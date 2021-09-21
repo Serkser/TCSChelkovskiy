@@ -1,0 +1,160 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU;x64</Platforms>
+    <AssemblyName>TCSChelkovskiy</AssemblyName>
+    <RootNamespace>TCSChelkovskiy</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="adv1.png" />
+    <None Remove="categories.png" />
+    <None Remove="Controls\ArrowLeft.png" />
+    <None Remove="Controls\ArrowRight.png" />
+    <None Remove="Controls\Backspace.png" />
+    <None Remove="Controls\CategoryItemTemplate.png" />
+    <None Remove="Controls\ControlContent.png" />
+    <None Remove="Controls\ControlHeader.png" />
+    <None Remove="Controls\Lang.png" />
+    <None Remove="Controls\Shift.png" />
+    <None Remove="Controls\ShopItemTemplate.png" />
+    <None Remove="Controls\SliderArrowLeft.png" />
+    <None Remove="Controls\SliderArrowRight.png" />
+    <None Remove="Controls\SliderPressButton.png" />
+    <None Remove="Images\ItemTemplates\CategoryItemTemplate.png" />
+    <None Remove="Images\ItemTemplates\SaleItemTemplate.png" />
+    <None Remove="Images\ItemTemplates\ShopItemTemplate.png" />
+    <None Remove="Images\ItemTemplates\ToHomeItemTemplate.png" />
+    <None Remove="Images\ItemTemplates\VacancyItemTemplate\ControlContent.png" />
+    <None Remove="Images\ItemTemplates\VacancyItemTemplate\ControlHeader.png" />
+    <None Remove="Images\ItemTemplates\VacancyItemTemplate\HideButton.png" />
+    <None Remove="Images\ItemTemplates\VacancyItemTemplate\ShowButton.png" />
+    <None Remove="Images\Keyboard\ArrowLeft.png" />
+    <None Remove="Images\Keyboard\ArrowRight.png" />
+    <None Remove="Images\Keyboard\Backspace.png" />
+    <None Remove="Images\Keyboard\Lang.png" />
+    <None Remove="Images\Keyboard\Shift.png" />
+    <None Remove="Images\MainWindow\ArrowDown.png" />
+    <None Remove="Images\MainWindow\Logo.png" />
+    <None Remove="Images\MainWindow\Search.png" />
+    <None Remove="Images\MainWindow\TrafficLight.png" />
+    <None Remove="Images\Navigation\FloopMarker.png" />
+    <None Remove="Images\Navigation\FloorButton.png" />
+    <None Remove="Images\Navigation\FloorButtonActive.png" />
+    <None Remove="Images\Navigation\SearchNavButton.png" />
+    <None Remove="Images\Navigation\ToHomeButton.png" />
+    <None Remove="Images\Samples\adv1.png" />
+    <None Remove="Images\Samples\adv2.png" />
+    <None Remove="Images\Samples\adv3.png" />
+    <None Remove="Images\Shared\ClockIcon.png" />
+    <None Remove="Images\Shared\CloseButton.png" />
+    <None Remove="Images\Shared\LocationIcon.png" />
+    <None Remove="Images\Shared\Metro.png" />
+    <None Remove="Images\Shared\PhoneIcon.png" />
+    <None Remove="Images\Slider\SliderArrowLeft.png" />
+    <None Remove="Images\Slider\SliderArrowRight.png" />
+    <None Remove="Images\Slider\SliderPressButton.png" />
+    <None Remove="info.png" />
+    <None Remove="news.png" />
+    <None Remove="SearchNavButton.png" />
+    <None Remove="shops.png" />
+    <None Remove="Views\ClockIcon.png" />
+    <None Remove="Views\Contacts.png" />
+    <None Remove="Views\FloopMarker.png" />
+    <None Remove="Views\FloorButton.png" />
+    <None Remove="Views\FloorButtonActive.png" />
+    <None Remove="Views\LocationIcon.png" />
+    <None Remove="Views\Metro.png" />
+    <None Remove="Views\PhoneIcon.png" />
+    <None Remove="Views\SearchNavButton.png" />
+    <None Remove="Views\SiteIcon.png" />
+    <None Remove="Views\ToHomeButton.png" />
+    <None Remove="Views\WC.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="categories.png" />
+    <Resource Include="Controls\Shift.png" />
+    <Resource Include="Images\ItemTemplates\CategoryItemTemplate.png" />
+    <Resource Include="Images\ItemTemplates\ShopItemTemplate.png" />
+    <Resource Include="Images\ItemTemplates\SaleItemTemplate.png" />
+    <Resource Include="Images\ItemTemplates\ToHomeItemTemplate.png" />
+    <Resource Include="Images\ItemTemplates\VacancyItemTemplate\ControlContent.png" />
+    <Resource Include="Images\ItemTemplates\VacancyItemTemplate\ControlHeader.png" />
+    <Resource Include="Images\ItemTemplates\VacancyItemTemplate\HideButton.png" />
+    <Resource Include="Images\ItemTemplates\VacancyItemTemplate\ShowButton.png" />
+    <Resource Include="Images\Keyboard\Backspace.png" />
+    <Resource Include="Images\Keyboard\Lang.png" />
+    <Resource Include="Images\Keyboard\Shift.png" />
+    <Resource Include="Images\MainWindow\ArrowDown.png" />
+    <Resource Include="Images\MainWindow\Logo.png" />
+    <Resource Include="Images\MainWindow\Search.png" />
+    <Resource Include="Images\MainWindow\TrafficLight.png" />
+    <Resource Include="Images\Navigation\FloopMarker.png" />
+    <Resource Include="Images\Samples\adv1.png" />
+    <Resource Include="Images\Samples\adv2.png" />
+    <Resource Include="Images\Samples\adv3.png" />
+    <Resource Include="Images\Shared\CloseButton.png" />
+    <Resource Include="Images\Shared\LocationIcon.png" />
+    <Resource Include="Images\Shared\PhoneIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Syncfusion.Shared.WPF" Version="19.2.0.62" />
+    <PackageReference Include="Syncfusion.UI.WPF.NET" Version="19.2.0.62" />
+    <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="adv1.png" />
+    <Resource Include="Controls\ArrowLeft.png" />
+    <Resource Include="Controls\ArrowRight.png" />
+    <Resource Include="Controls\Backspace.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Controls\CategoryItemTemplate.png" />
+    <Resource Include="Controls\ControlContent.png" />
+    <Resource Include="Controls\ControlHeader.png" />
+    <Resource Include="Controls\Lang.png" />
+    <Resource Include="Controls\ShopItemTemplate.png" />
+    <Resource Include="Controls\SliderArrowLeft.png" />
+    <Resource Include="Controls\SliderArrowRight.png" />
+    <Resource Include="Controls\SliderPressButton.png" />
+    <Resource Include="Images\Navigation\FloorButton.png" />
+    <Resource Include="Images\Navigation\FloorButtonActive.png" />
+    <Resource Include="Images\Navigation\SearchNavButton.png" />
+    <Resource Include="Images\Navigation\ToHomeButton.png" />
+    <Resource Include="Images\Shared\ClockIcon.png" />
+    <Resource Include="Images\Shared\Metro.png" />
+    <Resource Include="Images\Slider\SliderArrowLeft.png" />
+    <Resource Include="Images\Slider\SliderArrowRight.png" />
+    <Resource Include="Images\Slider\SliderPressButton.png" />
+    <Resource Include="info.png" />
+    <Resource Include="news.png" />
+    <Resource Include="SearchNavButton.png" />
+    <Resource Include="shops.png" />
+    <Resource Include="Views\ClockIcon.png" />
+    <Resource Include="Views\Contacts.png" />
+    <Resource Include="Views\FloopMarker.png" />
+    <Resource Include="Views\FloorButton.png" />
+    <Resource Include="Views\FloorButtonActive.png" />
+    <Resource Include="Views\LocationIcon.png" />
+    <Resource Include="Views\Metro.png" />
+    <Resource Include="Views\PhoneIcon.png" />
+    <Resource Include="Views\SearchNavButton.png" />
+    <Resource Include="Views\SiteIcon.png" />
+    <Resource Include="Views\ToHomeButton.png" />
+    <Resource Include="Views\WC.png" />
+  </ItemGroup>
+
+
+
+</Project>

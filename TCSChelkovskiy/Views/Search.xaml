@@ -1,0 +1,30 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TCSChelkovskiy.Views.Search" 
+      xmlns:controls="clr-namespace:TCSChelkovskiy.Controls"
+      mc:Ignorable="d" 
+      d:DesignHeight="830" d:DesignWidth="1440"
+      Title="Search">
+    <Grid Background="#E5E5e5">
+        <ListView Margin="38,49,38,415">
+            <ListView.View>
+                <GridView>
+
+                </GridView>
+            </ListView.View>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel>
+                        <controls:ShopItemTemplate></controls:ShopItemTemplate>
+                    </WrapPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+        <controls:Keyboard Margin="188,463,188,102"></controls:Keyboard>
+    </Grid>
+</Page>
+

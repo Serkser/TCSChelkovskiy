@@ -1,0 +1,36 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TCSChelkovskiy.Views"
+      xmlns:Controls="clr-namespace:TCSChelkovskiy.Controls" x:Class="TCSChelkovskiy.Views.ShopsView"
+      mc:Ignorable="d" 
+      d:DesignHeight="830" d:DesignWidth="1297"
+      Title="ProductsView">
+    <Grid Background="#E5E5E5">
+        <Button  Command="{Binding GoHome}" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
+            HorizontalAlignment="Left" Margin="38,29,0,0" VerticalAlignment="Top" Height="64" Width="345" >
+            <StackPanel Orientation="Horizontal">
+                <Image Width="40" Height="40" Source="/Views/ToHomeButton.png"/>
+                <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="МАГАЗИНЫ" FontWeight="SemiBold" Height="46"/>
+            </StackPanel>
+        </Button>
+
+        <ListView Margin="38,98,39,49">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel>
+                        <!--<Controls:ShopItemTemplate />-->
+                    </WrapPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </Grid>
+</Page>

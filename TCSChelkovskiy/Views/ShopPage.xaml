@@ -1,0 +1,56 @@
+﻿<Page x:Class="TCSChelkovskiy.Views.ShopPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TCSChelkovskiy.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="830" d:DesignWidth="1440"
+      Title="ShopPage">
+
+    <Grid Background="#E5E5E5">
+        <Border Background="White" CornerRadius="20" Margin="74,66,74,67">
+            <Grid Margin="0,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="69*"/>
+                    <ColumnDefinition Width="254*"/>
+                </Grid.ColumnDefinitions>
+                <Button FontWeight="SemiBold" Style="{StaticResource ButtonBlue}" Content="КАК ПРОЙТИ?" HorizontalAlignment="Left"
+                FontSize="30" Margin="723,52,0,0" VerticalAlignment="Top" Width="260" Height="100" RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
+                <Button FontWeight="SemiBold" Command="{Binding GoHome}" Style="{StaticResource ButtonBordered}" Content="ЗАКРЫТЬ" HorizontalAlignment="Left"
+                FontSize="30"  Margin="723,174,0,0" VerticalAlignment="Top" Width="260" Height="100" RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
+                <Image Width="25" Height="25" Margin="52,256,939,416" Source="/Views/PhoneIcon.png" Grid.Column="1"></Image>
+                <TextBlock HorizontalAlignment="Left" Margin="63,192,0,0" Text="2 этаж" FontFamily="Manrope" TextAlignment="Left" 
+            FontSize="18px" Foreground="Black" FontWeight="Regular" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" Height="80"/>
+                <Border Width="140" Height="140"  CornerRadius="15" BorderThickness="1"  BorderBrush="Black" Background="Wheat" Margin="63,45,73,512">
+                    <Image  HorizontalAlignment="Left" Height="140" Margin="-3,-3,0,0" VerticalAlignment="Top" Width="140"/>
+                </Border>
+                <TextBlock HorizontalAlignment="Left" Margin="55,55,0,0" Text="ZARA" FontFamily="Manrope" TextAlignment="Left" 
+                    FontSize="35px" Foreground="Black" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" Width="791" Height="47" Grid.Column="1"/>
+                <TextBlock HorizontalAlignment="Left" Margin="55,101,0,0" Text="Женская одежда" FontFamily="Manrope" TextAlignment="Left" 
+                    FontSize="14px" Foreground="Black" FontWeight="Regular" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" Height="18" Grid.Column="1"/>
+                <TextBlock HorizontalAlignment="Left" Margin="55,124,0,0" Text="Магазин ультрамодной женской, мужской  и детской одежды. Здесь вы можете найти самые трендовые вещи этого сезона. Будьте самыми модными. Ждем Вас." FontFamily="Manrope" TextAlignment="Left" 
+                    FontSize="18px" Foreground="Black" FontWeight="Regular" TextWrapping="Wrap" VerticalAlignment="Top" Width="641" Height="101" Grid.Column="1"/>
+                <Image Width="25" Height="25" Margin="52,319,939,353" Source="/Views/SiteIcon.png" Grid.Column="1"/>
+                <Image Width="25" Height="25" Margin="88,259,0,0" Source="/Views/ClockIcon.png" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="88,294,0,0" Text="КОСМЕТИКА" FontFamily="Manrope" TextAlignment="Left" 
+                    FontSize="16px" Foreground="Black" FontWeight="Medium" TextWrapping="Wrap" VerticalAlignment="Top" Width="292" Height="18" Grid.Column="1"/>
+                <TextBlock HorizontalAlignment="Left" Margin="88,324,0,0" Text="КОСМЕТИКА" FontFamily="Manrope" TextAlignment="Left" 
+                    FontSize="16px" Foreground="Black" FontWeight="Medium" TextWrapping="Wrap" VerticalAlignment="Top" Width="292" Height="18" Grid.Column="1"/>
+                <TextBlock Margin="364,324,0,0" Text="КОСМЕТИКА" FontFamily="Manrope" TextAlignment="Left" 
+                    FontSize="16px" Foreground="Black" FontWeight="Medium" TextWrapping="Wrap" Width="292" Height="18" Grid.ColumnSpan="2"/>
+                <ListView Margin="49,371,49,29" Padding="10,0,0,0" Height="297" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top">
+
+                </ListView>
+            </Grid>
+        </Border>
+        <Button Style="{StaticResource HeaderSearchButton}"  Command="{Binding GoBack}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
+            HorizontalAlignment="Left" Margin="62,2,0,0" VerticalAlignment="Top" Height="64" Width="345" >
+            <StackPanel Orientation="Horizontal">
+                <Image Width="40" Height="40" Source="/Views/ToHomeButton.png"/>
+                <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="Назад" FontWeight="SemiBold" Height="46"/>
+            </StackPanel>
+        </Button>
+
+    </Grid>
+</Page>

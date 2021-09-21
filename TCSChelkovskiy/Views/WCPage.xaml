@@ -1,0 +1,56 @@
+﻿<Page x:Class="TCSChelkovskiy.Views.WCPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TCSChelkovskiy.Views"
+      mc:Ignorable="d" 
+       d:DesignHeight="830" d:DesignWidth="1440"
+      Title="WCPage">
+    <Grid Background="#E5E5E5">
+        <Border Background="White" CornerRadius="20" Margin="74,66,74,67">
+            <Grid Margin="0,0,0,0">
+                <Button FontWeight="SemiBold" Style="{StaticResource ButtonBlue}"  HorizontalAlignment="Left"
+                FontSize="30" Margin="204,290,0,0" VerticalAlignment="Top" Width="260" Height="100" RenderTransformOrigin="0.5,0.5">
+                    <Button.Content>
+                        <TextBlock TextAlignment="Center">
+                            <Run>Туалет на</Run><LineBreak/>
+                            <Run>1-ом этаже</Run>
+                        </TextBlock>
+                    </Button.Content>
+                </Button>
+                <Border Width="140" Height="140"  CornerRadius="15" Panel.ZIndex="2" BorderThickness="1"  BorderBrush="Black" Background="Wheat" Margin="63,45,1089,512">
+                    <Image  HorizontalAlignment="Center" Height="140" VerticalAlignment="Center" Width="140" Source="/Views/WC.png" Stretch="Fill"/>
+                </Border>
+                <TextBlock HorizontalAlignment="Left" Margin="331,55,0,0" Text="Туалет" FontFamily="Manrope" TextAlignment="Left" 
+                    FontSize="35px" Foreground="Black" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" Width="791" Height="47"/>
+                <TextBlock HorizontalAlignment="Left" Margin="331,99,0,0" Text="Женский туалет, мужской туалет, комната матери и ребёнка" FontFamily="Manrope" TextAlignment="Left" 
+                    FontSize="18px" Foreground="Black" FontWeight="Regular" TextWrapping="Wrap" VerticalAlignment="Top" Width="641" Height="53"/>
+                <Button FontWeight="SemiBold" Style="{StaticResource ButtonBlue}"  HorizontalAlignment="Left"
+                    FontSize="30" Margin="528,290,0,0" VerticalAlignment="Top" Width="260" Height="100" RenderTransformOrigin="0.5,0.5">
+                    <TextBlock  TextAlignment="Center"><Run Text="Туалет на"/><LineBreak/><Run Text="2-ом этаже"/></TextBlock>
+                </Button>
+                <Button FontWeight="SemiBold" Style="{StaticResource ButtonBlue}"  HorizontalAlignment="Left"
+                    FontSize="30" Margin="852,290,0,0" VerticalAlignment="Top" Width="260" Height="100" RenderTransformOrigin="0.5,0.5">
+                    <TextBlock  TextAlignment="Center"><Run Text="Туалет на"/><LineBreak/><Run Text="3-ом этаже"/></TextBlock>
+                </Button>
+                <Button FontWeight="SemiBold" Style="{StaticResource ButtonBlue}"  HorizontalAlignment="Left"
+                    FontSize="30" Margin="360,422,0,0" VerticalAlignment="Top" Width="260" Height="100" RenderTransformOrigin="0.5,0.5">
+                    <TextBlock  TextAlignment="Center"><Run Text="Туалет на"/><LineBreak/><Run Text="4-ом этаже"/></TextBlock>
+                </Button>
+                <Button FontWeight="SemiBold" Style="{StaticResource ButtonBlue}"  HorizontalAlignment="Left"
+                    FontSize="30" Margin="684,422,0,0" VerticalAlignment="Top" Width="260" Height="100" RenderTransformOrigin="0.5,0.5">
+                    <TextBlock  TextAlignment="Center"><Run Text="Туалет на"/><LineBreak/><Run Text="5-ом этаже"/></TextBlock>
+                </Button>
+            </Grid>
+        </Border>
+        <Button  Command="{Binding GoBack}" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
+            HorizontalAlignment="Left" Margin="62,2,0,0" VerticalAlignment="Top" Height="64" Width="345" >
+            <StackPanel Orientation="Horizontal">
+                <Image Width="40" Height="40" Source="/Views/ToHomeButton.png"/>
+                <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="Назад" FontWeight="SemiBold" Height="46"/>
+            </StackPanel>
+        </Button>
+
+    </Grid>
+</Page>

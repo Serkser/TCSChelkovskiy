@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TCSChelkovskiy": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\Arturbipolar\\Desktop\\проекты\\TCSChelkovskiy\\TCSChelkovskiy\\bin\\x64\\Debug\\net5.0-windows\\TCSChelkovskiy.exe"
+    }
+  }
+}
