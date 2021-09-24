@@ -35,12 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Gu.Wpf.FlipView, Version=2.0.2.0, Culture=neutral, PublicKeyToken=5fdc803b1f5d8362, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Gu.Wpf.FlipView.dll</HintPath>
+      <HintPath>..\packages\Gu.Wpf.FlipView.2.0.2\lib\net45\Gu.Wpf.FlipView.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Microsoft.Xaml.Behaviors.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.37\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

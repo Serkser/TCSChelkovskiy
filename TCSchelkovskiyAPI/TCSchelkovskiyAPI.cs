@@ -133,6 +133,7 @@ namespace TCSchelkovskiyAPI
                         shopModel.Photos = shopPhotos;
                         shopModels.Add(shopModel);
                     }
+                    category.Shops = shopModels;
                     categories.Add(category);
                 }  
                 

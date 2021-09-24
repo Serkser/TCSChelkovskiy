@@ -51,7 +51,7 @@
                 </Style>
             </TextBox.Resources>
         </TextBox>
-        <CheckBox FontSize="11" HorizontalAlignment="Left" Margin="5,83,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1">
+        <CheckBox FontSize="11" HorizontalAlignment="Left" Margin="5,120,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1">
             <CheckBox.LayoutTransform>
                 <ScaleTransform ScaleX="2.5" ScaleY="2.5" />
             </CheckBox.LayoutTransform>
@@ -63,7 +63,8 @@
         <Controls:Keyboard Grid.Column="1" Margin="619,102,66,45" Grid.Row="1"/>
 
 
-        <TextBlock Grid.Column="1" HorizontalAlignment="Right" Margin="0,87,740,0" FontSize="20" Text="Даю согласие на обработку персональных данных" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Row="1"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Right" Margin="0,120,740,0" FontSize="20" Text="Даю согласие на обработку персональных данных" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Row="1"/>
+       
 
 
     </Grid>

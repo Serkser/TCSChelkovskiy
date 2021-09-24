@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920" WindowStyle="None" Background="#E5E5E5" WindowState="Maximized">
     <Grid >
-        <Viewbox Margin="10,36,352,136">
+        <!--<Viewbox Margin="10,36,352,136">-->
             <Grid>
                 <Rectangle HorizontalAlignment="Left" Height="140" Margin="480,940,0,0" Stroke="#D8D5CC" Fill="#D8D5CC" VerticalAlignment="Top" Width="1463"/>
                 <Image HorizontalAlignment="Left" Height="360" VerticalAlignment="Top" Width="480" Source="/adv1.png" Stretch="Fill"/>
@@ -22,7 +22,9 @@
                         <ImageBrush ImageSource="/shops.png"/>
                     </Button.Background>
                 </Button>
-                <Frame x:Name="frame" Panel.ZIndex="2" Content="Frame" Margin="482,164,3,145"/>
+                <Frame x:Name="frame" Panel.ZIndex="2" Content="Frame" 
+                       NavigationUIVisibility="Hidden"
+                       Margin="482,164,3,145"/>
                 <Button  Command="{Binding GoCategories}"  Style="{StaticResource FooterButton}" Content="КАТЕГОРИИ"
                     FontSize="20"  Margin="879,960,729,0" VerticalAlignment="Top" Width="335" Height="100">
                     <Button.Background>
@@ -51,9 +53,15 @@
 
                     </Button.Content>
                 </Button>
+            <Button  Command="{Binding GoNews}"  Style="{StaticResource FooterButton}" Content="НОВОСТИ"
+                    FontSize="20"  Margin="1585,960,23,0" VerticalAlignment="Top" Width="335" Height="100">
+                <Button.Background>
+                    <ImageBrush ImageSource="/news.png"/>
+                </Button.Background>
+            </Button>
 
-            </Grid>
-        </Viewbox>
+        </Grid>
+        <!--</Viewbox>-->
 
     </Grid>
 </Window>
