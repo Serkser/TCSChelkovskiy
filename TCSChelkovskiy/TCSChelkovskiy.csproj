@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NavigationMap\**" />
+    <EmbeddedResource Remove="NavigationMap\**" />
+    <None Remove="NavigationMap\**" />
+    <Page Remove="NavigationMap\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="adv1.png" />
     <None Remove="categories.png" />
     <None Remove="Controls\ArrowLeft.png" />
@@ -58,6 +65,7 @@
     <None Remove="Images\Slider\SliderArrowRight.png" />
     <None Remove="Images\Slider\SliderPressButton.png" />
     <None Remove="info.png" />
+    <None Remove="NavigateButton.png" />
     <None Remove="news.png" />
     <None Remove="SearchNavButton.png" />
     <None Remove="shops.png" />
@@ -66,6 +74,7 @@
     <None Remove="Views\FloopMarker.png" />
     <None Remove="Views\FloorButton.png" />
     <None Remove="Views\FloorButtonActive.png" />
+    <None Remove="Views\FloorsPanel.png" />
     <None Remove="Views\LocationIcon.png" />
     <None Remove="Views\Metro.png" />
     <None Remove="Views\PhoneIcon.png" />
@@ -73,6 +82,8 @@
     <None Remove="Views\SiteIcon.png" />
     <None Remove="Views\ToHomeButton.png" />
     <None Remove="Views\WC.png" />
+    <None Remove="ZoomIn.png" />
+    <None Remove="ZoomOut.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -104,13 +115,24 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Syncfusion.Shared.WPF" Version="19.2.0.62" />
     <PackageReference Include="Syncfusion.UI.WPF.NET" Version="19.2.0.62" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NavigationMap\NavigationMap.csproj" />
+    <ProjectReference Include="..\TCSchelkovskiyAPI\TCSchelkovskiyAPI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Gu.Wpf.FlipView">
+      <HintPath>..\NavigationMap\bin\Debug\Gu.Wpf.FlipView.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -138,6 +160,7 @@
     <Resource Include="Images\Slider\SliderArrowRight.png" />
     <Resource Include="Images\Slider\SliderPressButton.png" />
     <Resource Include="info.png" />
+    <Resource Include="NavigateButton.png" />
     <Resource Include="news.png" />
     <Resource Include="SearchNavButton.png" />
     <Resource Include="shops.png" />
@@ -146,6 +169,7 @@
     <Resource Include="Views\FloopMarker.png" />
     <Resource Include="Views\FloorButton.png" />
     <Resource Include="Views\FloorButtonActive.png" />
+    <Resource Include="Views\FloorsPanel.png" />
     <Resource Include="Views\LocationIcon.png" />
     <Resource Include="Views\Metro.png" />
     <Resource Include="Views\PhoneIcon.png" />
@@ -153,6 +177,8 @@
     <Resource Include="Views\SiteIcon.png" />
     <Resource Include="Views\ToHomeButton.png" />
     <Resource Include="Views\WC.png" />
+    <Resource Include="ZoomIn.png" />
+    <Resource Include="ZoomOut.png" />
   </ItemGroup>
 
 

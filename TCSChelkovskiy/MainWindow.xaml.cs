@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TCSChelkovskiy.Views;
 
 namespace TCEvropeyskiy
 {
@@ -24,6 +25,7 @@ namespace TCEvropeyskiy
         {
             InitializeComponent();
             this.DataContext = new ViewModels.MainWindowViewModel(this);
+            frame.Navigate(new MapPage(this));
         }
     }
 }

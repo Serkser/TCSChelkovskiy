@@ -8,6 +8,10 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TCSChelkovskiy.Views;
 using System.Windows;
+using NavigationMap.Models;
+using System.Collections.ObjectModel;
+using TCSchelkovskiyAPI.Models;
+using TCSChelkovskiy.Memory;
 
 namespace TCEvropeyskiy.ViewModels
 {
@@ -17,7 +21,16 @@ namespace TCEvropeyskiy.ViewModels
         public MainWindowViewModel(MainWindow _this)
         {
             This = _this;
+            This.frame.Navigate(new MapPage(This));
+
+            Categories = KioskObjects.Categories;
+            Stations = KioskObjects.Stations;
+            Shops = KioskObjects.Shops;
+            Gallery = KioskObjects.Gallery;
+        
         }
+
+
 
         #region Методы и команды для хедера
         private RelayCommand tapSearch;
@@ -35,9 +48,64 @@ namespace TCEvropeyskiy.ViewModels
             }
         }
         #endregion
-      
 
 
+        #region Свойства сущностей
+
+        private ObservableCollection<CategoryModel> categories;
+        public ObservableCollection<CategoryModel> Categories
+        {
+            get
+            {
+                return categories;
+            }
+            set
+            {
+                categories = value;
+                OnPropertyChanged("Categories");
+            }
+        }
+        private ObservableCollection<Station> stations;
+        public ObservableCollection<Station> Stations
+        {
+            get
+            {
+                return stations;
+            }
+            set
+            {
+                stations = value;
+                OnPropertyChanged("Stations");
+            }
+        }
+
+        private ObservableCollection<ShopModel> shops;
+        public ObservableCollection<ShopModel> Shops
+        {
+            get
+            {
+                return shops;
+            }
+            set
+            {
+                shops = value;
+                OnPropertyChanged("Shops");
+            }
+        }
+        private ObservableCollection<ShopGalleryModel> gallery;
+        public ObservableCollection<ShopGalleryModel> Gallery
+        {
+            get
+            {
+                return gallery;
+            }
+            set
+            {
+                gallery = value;
+                OnPropertyChanged("Gallery");
+            }
+        }
+        #endregion
 
         #region Навигация
         private RelayCommand goHome;
@@ -48,7 +116,7 @@ namespace TCEvropeyskiy.ViewModels
                 return goHome ??
                     (goHome = new RelayCommand(obj =>
                     {
-                        This.frame.Navigate(null);
+                        This.frame.Navigate(new MapPage(This));
                     }));
             }
         }
@@ -63,8 +131,12 @@ namespace TCEvropeyskiy.ViewModels
                     {
                         if (This.frame.CanGoBack)
                         {                          
-                            This.frame.GoBack();
-                        }                      
+                            //This.frame.GoBack();
+                        }
+                        else
+                        {
+                            This.frame.Navigate(new MapPage(This));
+                        }
                     }));
             }
         }

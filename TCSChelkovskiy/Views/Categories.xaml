@@ -10,16 +10,16 @@
       Title="Categories">
     <Grid Background="#E5E5E5">
 
-        <ListView Margin="38,119,39,48">
+        <ListView Margin="38,119,39,48" ItemsSource="{Binding Categories,Mode=TwoWay}">
             <ListView.View>
                 <GridView>
-                    
+                 
                 </GridView>
             </ListView.View>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
-                        <Controls:CategoryItemTemplate></Controls:CategoryItemTemplate>
+                        <Controls:CategoryItemTemplate CategoryModel="{Binding}"></Controls:CategoryItemTemplate>
                     </WrapPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

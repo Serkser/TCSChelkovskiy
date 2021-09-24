@@ -8,7 +8,7 @@
     <Grid>
 
 
-        <Button Style="{DynamicResource KeyboardButton}" Content="q"  Margin="10,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button MouseDown="Click" Style="{DynamicResource KeyboardButton}" Content="q"  Margin="10,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
         <Button Style="{DynamicResource KeyboardButton}" Content="w"  Margin="55,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
         <Button Style="{DynamicResource KeyboardButton}" Content="e"  Margin="98,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
         <Button Style="{DynamicResource KeyboardButton}" Content="r"  Margin="141,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
@@ -27,7 +27,7 @@
         <Button Style="{DynamicResource KeyboardButton}" Content="j"  Margin="298,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
         <Button Style="{DynamicResource KeyboardButton}" Content="k"  Margin="344,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
         <Button Style="{DynamicResource KeyboardButton}" Content="l"  Margin="390,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" BorderThickness="0" Content=""  Margin="370,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="86">
+        <Button Style="{DynamicResource KeyboardButton}" BorderThickness="0" Content="Backspace" Foreground="Transparent" Margin="370,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="86">
             <Button.Background>
                 <ImageBrush ImageSource="/Controls/Backspace.png"/>
             </Button.Background>
@@ -39,7 +39,7 @@
         <Button Style="{DynamicResource KeyboardButton}" Content="b"  Margin="231,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
         <Button Style="{DynamicResource KeyboardButton}" Content="n"  Margin="278,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
         <Button Style="{DynamicResource KeyboardButton}" Content="m"  Margin="324,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="" BorderThickness="0"  Margin="10,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40">
+        <Button Style="{DynamicResource KeyboardButton}" Content="Shift" Foreground="Transparent" BorderThickness="0"  Margin="10,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40">
             <Button.Background>
                 <ImageBrush ImageSource="/Controls/Shift.png"/>
             </Button.Background>
@@ -47,12 +47,12 @@
         <Button Style="{DynamicResource KeyboardButton}" Content="@"  Margin="370,150,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
         <Button Style="{DynamicResource KeyboardButton}" Content="."  Margin="416,150,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
         <Button Style="{DynamicResource KeyboardButton}" Content="123"  Margin="75,150,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="58"/>
-        <Button Style="{DynamicResource KeyboardButton}" BorderThickness="0" Content=""  Margin="10,150,0,0" VerticalAlignment="Top" Height="40" RenderTransformOrigin="0.944,0.487" HorizontalAlignment="Left" Width="60">
+        <Button Style="{DynamicResource KeyboardButton}" BorderThickness="0" Content="Lang" Foreground="Transparent"  Margin="10,150,0,0" VerticalAlignment="Top" Height="40" RenderTransformOrigin="0.944,0.487" HorizontalAlignment="Left" Width="60">
             <Button.Background>
                 <ImageBrush ImageSource="/Controls/Lang.png" Stretch="Fill"/>
             </Button.Background>
         </Button>
-        <Button Style="{DynamicResource KeyboardButton}" Content=""  Margin="138,150,0,0" VerticalAlignment="Top" Height="40" RenderTransformOrigin="0.944,0.487" HorizontalAlignment="Left" Width="226"/>
+        <Button Style="{DynamicResource KeyboardButton}" Content=" "  Margin="138,150,0,0" VerticalAlignment="Top" Height="40" RenderTransformOrigin="0.944,0.487" HorizontalAlignment="Left" Width="226"/>
 
     </Grid>
 </UserControl>

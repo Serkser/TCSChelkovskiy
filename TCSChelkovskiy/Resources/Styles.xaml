@@ -63,6 +63,49 @@
         <Setter Property="Padding" Value="35,0,0,0"></Setter>
     </Style>
 
+    <Style  x:Key="FloorButtonPink" TargetType="Button" BasedOn="{StaticResource ButtonBase}">
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="#EC84D3"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    
+    <Style  x:Key="FloorButtonLeft" TargetType="Button" BasedOn="{StaticResource ButtonCornered}">
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="Foreground" Value="#0068FF"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="#EC84D3"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style  x:Key="FloorButtonRight" TargetType="Button" BasedOn="{StaticResource ButtonCornered}">
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="#EC84D3"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="ButtonBlue" TargetType="Button" BasedOn="{StaticResource ButtonCornered}">
         <Style.Setters>
             <Setter Property="FontFamily" Value="Montserrat"></Setter>

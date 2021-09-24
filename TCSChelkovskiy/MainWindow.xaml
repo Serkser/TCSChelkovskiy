@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TCEvropeyskiy"
+        xmlns:nav="clr-namespace:NavigationMap.Controls;assembly=NavigationMap"
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920" WindowStyle="None" Background="#E5E5E5" WindowState="Maximized">
     <Grid >
@@ -21,7 +22,7 @@
                         <ImageBrush ImageSource="/shops.png"/>
                     </Button.Background>
                 </Button>
-                <Frame x:Name="frame" Content="Frame" Margin="485,169,0,152"/>
+                <Frame x:Name="frame" Panel.ZIndex="2" Content="Frame" Margin="482,164,3,145"/>
                 <Button  Command="{Binding GoCategories}"  Style="{StaticResource FooterButton}" Content="КАТЕГОРИИ"
                     FontSize="20"  Margin="879,960,729,0" VerticalAlignment="Top" Width="335" Height="100">
                     <Button.Background>

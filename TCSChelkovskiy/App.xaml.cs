@@ -13,5 +13,9 @@ namespace TCSChelkovskiy
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            Memory.KioskObjects.LoadAllObjects();
+        }
     }
 }

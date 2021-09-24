@@ -1,0 +1,51 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TCSChelkovskiy.Views"
+      xmlns:Controls="clr-namespace:NavigationMap.Controls;assembly=NavigationMap" x:Class="TCSChelkovskiy.Views.MapPage"
+      mc:Ignorable="d" 
+      d:DesignHeight="776" d:DesignWidth="1440"
+      Title="MapPage">
+
+    <Grid>
+        <Controls:Map  x:Name="Map" Margin="0,0,-18,-0"/>
+        <Button   Style="{StaticResource FooterButton}" Content=""
+            FontSize="20"  Margin="1296,603,24,0" VerticalAlignment="Top" Width="120" Height="120">
+            <d:Button.Background>
+                <ImageBrush ImageSource="/NavigateButton.png"/>
+            </d:Button.Background>
+        </Button>
+        <Button  Command="{Binding ZoomOut}" Panel.ZIndex="1"  Style="{StaticResource FooterButton}" Content=""
+            FontSize="20"  Margin="1296,436,24,0" VerticalAlignment="Top" Width="120" Height="120">
+            <d:Button.Background>
+                <ImageBrush ImageSource="/ZoomOut.png"/>
+            </d:Button.Background>
+        </Button>
+        <Button  Command="{Binding ZoomIn}"  Style="{StaticResource FooterButton}" Content=""
+            FontSize="20"  Margin="1296,320,24,0" VerticalAlignment="Top" Width="120" Height="120">
+            <d:Button.Background>
+                <ImageBrush ImageSource="/ZoomIn.png"/>
+            </d:Button.Background>
+        </Button>
+        <Image HorizontalAlignment="Left" Height="110" Margin="83,72,0,0" VerticalAlignment="Top" Width="646" Source="/Views/FloorsPanel.png" Stretch="Fill"/>
+        <Button  Command="{Binding GoNews}" IsEnabled="False" Style="{StaticResource FloorButtonPink}" Content="1"
+            FontSize="20"  Margin="254,80,1110,0" VerticalAlignment="Top" Height="81"/>
+        <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonPink}" Content="2"
+            FontSize="20"  Margin="330,80,1034,0" VerticalAlignment="Top" Height="81"/>
+        <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonPink}" Content="0"
+            FontSize="20"  Margin="178,80,1186,0" VerticalAlignment="Top" Height="80"/>
+        <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonPink}" Content="3"
+            FontSize="20"  Margin="406,80,958,0" VerticalAlignment="Top" Height="81"/>
+        <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonPink}" Content="4"
+            FontSize="20"  Margin="482,80,882,0" VerticalAlignment="Top" Height="80"/>
+        <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonPink}" Content="5"
+            FontSize="20"  Margin="559,80,805,0" VerticalAlignment="Top" Height="81"/>
+        <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonRight}" Content="6"
+            FontSize="20"  Margin="635,80,729,0" VerticalAlignment="Top" Height="80"/>
+        <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonLeft}" Content="P"
+            FontSize="20"  Margin="102,80,1262,0" VerticalAlignment="Top" Height="80"/>
+
+    </Grid>
+</Page>

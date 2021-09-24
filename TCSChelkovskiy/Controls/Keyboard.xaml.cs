@@ -24,5 +24,36 @@ namespace TCSChelkovskiy.Controls
         {
             InitializeComponent();
         }
+
+        private bool isUppercase = false;
+        private void Click(object sender, MouseButtonEventArgs e)
+        {
+            Button button = sender as Button;
+            string btnText = button.Content.ToString();
+            string symbol = "";
+            switch (btnText)
+            {
+                case "Lang":
+
+                    break;
+                case "Backspace":
+
+                    break;
+                case "Shift":
+                    isUppercase = !isUppercase;
+                    break;
+                default:
+                    if (isUppercase)
+                    {
+                        symbol = btnText.ToUpper();
+                    }
+                    else
+                    {
+                        symbol = btnText.ToLower();
+                    }
+                    break;
+
+            }
+        }
     }
 }

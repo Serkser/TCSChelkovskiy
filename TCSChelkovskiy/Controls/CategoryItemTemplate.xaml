@@ -11,9 +11,9 @@
             <ImageBrush ImageSource="/Controls/CategoryItemTemplate.png"/>
         </Grid.Background>
 
-        <Image  HorizontalAlignment="Left" Height="80" Margin="217,29,0,0" VerticalAlignment="Top" Width="80"/>
+        <Image x:Name="image" HorizontalAlignment="Left" Height="80" Margin="217,29,0,0" VerticalAlignment="Top" Width="80"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="10,16,0,0" Text="TextBlock" FontFamily="Manrope" TextAlignment="Left" 
+        <TextBlock x:Name="title" HorizontalAlignment="Left" Margin="10,16,0,0" Text="TextBlock" FontFamily="Manrope" TextAlignment="Left" 
             FontSize="22px" FontWeight="SemiBold" Foreground="Black" TextWrapping="Wrap" VerticalAlignment="Top" Width="134" Height="105"/>
 
     </Grid>

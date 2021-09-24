@@ -10,12 +10,12 @@
         <Grid.Background>
             <ImageBrush ImageSource="/Controls/ShopItemTemplate.png"/>
         </Grid.Background>
-        <Border Width="100" Height="100"  CornerRadius="15" BorderThickness="1"  BorderBrush="Black" Background="Wheat" Margin="207,19,24,19">
-            <Image  HorizontalAlignment="Left" Height="100" Margin="-3,-3,0,0" VerticalAlignment="Top" Width="100"/>
+        <Border Width="100" Height="100"  CornerRadius="15" BorderThickness="1"  BorderBrush="Black" Background="Transparent" Margin="207,19,24,19">
+            <Image x:Name="img"  HorizontalAlignment="Left" Height="100" Margin="-3,-3,0,0" VerticalAlignment="Top" Width="100"/>
         </Border>
-        <TextBlock HorizontalAlignment="Left" Margin="19,19,0,0" Text="TextBlock" FontFamily="Manrope" TextAlignment="Left" 
+        <TextBlock x:Name="title" HorizontalAlignment="Left" Margin="19,19,0,0" Text="TextBlock" FontFamily="Manrope" TextAlignment="Left" 
             FontSize="22" Foreground="Black" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" Width="168" Height="73"/>
-        <TextBlock HorizontalAlignment="Left" Margin="19,110,0,0" Text="КОСМЕТИКА" FontFamily="Manrope" TextAlignment="Left" 
+        <TextBlock x:Name="category" HorizontalAlignment="Left" Margin="19,110,0,0" Text="КОСМЕТИКА" FontFamily="Manrope" TextAlignment="Left" 
             FontSize="10px" Foreground="Black" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" Height="18"/>
 
     </Grid>

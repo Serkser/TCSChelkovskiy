@@ -17,7 +17,7 @@
             </StackPanel>
         </Button>
 
-        <ListView Margin="38,98,39,49">
+        <ListView ItemsSource="{Binding Shops,Mode=TwoWay}" Margin="38,98,39,49" SelectionChanged="ListView_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
@@ -26,7 +26,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
-                        <!--<Controls:ShopItemTemplate />-->
+                        <Controls:ShopItemTemplate ShopModel="{Binding}" />
                     </WrapPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
