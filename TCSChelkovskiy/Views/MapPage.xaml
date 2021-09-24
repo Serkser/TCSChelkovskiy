@@ -10,7 +10,7 @@
       Title="MapPage">
 
     <Grid>
-        <Controls:Map  x:Name="Map" Margin="0,0,-18,-0"/>
+        <Controls:Map  x:Name="Map" Margin="0,0,-0,-0"/>
         <Button   Style="{StaticResource FooterButton}" Content=""
             FontSize="20"  Margin="1296,603,24,0" VerticalAlignment="Top" Width="120" Height="120">
             <d:Button.Background>

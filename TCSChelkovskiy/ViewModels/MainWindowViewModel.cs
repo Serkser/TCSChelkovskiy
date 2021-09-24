@@ -12,6 +12,7 @@ using NavigationMap.Models;
 using System.Collections.ObjectModel;
 using TCSchelkovskiyAPI.Models;
 using TCSChelkovskiy.Memory;
+using NavigationMap.Core;
 
 namespace TCEvropeyskiy.ViewModels
 {

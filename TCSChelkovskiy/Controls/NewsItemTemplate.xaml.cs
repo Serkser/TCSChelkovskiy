@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,33 @@ namespace TCSChelkovskiy.Controls
         public NewsItemTemplate()
         {
             InitializeComponent();
+        }
+
+        public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(string), typeof(NewsItemTemplate));
+        public string Description
+        {
+            get { return (string)GetValue(DescriptionProperty); }
+            set { SetValue(DescriptionProperty, value); }
+        }
+        public static readonly DependencyProperty IconURIProperty = DependencyProperty.Register("IconURI", typeof(string), typeof(NewsItemTemplate));
+        public string IconURI
+        {
+            get { return (string)GetValue(IconURIProperty); }
+            set { SetValue(IconURIProperty, value); }
+        }
+        public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(NewsItemTemplate));
+        public string Icon
+        {
+            get { return (string)GetValue(IconProperty); }
+            set { SetValue(IconProperty, value); }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            Bitmap bitmap = Services.ImageDownloader.DownloadImage(IconURI, Icon);
+            image.Source = Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap);
+            bitmap.Dispose();
+            description.Text = Description;
         }
     }
 }

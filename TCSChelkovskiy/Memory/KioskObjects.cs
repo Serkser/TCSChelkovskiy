@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using TCSchelkovskiyAPI.Models;
 
 namespace TCSChelkovskiy.Memory
@@ -19,12 +20,14 @@ namespace TCSChelkovskiy.Memory
 
         public static async Task LoadAllObjects()
         {
-          await Task.Run(() =>
+
+            await Task.Run(() =>
             {
                 Categories = new ObservableCollection<CategoryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetCategories());
                 Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
                 Shops = new ObservableCollection<ShopModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShops());
                 Gallery = new ObservableCollection<ShopGalleryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShopsGallery());
+
 
             });
         }

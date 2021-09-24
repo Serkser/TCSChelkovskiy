@@ -25,21 +25,40 @@ namespace TCSChelkovskiy.Controls
         public ShopItemTemplate()
         {
             InitializeComponent();
-            Bitmap bitmap = Services.ImageDownloader.DownloadImage(ShopModel.IconURI, ShopModel.Icon);
-            img.Source = Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap);
+        }
+
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(CategoryItemTemplate));
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+        public static readonly DependencyProperty CategoryProperty = DependencyProperty.Register("Category", typeof(string), typeof(NewsItemTemplate));
+        public string Category
+        {
+            get { return (string)GetValue(CategoryProperty); }
+            set { SetValue(CategoryProperty, value); }
+        }
+        public static readonly DependencyProperty IconURIProperty = DependencyProperty.Register("IconURI", typeof(string), typeof(NewsItemTemplate));
+        public string IconURI
+        {
+            get { return (string)GetValue(IconURIProperty); }
+            set { SetValue(IconURIProperty, value); }
+        }
+        public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(NewsItemTemplate));
+        public string Icon
+        {
+            get { return (string)GetValue(IconProperty); }
+            set { SetValue(IconProperty, value); }
+        }
+
+        private void image_Loaded(object sender, RoutedEventArgs e)
+        {
+            Bitmap bitmap = Services.ImageDownloader.DownloadImage(IconURI, Icon);
+            image.Source = Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap);
             bitmap.Dispose();
-            title.Text = ShopModel.Name;
-            category.Text = ShopModel.Category.Name;
-        }
-        static ShopItemTemplate()
-        {
-            ShopModelProperty = DependencyProperty.Register("ShopModel", typeof(ShopModel), typeof(ShopItemTemplate));
-        }
-        public static readonly DependencyProperty ShopModelProperty;
-        public ShopModel ShopModel
-        {
-            get { return (ShopModel)GetValue(ShopModelProperty); }
-            set { SetValue(ShopModelProperty, value); }
+            category.Text = Category;
+            title.Text = Title;
         }
     }
 }

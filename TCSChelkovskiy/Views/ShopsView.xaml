@@ -18,15 +18,14 @@
         </Button>
 
         <ListView ItemsSource="{Binding Shops,Mode=TwoWay}" Margin="38,98,39,49" SelectionChanged="ListView_SelectionChanged">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
+          
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <WrapPanel>
-                        <Controls:ShopItemTemplate ShopModel="{Binding}" />
+                    <WrapPanel Orientation="Horizontal">
+                        <Controls:ShopItemTemplate  Width="331" Height="138" Icon="{Binding Path=Icon, Mode=TwoWay}"
+                            IconURI="{Binding Path=IconURI, Mode=TwoWay}"
+                            Title="{Binding Path=Name, Mode=TwoWay}"
+                           Category="{Binding Path=Category.Name,Mode=TwoWay}"/>
                     </WrapPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

@@ -26,21 +26,34 @@ namespace TCSChelkovskiy.Controls
         public CategoryItemTemplate()
         {
             InitializeComponent();
-            Bitmap bitmap = Services.ImageDownloader.DownloadImage(CategoryModel.IconURI, CategoryModel.Icon);
-            image.Source = Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap);
-            bitmap.Dispose();
-            title.Text = CategoryModel.Name;
-        }
-        static CategoryItemTemplate()
-        {
-            CategoryModelProperty = DependencyProperty.Register("CateroryModel", typeof(CategoryModel), typeof(CategoryItemTemplate));
-        }
-        public static readonly DependencyProperty CategoryModelProperty;
-        public CategoryModel CategoryModel
-        {
-            get { return (CategoryModel)GetValue(CategoryModelProperty); }
-            set { SetValue(CategoryModelProperty, value); }
+            
         }
 
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(CategoryItemTemplate));
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+        public static readonly DependencyProperty IconURIProperty = DependencyProperty.Register("IconURI", typeof(string), typeof(CategoryItemTemplate));
+        public string IconURI
+        {
+            get { return (string)GetValue(IconURIProperty); }
+            set { SetValue(IconURIProperty, value); }
+        }
+        public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(CategoryItemTemplate));
+        public string Icon
+        {
+            get { return (string)GetValue(IconProperty); }
+            set { SetValue(IconProperty, value); }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            Bitmap bitmap = Services.ImageDownloader.DownloadImage(IconURI, Icon);
+            image.Source = Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap);
+            bitmap.Dispose();
+            title.Text = Title;
+        }
     }
 }

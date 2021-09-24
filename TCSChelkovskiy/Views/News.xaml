@@ -11,15 +11,14 @@
     <Grid Background="#E5E5E5">
 
         <ListView Margin="38,119,39,48">
-            <ListView.View>
-                <GridView>
-                    
-                </GridView>
-            </ListView.View>
+          
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
-                        <Controls:NewsItemTemplate></Controls:NewsItemTemplate>
+                        <Controls:NewsItemTemplate Width="324" Height="295"
+                            Icon="{Binding Path=Icon, Mode=TwoWay}"
+                            IconURI="{Binding Path=IconURI, Mode=TwoWay}"
+                            Description="{Binding Path=Description, Mode=TwoWay}"></Controls:NewsItemTemplate>
                     </WrapPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

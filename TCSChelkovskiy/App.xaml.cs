@@ -15,7 +15,9 @@ namespace TCSChelkovskiy
     {
         public App()
         {
-            Memory.KioskObjects.LoadAllObjects();
+           
+            Memory.KioskObjects.LoadAllObjects().Wait();
+          
         }
     }
 }

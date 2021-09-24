@@ -11,15 +11,14 @@
     <Grid Background="#E5E5E5">
 
         <ListView Margin="38,119,39,48" ItemsSource="{Binding Categories,Mode=TwoWay}">
-            <ListView.View>
-                <GridView>
-                 
-                </GridView>
-            </ListView.View>
+            
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <WrapPanel>
-                        <Controls:CategoryItemTemplate CategoryModel="{Binding}"></Controls:CategoryItemTemplate>
+                    <WrapPanel Orientation="Horizontal">
+                        <Controls:CategoryItemTemplate Width="324" Height="140"
+                            Icon="{Binding Path=Icon, Mode=TwoWay}"
+                            IconURI="{Binding Path=IconURI, Mode=TwoWay}"
+                            Title="{Binding Path=Name, Mode=TwoWay}"></Controls:CategoryItemTemplate>
                     </WrapPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

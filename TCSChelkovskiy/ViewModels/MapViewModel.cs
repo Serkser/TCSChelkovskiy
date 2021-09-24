@@ -196,7 +196,7 @@ namespace TCSChelkovskiy.ViewModels
             get
             {
                 return changeFloor ??
-                    (changeFloor = new TCEvropeyskiy.RelayCommand(obj =>
+                    (changeFloor = new RelayCommand(obj =>
                     {
                             if (obj != null)
                             {

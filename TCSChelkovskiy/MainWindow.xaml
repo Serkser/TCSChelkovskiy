@@ -41,7 +41,7 @@
                         <ImageBrush ImageSource="/news.png"/>
                     </Button.Background>
                 </Button>
-                <Button Style="{StaticResource HeaderSearchButton}" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
+                <Button Command="{Binding TapSearch}" Style="{StaticResource HeaderSearchButton}" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
                          HorizontalAlignment="Left" Margin="1556,50,0,0" VerticalAlignment="Top" Height="64" Width="345">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
