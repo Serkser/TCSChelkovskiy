@@ -12,7 +12,7 @@
             <Grid Margin="0,0,0,0">
                 <TextBlock HorizontalAlignment="Left" Margin="475,37,0,0" Text="Вакансии" FontFamily="Manrope" TextAlignment="Center" 
                     FontSize="35px" Foreground="Black" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="47"/>
-                <syncfusion:SfAccordion Margin="62,90,77,70" />
+                <syncfusion:SfAccordion Margin="62,90,77,0" Height="555" />
             </Grid>
         </Border>
         <Button  Command="{Binding GoBack}" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"

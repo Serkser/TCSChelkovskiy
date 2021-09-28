@@ -51,7 +51,7 @@ namespace TCEvropeyskiy.ViewModels
         #endregion
 
 
-        #region Свойства сущностей
+        #region Колллекции сущностей
 
         private ObservableCollection<CategoryModel> categories;
         public ObservableCollection<CategoryModel> Categories
@@ -107,7 +107,62 @@ namespace TCEvropeyskiy.ViewModels
             }
         }
         #endregion
+        #region Выбранные объекты
+        private Floor currentFloor;
+        public Floor CurrentFloor
+        {
+            get
+            {
+                return currentFloor;
+            }
+            set
+            {
+                currentFloor = value;
+                OnPropertyChanged("CurrentFloor");
+            }
+        }
 
+        private CategoryModel currentCategory;
+        public CategoryModel CurrentCategory
+        {
+            get
+            {
+                return currentCategory;
+            }
+            set
+            {
+                currentCategory = value;
+                OnPropertyChanged("CurrentCategory");
+            }
+        }
+
+        private ShopModel currentShop;
+        public ShopModel CurrentShop
+        {
+            get
+            {
+                return currentShop;
+            }
+            set
+            {
+                currentShop = value;
+                OnPropertyChanged("CurrentShop");
+            }
+        }
+        private ShopGalleryModel currentGallery;
+        public ShopGalleryModel CurrentGallery
+        {
+            get
+            {
+                return currentGallery;
+            }
+            set
+            {
+                currentGallery = value;
+                OnPropertyChanged("CurrentGallery");
+            }
+        }
+        #endregion
         #region Навигация
         private RelayCommand goHome;
         public RelayCommand GoHome
@@ -132,7 +187,7 @@ namespace TCEvropeyskiy.ViewModels
                     {
                         if (This.frame.CanGoBack)
                         {                          
-                            //This.frame.GoBack();
+                            This.frame.GoBack();
                         }
                         else
                         {

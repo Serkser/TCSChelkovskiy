@@ -10,15 +10,14 @@
       Title="Search">
     <Grid Background="#E5E5e5">
         <ListView Margin="38,49,38,415">
-            <ListView.View>
-                <GridView>
 
-                </GridView>
-            </ListView.View>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <WrapPanel>
-                        <controls:ShopItemTemplate></controls:ShopItemTemplate>
+                    <WrapPanel Orientation="Horizontal">
+                        <controls:ShopItemTemplate  Width="331" Height="138" Icon="{Binding Path=Icon, Mode=TwoWay}"
+                            IconURI="{Binding Path=IconURI, Mode=TwoWay}"
+                            Title="{Binding Path=Name, Mode=TwoWay}"
+                           Category="{Binding Path=Category.Name,Mode=TwoWay}"/>
                     </WrapPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

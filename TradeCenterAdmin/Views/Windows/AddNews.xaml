@@ -1,0 +1,34 @@
+﻿<Window x:Class="TradeCenterAdmin.Views.Windows.AddNews"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TradeCenterAdmin.Views.Windows"
+        mc:Ignorable="d"
+        Title="Добавление новости" Height="450" Width="848">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="19,14,0,0" TextWrapping="Wrap" Text="Заголовок" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="19,35,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="270"/>
+        <TextBlock HorizontalAlignment="Left" Margin="19,67,0,0" TextWrapping="Wrap" Text="Краткое описание" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" ScrollViewer.VerticalScrollBarVisibility="Visible"  Height="109" Margin="19,89,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="383"/>
+        <TextBlock HorizontalAlignment="Left" Margin="19,201,0,0" TextWrapping="Wrap" Text="Подробное описание" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" ScrollViewer.VerticalScrollBarVisibility="Visible"  Height="131" Margin="19,222,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="383"/>
+        <TextBlock HorizontalAlignment="Left" Margin="411,17,0,0" TextWrapping="Wrap" Text="Главное изображение" VerticalAlignment="Top"/>
+        <ListView HorizontalAlignment="Left" Height="107" Margin="411,222,0,0" VerticalAlignment="Top" Width="383">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Content="Удалить выбранное фото" HorizontalAlignment="Left" Margin="412,334,0,0" VerticalAlignment="Top" Width="183" RenderTransformOrigin="0.0,0.177"/>
+        <Button Content="Добавить новое фото" HorizontalAlignment="Left" Margin="600,334,0,0" VerticalAlignment="Top" Width="194" RenderTransformOrigin="0.0,0.177"/>
+        <TextBlock HorizontalAlignment="Left" Margin="412,201,0,0" TextWrapping="Wrap" Text="Галерея" VerticalAlignment="Top"/>
+        <Button Content="Выбрать фото" HorizontalAlignment="Left" Margin="600,62,0,0" VerticalAlignment="Top" Width="194" RenderTransformOrigin="0.0,0.177"/>
+        <Button Content="Удалить фото" HorizontalAlignment="Left" Margin="600,38,0,0" VerticalAlignment="Top" Width="194" RenderTransformOrigin="0.0,0.177"/>
+        <Image HorizontalAlignment="Left" Height="100" Margin="448,125,0,0" VerticalAlignment="Top" Width="100"/>
+        <Image HorizontalAlignment="Left" Height="160" Margin="412,38,0,0" VerticalAlignment="Top" Width="183"/>
+        <Button Content="Добавить новость" HorizontalAlignment="Left" Margin="19,358,0,0" VerticalAlignment="Top" Width="775" RenderTransformOrigin="0.0,0.177" Height="25"/>
+
+    </Grid>
+</Window>

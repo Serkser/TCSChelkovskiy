@@ -25,35 +25,55 @@ namespace TCSChelkovskiy.Controls
             InitializeComponent();
         }
 
+        public static readonly DependencyProperty CurrentKeyProperty = DependencyProperty.Register("CurrentKey", typeof(string), typeof(CategoryItemTemplate));
+        public string CurrentKey
+        {
+            get { return (string)GetValue(CurrentKeyProperty); }
+            set { SetValue(CurrentKeyProperty, value); }
+        }
+        public static readonly DependencyProperty CurrentTextProperty = DependencyProperty.Register("CurrentText", typeof(string), typeof(CategoryItemTemplate));
+        public string CurrentText
+        {
+            get { return (string)GetValue(CurrentTextProperty); }
+            set { SetValue(CurrentTextProperty, value); }
+        }
+
         private bool isUppercase = false;
         private void Click(object sender, MouseButtonEventArgs e)
         {
             Button button = sender as Button;
             string btnText = button.Content.ToString();
-            string symbol = "";
             switch (btnText)
             {
                 case "Lang":
-
+                    CurrentKey = "Lang";
                     break;
                 case "Backspace":
-
+                    CurrentKey = "Backspace";
+                    CurrentText = CurrentText.Remove(CurrentText.Length - 1);
                     break;
                 case "Shift":
+                    CurrentKey = "Shift";
                     isUppercase = !isUppercase;
                     break;
                 default:
                     if (isUppercase)
                     {
-                        symbol = btnText.ToUpper();
+                        CurrentKey = btnText.ToUpper();
                     }
                     else
                     {
-                        symbol = btnText.ToLower();
+                        CurrentKey = btnText.ToLower();
                     }
+                    CurrentText += CurrentKey;
                     break;
 
             }
+        }
+
+        private void touch(object sender, TouchEventArgs e)
+        {
+            Click(sender, null);
         }
     }
 }

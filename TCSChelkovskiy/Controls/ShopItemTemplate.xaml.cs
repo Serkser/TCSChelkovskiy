@@ -27,25 +27,25 @@ namespace TCSChelkovskiy.Controls
             InitializeComponent();
         }
 
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(CategoryItemTemplate));
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(ShopItemTemplate));
         public string Title
         {
             get { return (string)GetValue(TitleProperty); }
             set { SetValue(TitleProperty, value); }
         }
-        public static readonly DependencyProperty CategoryProperty = DependencyProperty.Register("Category", typeof(string), typeof(NewsItemTemplate));
+        public static readonly DependencyProperty CategoryProperty = DependencyProperty.Register("Category", typeof(string), typeof(ShopItemTemplate));
         public string Category
         {
             get { return (string)GetValue(CategoryProperty); }
             set { SetValue(CategoryProperty, value); }
         }
-        public static readonly DependencyProperty IconURIProperty = DependencyProperty.Register("IconURI", typeof(string), typeof(NewsItemTemplate));
+        public static readonly DependencyProperty IconURIProperty = DependencyProperty.Register("IconURI", typeof(string), typeof(ShopItemTemplate));
         public string IconURI
         {
             get { return (string)GetValue(IconURIProperty); }
             set { SetValue(IconURIProperty, value); }
         }
-        public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(NewsItemTemplate));
+        public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(ShopItemTemplate));
         public string Icon
         {
             get { return (string)GetValue(IconProperty); }

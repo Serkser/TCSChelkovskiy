@@ -20,28 +20,30 @@
                 <Button FontWeight="SemiBold" Command="{Binding GoHome}" Style="{StaticResource ButtonBordered}" Content="ЗАКРЫТЬ" HorizontalAlignment="Left"
                 FontSize="30"  Margin="723,174,0,0" VerticalAlignment="Top" Width="260" Height="100" RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
                 <Image Width="25" Height="25" Margin="52,256,939,416" Source="/Views/PhoneIcon.png" Grid.Column="1"></Image>
-                <TextBlock HorizontalAlignment="Left" Margin="63,192,0,0" Text="2 этаж" FontFamily="Manrope" TextAlignment="Left" 
-            FontSize="18px" Foreground="Black" FontWeight="Regular" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" Height="80"/>
-                <Border Width="140" Height="140"  CornerRadius="15" BorderThickness="1"  BorderBrush="Black" Background="Wheat" Margin="63,45,73,512">
-                    <Image  HorizontalAlignment="Left" Height="140" Margin="-3,-3,0,0" VerticalAlignment="Top" Width="140"/>
+                <Border Width="140" Height="140"  CornerRadius="15" BorderThickness="1"  BorderBrush="Black" Background="Transparent" Margin="63,45,73,512">
+                    <Image Source="{Binding CurrentShop.IconURI, Converter={StaticResource ResourceKey=ImageSourceConverter}}" HorizontalAlignment="Left" Height="140" Margin="-3,-3,0,0" VerticalAlignment="Top" Width="140"/>
                 </Border>
-                <TextBlock HorizontalAlignment="Left" Margin="55,55,0,0" Text="ZARA" FontFamily="Manrope" TextAlignment="Left" 
+                <TextBlock HorizontalAlignment="Left" Margin="55,55,0,0" Text="{Binding CurrentShop.Name, Mode=TwoWay}" FontFamily="Manrope" TextAlignment="Left" 
                     FontSize="35px" Foreground="Black" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" Width="791" Height="47" Grid.Column="1"/>
-                <TextBlock HorizontalAlignment="Left" Margin="55,101,0,0" Text="Женская одежда" FontFamily="Manrope" TextAlignment="Left" 
+                <TextBlock HorizontalAlignment="Left" Margin="55,101,0,0" Text="{Binding CurrentShop.Category.Name, Mode=TwoWay}" FontFamily="Manrope" TextAlignment="Left" 
                     FontSize="14px" Foreground="Black" FontWeight="Regular" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" Height="18" Grid.Column="1"/>
-                <TextBlock HorizontalAlignment="Left" Margin="55,124,0,0" Text="Магазин ультрамодной женской, мужской  и детской одежды. Здесь вы можете найти самые трендовые вещи этого сезона. Будьте самыми модными. Ждем Вас." FontFamily="Manrope" TextAlignment="Left" 
+                <TextBlock HorizontalAlignment="Left" Margin="55,124,0,0" Text="{Binding CurrentShop.Description, Mode=TwoWay}" FontFamily="Manrope" TextAlignment="Left" 
                     FontSize="18px" Foreground="Black" FontWeight="Regular" TextWrapping="Wrap" VerticalAlignment="Top" Width="641" Height="101" Grid.Column="1"/>
-                <Image Width="25" Height="25" Margin="52,319,939,353" Source="/Views/SiteIcon.png" Grid.Column="1"/>
+                <Image Margin="52,291,939,381" Source="/Views/SiteIcon.png" Grid.Column="1"/>
                 <Image Width="25" Height="25" Margin="88,259,0,0" Source="/Views/ClockIcon.png" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="88,294,0,0" Text="КОСМЕТИКА" FontFamily="Manrope" TextAlignment="Left" 
                     FontSize="16px" Foreground="Black" FontWeight="Medium" TextWrapping="Wrap" VerticalAlignment="Top" Width="292" Height="18" Grid.Column="1"/>
                 <TextBlock HorizontalAlignment="Left" Margin="88,324,0,0" Text="КОСМЕТИКА" FontFamily="Manrope" TextAlignment="Left" 
                     FontSize="16px" Foreground="Black" FontWeight="Medium" TextWrapping="Wrap" VerticalAlignment="Top" Width="292" Height="18" Grid.Column="1"/>
-                <TextBlock Margin="364,324,0,0" Text="КОСМЕТИКА" FontFamily="Manrope" TextAlignment="Left" 
-                    FontSize="16px" Foreground="Black" FontWeight="Medium" TextWrapping="Wrap" Width="292" Height="18" Grid.ColumnSpan="2"/>
                 <ListView Margin="49,371,49,29" Padding="10,0,0,0" Height="297" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top">
 
                 </ListView>
+                <TextBlock HorizontalAlignment="Left" Margin="88,262,0,0" Text="{Binding CurrentShop.Phone, Mode=TwoWay}" FontFamily="Manrope" TextAlignment="Left" 
+                    FontSize="16px" Foreground="Black" FontWeight="Medium" TextWrapping="Wrap" VerticalAlignment="Top" Width="292" Height="18" Grid.Column="1"/>
+                <TextBlock HorizontalAlignment="Left" Margin="78,192,0,0" Text="этаж" FontFamily="Manrope" TextAlignment="Left" 
+                    FontSize="18px" Foreground="Black" FontWeight="Regular" TextWrapping="Wrap" VerticalAlignment="Top" Width="152" Height="80"/>
+                <TextBlock HorizontalAlignment="Left" Margin="63,192,0,0" Text="{Binding CurrentShop.Floor.Floor, Mode=TwoWay}" FontFamily="Manrope" TextAlignment="Left" 
+                    FontSize="18px" Foreground="Black" FontWeight="Regular" TextWrapping="NoWrap" VerticalAlignment="Top" Width="14" Height="80"/>
             </Grid>
         </Border>
         <Button Style="{StaticResource HeaderSearchButton}"  Command="{Binding GoBack}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"

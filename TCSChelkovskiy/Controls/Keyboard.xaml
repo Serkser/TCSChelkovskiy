@@ -52,7 +52,8 @@
                 <ImageBrush ImageSource="/Controls/Lang.png" Stretch="Fill"/>
             </Button.Background>
         </Button>
-        <Button Style="{DynamicResource KeyboardButton}" Content=" "  Margin="138,150,0,0" VerticalAlignment="Top" Height="40" RenderTransformOrigin="0.944,0.487" HorizontalAlignment="Left" Width="226"/>
+        <Button Style="{DynamicResource KeyboardButton}" Content=" "  Margin="138,150,0,0" VerticalAlignment="Top" TouchDown="touch"
+                Height="40" RenderTransformOrigin="0.944,0.487" HorizontalAlignment="Left" Width="226"/>
 
     </Grid>
 </UserControl>
