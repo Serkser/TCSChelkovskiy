@@ -8,7 +8,7 @@ namespace TradeCenterAdmin.Enums
 {
     public enum MapEditorTool
     {
-        Hand =1,
+        Cursor =1,
         Kiosk =2,
         Area =3,
         Entry =4,

@@ -6,6 +6,11 @@ namespace NavigationMap.Models
 {
     public class Floor : ObservableObject, IDisposable
     {
+
+        public override string ToString()
+        {
+            return Name;
+        }
         private bool _disposed;
 
         private int _id;

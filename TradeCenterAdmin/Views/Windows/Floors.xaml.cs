@@ -22,6 +22,7 @@ namespace TradeCenterAdmin.Views.Windows
         public Floors()
         {
             InitializeComponent();
+            this.DataContext = new ViewModels.FloorsWindowViewModel();
         }
     }
 }

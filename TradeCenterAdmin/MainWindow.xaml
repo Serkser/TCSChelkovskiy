@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="1100">
     <Grid>
-        <Frame Content="Frame" HorizontalAlignment="Left" Height="599" Margin="218,61,0,0" VerticalAlignment="Top" Width="866"/>
+        <Frame x:Name="frame" Content="Frame" HorizontalAlignment="Left" Height="600" Margin="25,60,0,0" VerticalAlignment="Top" Width="1059"/>
+        <TextBlock FontWeight="DemiBold" FontSize="25" HorizontalAlignment="Left" Margin="19,17,0,0" TextWrapping="Wrap" Text="ТЦ Щелковский - карта ТЦ" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

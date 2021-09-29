@@ -1,0 +1,17 @@
+﻿<Window x:Class="TradeCenterAdmin.Preloader"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TradeCenterAdmin"
+        mc:Ignorable="d" Loaded="Window_Loaded"
+        Title="Preloader" Height="300" Width="500" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TextBlock FontWeight="Bold" FontSize="25" HorizontalAlignment="Left" Margin="124,39,0,0" TextWrapping="Wrap" Text="Идет загрузка карт" VerticalAlignment="Top"/>
+        <TextBlock FontWeight="DemiBold" FontSize="25" HorizontalAlignment="Left" Margin="100,224,0,0" TextWrapping="Wrap" Text="Подождите пожалуйста" VerticalAlignment="Top"/>
+        <ProgressBar Value="{Binding Progress,Mode=TwoWay}" HorizontalAlignment="Left" Height="30" Margin="100,189,0,0" VerticalAlignment="Top" Width="282"/>
+        <TextBlock FontWeight="DemiBold" FontSize="25" HorizontalAlignment="Left" Margin="182,88,0,0" TextWrapping="Wrap" Text="Загружено" VerticalAlignment="Top"/>
+        <TextBlock FontWeight="DemiBold" FontSize="25" HorizontalAlignment="Left" TextAlignment="Center" Margin="182,121,0,0" TextWrapping="Wrap" Text="{Binding Progress,Mode=TwoWay}" VerticalAlignment="Top" Width="135"/>
+        <TextBlock FontWeight="DemiBold" FontSize="25" HorizontalAlignment="Left" TextAlignment="Center" Margin="118,151,0,0" TextWrapping="Wrap" Text="из 100 %" VerticalAlignment="Top" Width="252"/>
+    </Grid>
+</Window>

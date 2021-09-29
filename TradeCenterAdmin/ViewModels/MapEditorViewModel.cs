@@ -1,17 +1,30 @@
 ﻿using NavigationMap.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using TradeCenterAdmin.Enums;
 
 namespace TradeCenterAdmin.ViewModels
 {
     public class MapEditorViewModel : INotifyPropertyChanged
     {
+        Views.Pages.MapEditor This;
+        public MapEditorViewModel(Views.Pages.MapEditor _this)
+        {
+            This = _this;
+            Floors = Storage.KioskObjects.Floors;
+        }
+
 
         #region Свойства редактора карт
         private MapEditorTool mapEditorTool;
@@ -24,8 +37,8 @@ namespace TradeCenterAdmin.ViewModels
                 OnPropertyChanged("MapEditorTool");
             }
         }
-        private List<Floor> floors;
-        public List<Floor> Floors
+        private ObservableCollection<Floor> floors;
+        public ObservableCollection<Floor> Floors
         {
             get { return floors; }
             set
@@ -41,21 +54,38 @@ namespace TradeCenterAdmin.ViewModels
             set
             {
                 selectedFloor = value;
+                if (value != null)
+                {
+                    Bitmap img = (Bitmap)System.Drawing.Image.FromFile(selectedFloor.Image);
+                    CurrentFloorImage = Services.BitmapToImageSourceConverter.BitmapToImageSource(img);
+                }
                 OnPropertyChanged("SelectedFloor");
+            }
+        }
+
+        private BitmapImage currentFloorImage;
+        public BitmapImage CurrentFloorImage
+        {
+            get { return currentFloorImage; }
+            set
+            {
+                currentFloorImage = value;
+                OnPropertyChanged("CurrentFloorImage");
             }
         }
         #endregion
 
         #region Команды выбора инструментов
-        private RelayCommand useHand;
-        public RelayCommand UseHand
+        private RelayCommand useCursor;
+        public RelayCommand UseCursor
         {
             get
             {
-                return useHand ??
-                    (useHand = new RelayCommand(obj =>
+                return useCursor ??
+                    (useCursor = new RelayCommand(obj =>
                     {
-                        MapEditorTool = MapEditorTool.Hand;
+                        This.Cursor = Cursors.Arrow;
+                        MapEditorTool = MapEditorTool.Cursor;
                     }));
             }
         }
@@ -68,6 +98,7 @@ namespace TradeCenterAdmin.ViewModels
                 return useKiosk ??
                     (useKiosk = new RelayCommand(obj =>
                     {
+                        This.Cursor = Cursors.Cross;
                         MapEditorTool = MapEditorTool.Kiosk;
                     }));
             }
@@ -81,6 +112,7 @@ namespace TradeCenterAdmin.ViewModels
                 return useArea ??
                     (useArea = new RelayCommand(obj =>
                     {
+                        This.Cursor = Cursors.Pen;
                         MapEditorTool = MapEditorTool.Area;
                     }));
             }
@@ -94,6 +126,7 @@ namespace TradeCenterAdmin.ViewModels
                 return useEntry ??
                     (useEntry = new RelayCommand(obj =>
                     {
+                        This.Cursor = Cursors.Cross;
                         MapEditorTool = MapEditorTool.Entry;
                     }));
             }
@@ -107,6 +140,7 @@ namespace TradeCenterAdmin.ViewModels
                 return useLift ??
                     (useLift = new RelayCommand(obj =>
                     {
+                        This.Cursor = Cursors.Cross;
                         MapEditorTool = MapEditorTool.Lift;
                     }));
             }
@@ -120,6 +154,7 @@ namespace TradeCenterAdmin.ViewModels
                 return useStairs ??
                     (useStairs = new RelayCommand(obj =>
                     {
+                        This.Cursor = Cursors.Cross;
                         MapEditorTool = MapEditorTool.Stairs;
                     }));
             }
@@ -133,6 +168,7 @@ namespace TradeCenterAdmin.ViewModels
                 return useWay ??
                     (useWay = new RelayCommand(obj =>
                     {
+                        This.Cursor = Cursors.Pen;
                         MapEditorTool = MapEditorTool.Way;
                     }));
             }
@@ -149,7 +185,15 @@ namespace TradeCenterAdmin.ViewModels
                 return leftMouseButtonClick ??
                     (leftMouseButtonClick = new RelayCommand(obj =>
                     {
-                        
+                        switch (MapEditorTool)
+                        {
+                            case MapEditorTool.Cursor:
+
+                                break;
+                            case MapEditorTool.Kiosk:
+                                
+                                break;
+                        }
                     }));
             }
         }
@@ -165,10 +209,56 @@ namespace TradeCenterAdmin.ViewModels
                     }));
             }
         }
+
+
+        double scaleX = 1.0;
+        double scaleY = 1.0;
+        private RelayCommand zoomIn;
+        public RelayCommand ZoomIn
+        {
+            get
+            {
+                return zoomIn ??
+                    (zoomIn = new RelayCommand(obj =>
+                    {
+                        //This.ZoomIn();
+                        var st = new ScaleTransform();
+                        //var textBox = new TextBox { Text = "Test" };
+                        This.canvasMap.RenderTransform = st;
+                        //This.canvasMap.Children.Add(textBox);
+                        st.ScaleX = scaleX * 1.4;
+                        st.ScaleY = scaleY * 1.4;
+                        scaleX = st.ScaleX;
+                        scaleY = st.ScaleY;
+
+                    }));
+            }
+        }
+        private RelayCommand zoomOut;
+        public RelayCommand ZoomOut
+        {
+            get
+            {
+                return zoomOut ??
+                    (zoomOut = new RelayCommand(obj =>
+                    {
+                        //This.ZoomOut();
+                        var st = new ScaleTransform();
+                        //var textBox = new TextBox { Text = "Test" };
+                        This.canvasMap.RenderTransform = st;
+                        //This.canvasMap.Children.Add(textBox);
+                        st.ScaleX = scaleX / 1.4;
+                        st.ScaleY = scaleY / 1.4;
+                        scaleX = st.ScaleX;
+                        scaleY = st.ScaleY;
+                    }));
+            }
+        }
+
         #endregion
 
 
-        #region Прочие комманды
+        #region Прочие команды
         private RelayCommand openFloors;
         public RelayCommand OpenFloors
         {
@@ -178,7 +268,6 @@ namespace TradeCenterAdmin.ViewModels
                     (openFloors = new RelayCommand(obj =>
                     {
                         Views.Windows.Floors f = new Views.Windows.Floors();
-                        //f.DataContext = this;
                         f.Show();
                     }));
             }

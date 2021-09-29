@@ -7,35 +7,20 @@
         mc:Ignorable="d"
         Title="Этажи" Height="433.935" Width="560.797">
     <Grid>
-        <ListBox HorizontalAlignment="Left" Height="173" Margin="30,49,0,0" VerticalAlignment="Top" Width="498">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid Height="50">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="320"></ColumnDefinition>
-                            <ColumnDefinition Width="90"></ColumnDefinition>
-                            <ColumnDefinition Width="90"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0">Этаж</TextBlock>
-                        <Button Grid.Column="1">Настроить</Button>
-                        <Button Grid.Column="2">Удалить</Button>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+        <ListBox ItemsSource="{Binding Floors,Mode=TwoWay}" SelectedItem="{Binding SelectedFloor,Mode=TwoWay}" HorizontalAlignment="Left" Height="173" Margin="30,49,0,0" VerticalAlignment="Top" Width="498">
         </ListBox>
         <TextBlock HorizontalAlignment="Left" Margin="30,28,0,0" TextWrapping="Wrap" Text="Этажи торгового центра" VerticalAlignment="Top"/>
         <TextBlock FontWeight="Bold" HorizontalAlignment="Left" Margin="30,227,0,0" TextWrapping="Wrap" Text="Добавление этажа" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,248,0,0" TextWrapping="Wrap" Text="Название" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="30,269,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="270"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="30,316,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="78"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,300,0,0" TextWrapping="Wrap" Text="Ширина (px)" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="130,316,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="78"/>
-        <TextBlock HorizontalAlignment="Left" Margin="130,300,0,0" TextWrapping="Wrap" Text="Высота (px)" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="30,269,0,0" TextWrapping="Wrap" Text="{Binding NewFloor.Name,Mode=TwoWay}" VerticalAlignment="Top" Width="270"/>
         <TextBlock HorizontalAlignment="Left" Margin="252,300,0,0" TextWrapping="Wrap" Text="Карта" VerticalAlignment="Top"/>
-        <Button Content="Обзор" HorizontalAlignment="Left" Margin="380,301,0,0" VerticalAlignment="Top" Width="75"/>
-        <TextBlock HorizontalAlignment="Left" Margin="252,321,0,0" TextWrapping="Wrap" Text="Обзор" VerticalAlignment="Top" Width="203"/>
-        <Button Content="Удалить" HorizontalAlignment="Left" Margin="460,301,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Content="Добавить этаж" HorizontalAlignment="Left" Margin="30,344,0,0" VerticalAlignment="Top" Width="505" Height="29"/>
+        <Button Command="{Binding SelectMap}" Content="Обзор" HorizontalAlignment="Left" Margin="380,301,0,0" VerticalAlignment="Top" Width="75"/>
+        <TextBlock HorizontalAlignment="Left" Margin="252,321,0,0" TextWrapping="Wrap" Text="{Binding NewFloorPhotoFilepath,Mode=TwoWay}" VerticalAlignment="Top" Width="283"/>
+        <Button  Command="{Binding RemoveMap}" Content="Удалить" HorizontalAlignment="Left" Margin="460,301,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Command="{Binding AddFloor}" Content="Добавить этаж" HorizontalAlignment="Left" Margin="30,344,0,0" VerticalAlignment="Top" Width="505" Height="29"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,297,0,0" TextWrapping="Wrap" Text="Разрешение изображения должно быть 9000*9000px " VerticalAlignment="Top" Height="40" Width="217"/>
+        <Button  Command="{Binding RemoveFloor}" Content="Удалить выбранный этаж" HorizontalAlignment="Left" Margin="380,227,0,0" VerticalAlignment="Top" Width="148"/>
+        <Button  Command="{Binding OpenEditFloor}" Content="Изменить выбранный этаж" HorizontalAlignment="Left" Margin="206,228,0,0" VerticalAlignment="Top" Width="169"/>
 
     </Grid>
 </Window>

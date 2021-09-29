@@ -23,6 +23,7 @@ namespace TradeCenterAdmin
         public MainWindow()
         {
             InitializeComponent();
+            frame.Navigate(new Views.Pages.MapEditor());
         }
     }
 }
