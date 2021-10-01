@@ -1,7 +1,9 @@
 ﻿using NavigationMap.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,19 +20,50 @@ namespace TCSChelkovskiy.Memory
         public static ObservableCollection<ShopModel> Shops { get; set; } = new ObservableCollection<ShopModel>();
         public static ObservableCollection<ShopGalleryModel> Gallery { get; set; } = new ObservableCollection<ShopGalleryModel>();
 
+        public static ContactsModel Contacts { get; set; } = new ContactsModel();
+        public static AboutMallModel AboutMall { get; set; } = new AboutMallModel();
         public static async Task LoadAllObjects()
         {
 
             await Task.Run(() =>
             {
                 Categories = new ObservableCollection<CategoryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetCategories());
-                Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
+              //  Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
                 Shops = new ObservableCollection<ShopModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShops());
                 Gallery = new ObservableCollection<ShopGalleryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShopsGallery());
-
-
+                Contacts = TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetContacts();
+                AboutMall = TCSchelkovskiyAPI.TCSchelkovskiyAPI.AboutMall();
+                RestoreSettings();
             });
+
+            
         }
+        static JsonSerializer serializer = new JsonSerializer();
+        public static void RestoreSettings()
+        {
+            if (File.Exists(FilePath))
+            {
+                using (StreamReader file = File.OpenText(FilePath))
+                {
+                    Floors = (ObservableCollection<Floor>)serializer.Deserialize(file, typeof(ObservableCollection<Floor>));
+                    MessageBox.Show(Floors[0].Areas.Count.ToString());
+                }
+            }
+
+            //string json = "";
+            //    if (!string.IsNullOrEmpty(json))
+            //    {
+            //        using (JsonTextReader stream = new JsonTextReader(new StringReader(json)))
+            //        {
+            //            var settings = serializer.Deserialize(stream);
+            //            JObject jObj = (JObject)settings;
+            //            Floors = jObj.ToObject<ObservableCollection<Floor>>();
+            //        }
+            //    }
+
+
+        }
+        public static string FilePath = @"C:\Users\Arturbipolar\Desktop\проекты\TCSChelkovskiy\TradeCenterAdmin\bin\Debug\settings.json";
 
         private static ObservableCollection<Floor> ConvertToFloors(List<FloorModel> floors)
         {

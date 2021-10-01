@@ -8,11 +8,14 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using TCSchelkovskiyAPI.Models;
 using TradeCenterAdmin.Enums;
+using Image = System.Windows.Controls.Image;
 
 namespace TradeCenterAdmin.ViewModels
 {
@@ -21,8 +24,70 @@ namespace TradeCenterAdmin.ViewModels
         Views.Pages.MapEditor This;
         public MapEditorViewModel(Views.Pages.MapEditor _this)
         {
+         
             This = _this;
             Floors = Storage.KioskObjects.Floors;
+            Shops = Storage.KioskObjects.Shops;
+            if (Floors.Count > 0)
+            {
+                SelectedFloor = Floors.FirstOrDefault();
+                LoadFloorObjects();
+               
+            }
+            MakeStartZoom();
+        }
+
+        public void LoadFloorObjects()
+        {
+            //очистка старых элементов
+            for (int i=0; i< This.canvasMap.Children.Count;i++)
+            {
+                UIElement obj = This.canvasMap.Children[i];
+                if (obj is Image)
+                {
+                    if (((Image)obj).Name == "img")
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    This.canvasMap.Children.Remove(obj);
+                }
+            }
+
+            foreach (var obj in SelectedFloor.Stations)
+            {
+                switch (obj.AreaPoint.PointType)
+                {
+                    case NavigationMap.Enums.PointTypeEnum.Entry:
+                        if (obj.Name.Contains("Вход"))
+                        {
+                            This.DrawEntry(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
+                        }
+                        else if (obj.Name.Contains("Лестница"))
+                        {
+                            This.DrawStairs(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
+                        }
+                        break;
+                    case NavigationMap.Enums.PointTypeEnum.Station:
+                        This.DrawKiosk(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
+                        break;
+                }
+            }
+            //Рисуем области магазинов и их пути
+            foreach (var obj in SelectedFloor.Areas)
+            {
+                This.DrawAreaPerimeter(obj);
+                if (obj.Ways.Count > 0)
+                {
+                    for (int i= 0;i< obj.Ways.Count; i++)
+                    {
+                        var way = obj.Ways[i];
+                        This.DrawWays(way);
+                    }
+                }
+            }
         }
 
 
@@ -45,6 +110,26 @@ namespace TradeCenterAdmin.ViewModels
             {
                 floors = value;
                 OnPropertyChanged("Floors");
+            }
+        }
+        private ObservableCollection<ShopModel> shops;
+        public ObservableCollection<ShopModel> Shops
+        {
+            get { return shops; }
+            set
+            {
+                shops = value;
+                OnPropertyChanged("Shops");
+            }
+        }
+        private ShopModel selectedShop;
+        public ShopModel SelectedShop
+        {
+            get { return selectedShop; }
+            set
+            {
+                selectedShop = value;
+                OnPropertyChanged("SelectedShop");
             }
         }
         private Floor selectedFloor;
@@ -100,6 +185,19 @@ namespace TradeCenterAdmin.ViewModels
                     {
                         This.Cursor = Cursors.Cross;
                         MapEditorTool = MapEditorTool.Kiosk;
+                    }));
+            }
+        }
+        private RelayCommand useHand;
+        public RelayCommand UseHand
+        {
+            get
+            {
+                return useHand ??
+                    (useHand = new RelayCommand(obj =>
+                    {
+                        This.Cursor = Cursors.Hand;
+                        MapEditorTool = MapEditorTool.Hand;
                     }));
             }
         }
@@ -177,40 +275,6 @@ namespace TradeCenterAdmin.ViewModels
 
 
         #region Работа с картой
-        private RelayCommand leftMouseButtonClick;
-        public RelayCommand LeftMouseButtonClick
-        {
-            get
-            {
-                return leftMouseButtonClick ??
-                    (leftMouseButtonClick = new RelayCommand(obj =>
-                    {
-                        switch (MapEditorTool)
-                        {
-                            case MapEditorTool.Cursor:
-
-                                break;
-                            case MapEditorTool.Kiosk:
-                                
-                                break;
-                        }
-                    }));
-            }
-        }
-        private RelayCommand rightMouseButtonClick;
-        public RelayCommand RightMouseButtonClick
-        {
-            get
-            {
-                return rightMouseButtonClick ??
-                    (rightMouseButtonClick = new RelayCommand(obj =>
-                    {
-
-                    }));
-            }
-        }
-
-
         double scaleX = 1.0;
         double scaleY = 1.0;
         private RelayCommand zoomIn;
@@ -255,10 +319,21 @@ namespace TradeCenterAdmin.ViewModels
             }
         }
 
+        void MakeStartZoom()
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                ZoomOut.Execute("анал");
+            }
+        }
+
         #endregion
 
 
         #region Прочие команды
+        /// <summary>
+        /// Открытие окна для изменения этажей
+        /// </summary>
         private RelayCommand openFloors;
         public RelayCommand OpenFloors
         {
@@ -269,6 +344,53 @@ namespace TradeCenterAdmin.ViewModels
                     {
                         Views.Windows.Floors f = new Views.Windows.Floors();
                         f.Show();
+                    }));
+            }
+        }
+        /// <summary>
+        /// Открытие окна для назначения области магазина
+        /// </summary>
+        private RelayCommand assignShop;
+        public RelayCommand AssignShop
+        {
+            get
+            {
+                return assignShop ??
+                    (assignShop = new RelayCommand(obj =>
+                    {
+                        Views.Windows.Floors f = new Views.Windows.Floors();
+                        f.Show();
+                    }));
+            }
+        }
+        /// <summary>
+        /// Сохранение изменений
+        /// </summary>
+        private RelayCommand saveChanges;
+        public RelayCommand SaveChanges
+        {
+            get
+            {
+                return saveChanges ??
+                    (saveChanges = new RelayCommand(obj =>
+                    {
+                        Storage.KioskObjects.SaveSettings();
+                        MessageBox.Show("Изменения успешно сохранены");
+                    }));
+            }
+        }
+        /// <summary>
+        /// Подгрузка объектов этажа при событии  SelectionChanged для Floors
+        /// </summary>
+        private RelayCommand redrawFloorItems;
+        public RelayCommand RedrawFloorItems
+        {
+            get
+            {
+                return redrawFloorItems ??
+                    (redrawFloorItems = new RelayCommand(obj =>
+                    {
+                        LoadFloorObjects(); 
                     }));
             }
         }

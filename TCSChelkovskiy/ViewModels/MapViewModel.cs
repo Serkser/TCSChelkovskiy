@@ -8,7 +8,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using TCEvropeyskiy;
+using TCSChelkovskiy.Memory;
 using TCSchelkovskiyAPI.Models;
 
 namespace TCSChelkovskiy.ViewModels
@@ -21,6 +23,20 @@ namespace TCSChelkovskiy.ViewModels
         {
             This = _this;
             MainWindow = main;
+
+            Floors = KioskObjects.Floors;
+            Categories = KioskObjects.Categories;
+            Stations = KioskObjects.Stations;
+            Shops = KioskObjects.Shops;
+            Gallery = KioskObjects.Gallery;
+            if (Floors.Count > 0)
+            {
+                CurrentFloor = Floors.FirstOrDefault();
+             
+            }
+            This.Map.SelectedStation = CurrentFloor.Stations.FirstOrDefault();
+
+
         }
 
 
@@ -36,6 +52,20 @@ namespace TCSChelkovskiy.ViewModels
             {
                 currentFloor = value;
                 OnPropertyChanged("CurrentFloor");
+            }
+        }
+
+        private Area currentFloorShop;
+        public Area CurrentFloorShop
+        {
+            get
+            {
+                return currentFloorShop;
+            }
+            set
+            {
+                currentFloorShop = value;
+                OnPropertyChanged("CurrentFloorShop");
             }
         }
 
@@ -183,10 +213,12 @@ namespace TCSChelkovskiy.ViewModels
                 return navigateTo ??
                     (navigateTo = new RelayCommand(obj =>
                     {
-                            if (obj != null)
-                            {
-                                This.Map.Navigate(Convert.ToInt32(obj));
-                            }
+                        var area = Floors[0].Areas[0];
+                        This.Map.Navigate(area.Id);
+                            //if (obj != null)
+                            //{
+                            //    This.Map.Navigate(Convert.ToInt32(obj));
+                            //}
                     }));
             }
         }
@@ -205,6 +237,7 @@ namespace TCSChelkovskiy.ViewModels
                     }));
             }
         }
+     
         #endregion
 
 

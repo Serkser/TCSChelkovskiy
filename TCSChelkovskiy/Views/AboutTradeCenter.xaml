@@ -12,9 +12,9 @@
         <Border Background="White" CornerRadius="20" Margin="122,74,26,59">
             <Grid Margin="0,0,0,0">
                 <Image  HorizontalAlignment="Left" Height="295" Margin="48,46,0,0" VerticalAlignment="Top" Width="313"/>
-                <TextBlock HorizontalAlignment="Left" Margin="373,46,0,0" Text="TextBlock" FontFamily="Manrope" TextAlignment="Left" 
+                <TextBlock HorizontalAlignment="Left" Margin="373,46,0,0" Text="{Binding AboutMall.MallName,Mode=TwoWay}" FontFamily="Manrope" TextAlignment="Left" 
                 FontSize="35px" Foreground="Black" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" Width="556" Height="120"/>
-                <TextBlock HorizontalAlignment="Left" Margin="373,171,0,0" Text="TextBlock" FontFamily="Manrope" TextAlignment="Left" 
+                <TextBlock HorizontalAlignment="Left" Margin="373,171,0,0" Text="{Binding AboutMall.Description,Mode=TwoWay}" FontFamily="Manrope" TextAlignment="Left" 
                 FontSize="20px" Foreground="Black" TextWrapping="Wrap" VerticalAlignment="Top" Width="556" Height="210"/>
 
                 <Grid>
@@ -29,8 +29,8 @@
                     <Button Command="{Binding GoContacts}" Style="{StaticResource ButtonBordered}" Content="КОНТАКТЫ" HorizontalAlignment="Left"
                     FontSize="25"  Margin="963,377,0,0" VerticalAlignment="Top" Width="260" Height="54" RenderTransformOrigin="0.5,0.5" FontWeight="Bold"/>
                 </Grid>
-                <Image  HorizontalAlignment="Left" Height="220" Margin="210,405,0,0" VerticalAlignment="Top" Width="347"/>
-                <Image  HorizontalAlignment="Left" Height="220" Margin="603,405,0,0" VerticalAlignment="Top" Width="347"/>
+                <Image x:Name="image1"  HorizontalAlignment="Left" Height="220" Margin="210,405,0,0" VerticalAlignment="Top" Width="347"/>
+                <Image x:Name="image2" HorizontalAlignment="Left" Height="220" Margin="603,405,0,0" VerticalAlignment="Top" Width="347"/>
             </Grid>
         </Border>
         <Button Command="{Binding GoBack}" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"

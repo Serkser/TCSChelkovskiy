@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TCEvropeyskiy.ViewModels;
 
 namespace TCSChelkovskiy.Views
 {
@@ -20,9 +21,22 @@ namespace TCSChelkovskiy.Views
     /// </summary>
     public partial class AboutTradeCenter : Page
     {
+
         public AboutTradeCenter()
         {
             InitializeComponent();
+            string url = "https://navigator.useful.su";
+            string prefix = ((MainWindowViewModel)this.DataContext).AboutMall.ImagesPrefix;
+            var images = ((MainWindowViewModel)this.DataContext).AboutMall.Images;
+            List<BitmapImage> bitmaps = new List<BitmapImage>(20);
+            foreach (var i in images)
+            {
+               var bitmap = Services.ImageDownloader.DownloadImage($"{url}{prefix}{i}",i);
+               var bitmapImage = Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap);
+               bitmaps.Add(bitmapImage);
+            }
+            image1.Source = bitmaps[0];
+            image2.Source = bitmaps[1];
         }
     }
 }

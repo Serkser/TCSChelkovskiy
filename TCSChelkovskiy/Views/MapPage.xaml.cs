@@ -26,13 +26,13 @@ namespace TCSChelkovskiy.Views
         {
             InitializeComponent();
             DataContext = new ViewModels.MapViewModel(this,main);
-            Map.Floors = new List<Floor>
-            {
-                new Floor{Image = System.IO.Path.Combine(Environment.CurrentDirectory,"Map","Floors","1.png"),
-                Width =9000,Height=9000,Name="1",Id=1}
-            };
-            Map.SelectedFloor = Map.Floors.FirstOrDefault();
+         
            
+        }
+
+        private void ss(Area obj)
+        {
+            ((ViewModels.MapViewModel)this.DataContext).CurrentFloorShop = obj;
         }
     }
 }

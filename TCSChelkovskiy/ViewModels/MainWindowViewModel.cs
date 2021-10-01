@@ -28,7 +28,9 @@ namespace TCEvropeyskiy.ViewModels
             Stations = KioskObjects.Stations;
             Shops = KioskObjects.Shops;
             Gallery = KioskObjects.Gallery;
-        
+            Contacts = KioskObjects.Contacts;
+            AboutMall = KioskObjects.AboutMall;
+             
         }
 
 
@@ -50,6 +52,35 @@ namespace TCEvropeyskiy.ViewModels
         }
         #endregion
 
+        #region Прочие свойства
+        private AboutMallModel aboutMall;
+        public AboutMallModel AboutMall
+        {
+            get
+            {
+                return aboutMall;
+            }
+            set
+            {
+                aboutMall = value;
+                OnPropertyChanged("AboutMall");
+            }
+        }
+        private ContactsModel contacts;
+        public ContactsModel Contacts
+        {
+            get
+            {
+                return contacts;
+            }
+            set
+            {
+                contacts = value;
+                OnPropertyChanged("Contacts");
+            }
+        }
+
+        #endregion
 
         #region Колллекции сущностей
 

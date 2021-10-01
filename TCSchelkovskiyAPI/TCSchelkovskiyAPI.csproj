@@ -48,7 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AboutMallModel.cs" />
+    <Compile Include="Models\ContactsModel.cs" />
     <Compile Include="Models\ShopGalleryModel.cs" />
+    <Compile Include="Models\VacancyModel.cs" />
     <Compile Include="TCSchelkovskiyAPI.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\FloorModel.cs" />

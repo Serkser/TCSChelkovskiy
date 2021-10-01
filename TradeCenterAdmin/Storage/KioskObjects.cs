@@ -16,42 +16,53 @@ namespace TradeCenterAdmin.Storage
     {
         public static ObservableCollection<Floor> Floors { get; set; } = new ObservableCollection<Floor>();
 
-        public static ObservableCollection<CategoryModel> Categories { get; set; } = new ObservableCollection<CategoryModel>();
-        public static ObservableCollection<Station> Stations { get; set; } = new ObservableCollection<Station>();
+        //public static ObservableCollection<CategoryModel> Categories { get; set; } = new ObservableCollection<CategoryModel>();
+        //public static ObservableCollection<Station> Stations { get; set; } = new ObservableCollection<Station>();
         public static ObservableCollection<ShopModel> Shops { get; set; } = new ObservableCollection<ShopModel>();
         //public static ObservableCollection<ShopGalleryModel> Gallery { get; set; } = new ObservableCollection<ShopGalleryModel>();
 
         static KioskObjects()
         {
             Floors.Add(new Floor { Height = 9000, Width = 9000, Id = 1, Image = @"C:\Users\Arturbipolar\Desktop\Новая папка\2.png" });
+            RestoreSettings();
         }
 
         static JsonSerializer serializer = new JsonSerializer();
         public static async Task LoadAllObjects()
         {
-
-            await Task.Run(() =>
-            {
-                Categories = new ObservableCollection<CategoryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetCategories());
-                Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
-                Shops = new ObservableCollection<ShopModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShops());
-                //Gallery = new ObservableCollection<ShopGalleryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShopsGallery());
-            });
+            Shops = new ObservableCollection<ShopModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShops());
+           
+            //await Task.Run(() =>
+            //{
+            //    //Categories = new ObservableCollection<CategoryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetCategories());
+            //    //Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
+            //    Shops = new ObservableCollection<ShopModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShops());
+            //    return;
+            //    //Gallery = new ObservableCollection<ShopGalleryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShopsGallery());
+            //});
         }
 
         public static void RestoreSettings()
         {
-
-                string json = "";
-                if (!string.IsNullOrEmpty(json))
+            if (File.Exists(FilePath))
+            {
+                using (StreamReader file = File.OpenText(FilePath))
                 {
-                    using (JsonTextReader stream = new JsonTextReader(new StringReader(json)))
-                    {
-                        var settings = serializer.Deserialize(stream);
-                        JObject jObj = (JObject)settings;
-                        Floors = jObj.ToObject<ObservableCollection<Floor>>();
-                    }
+                    Floors = (ObservableCollection<Floor>)serializer.Deserialize(file, typeof(ObservableCollection<Floor>));
                 }
+            }
+
+            //string json = "";
+            //    if (!string.IsNullOrEmpty(json))
+            //    {
+            //        using (JsonTextReader stream = new JsonTextReader(new StringReader(json)))
+            //        {
+            //            var settings = serializer.Deserialize(stream);
+            //            JObject jObj = (JObject)settings;
+            //            Floors = jObj.ToObject<ObservableCollection<Floor>>();
+            //        }
+            //    }
+           
             
         }
         public static string FilePath = Path.Combine(Environment.CurrentDirectory, "settings.json");
@@ -63,7 +74,7 @@ namespace TradeCenterAdmin.Storage
                 serializer.Serialize(sw, Floors);
             }
             string json = File.ReadAllText(FilePath);
-            if (File.Exists(FilePath)){ File.Delete(FilePath); }
+            //if (File.Exists(FilePath)){ File.Delete(FilePath); }
 
             
         }

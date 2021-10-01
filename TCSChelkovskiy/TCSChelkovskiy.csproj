@@ -118,6 +118,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Syncfusion.Shared.WPF" Version="19.2.0.62" />
     <PackageReference Include="Syncfusion.UI.WPF.NET" Version="19.2.0.62" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />

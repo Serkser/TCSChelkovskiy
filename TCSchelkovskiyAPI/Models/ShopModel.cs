@@ -17,5 +17,10 @@ namespace TCSchelkovskiyAPI.Models
         public FloorModel Floor { get; set; }
         public List<PhotoModel> Photos { get; set; }
         public CategoryModel Category { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

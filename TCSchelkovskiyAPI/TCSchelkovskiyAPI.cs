@@ -217,9 +217,11 @@ namespace TCSchelkovskiyAPI
                 request.AddHeader("Content-Type", "application/json");
                 response = client.Execute(request);
 
+               
                 dynamic data = JsonConvert.DeserializeObject(response.Content);
                 foreach (var shop in data)
                 {
+                    Debug.WriteLine("++");
                     ShopModel shopModel = new ShopModel
                     {
                         IconURI = shop.iconUri.ToString(),
@@ -245,22 +247,30 @@ namespace TCSchelkovskiyAPI
                         }
                     };
                     List<PhotoModel> shopPhotos = new List<PhotoModel>();
-                    foreach (var photo in shop.photos)
+                    if (shop.photos != null)
                     {
-                        PhotoModel shopPhoto = new PhotoModel
+                        foreach (var photo in shop.photos)
                         {
-                            Image = photo.image.ToString(),
-                            ImageURI = photo.imageUri.ToString(),
-                        };
+                            PhotoModel shopPhoto = new PhotoModel
+                            {
+                                Image = photo.image.ToString(),
+                                ImageURI = photo.imageUri.ToString(),
+                            };
+                            shopPhotos.Add(shopPhoto);
+                        }
+                        shopModel.Photos = shopPhotos;
+                        
                     }
-                    shopModel.Photos = shopPhotos;
                     shops.Add(shopModel);
+                    
                 }
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.StackTrace);
                 Debug.WriteLine(ex.Message);
             }
+            Debug.WriteLine("метод выполнен");
             return shops;
         }
         public static ShopModel GetShop(int id)
@@ -399,9 +409,119 @@ namespace TCSchelkovskiyAPI
         }
 
         public static void GetNews(int? id =null) { }
-        public static void GetTCInfo() { }
         public static void GetStations() { }
         public static void GetRules() { }
-        public static void GetContacts() { }
+        public static void GetBanners() { }
+        public static ContactsModel GetContacts()
+        {
+            string url = $"https://navigator.useful.su/api/v1/contacts";
+            try
+            {
+                RestClient client = new RestClient(url);
+                request = new RestRequest(Method.GET);
+                request.AddHeader("Accept", "application/json");
+                request.AddHeader("Content-Type", "application/json");
+                response = client.Execute(request);
+
+                dynamic data = JsonConvert.DeserializeObject(response.Content);
+                ContactsModel model = new ContactsModel()
+                {
+                    ID = Convert.ToInt32(data.id),
+                    Address = data.address.ToString(),
+                    Phone = data.phone.ToString(),
+                    TimeWork = data.time_work.ToString(),
+                };
+                return model;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            return new ContactsModel { };
+        }
+
+        public static AboutMallModel AboutMall() 
+        {
+            string url = $"https://navigator.useful.su/api/v1/aboutmall";
+            try
+            {
+                RestClient client = new RestClient(url);
+                request = new RestRequest(Method.GET);
+                request.AddHeader("Accept", "application/json");
+                request.AddHeader("Content-Type", "application/json");
+                response = client.Execute(request);
+
+                dynamic data = JsonConvert.DeserializeObject(response.Content);
+                AboutMallModel aboutMallModel = new AboutMallModel()
+                {
+                    Description = data.description.ToString(),
+                    ImagesPrefix = data.imagesPrefix.ToString(),
+                    MallName = data.mall_name.ToString(),
+                };
+                List<string> images = new List<string>();
+                foreach (var img in data.images)
+                {
+                    images.Add(img.ToString());
+                }
+                aboutMallModel.Images = images;
+                return aboutMallModel;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            return new AboutMallModel { };
+
+        }
+        public static List<VacancyModel> GetVacancies(int? id = null)
+        {
+            string url = "";
+            if (id == null)
+            {
+                url = $"https://navigator.useful.su/api/v1/vacancy";
+            }
+            else
+            {
+                url = $"https://navigator.useful.su/api/v1/vacancy/{id}";
+            }
+            List<VacancyModel> vacancies = new List<VacancyModel>();
+            try
+            {
+                RestClient client = new RestClient(url);
+                request = new RestRequest(Method.GET);
+                request.AddHeader("Accept", "application/json");
+                request.AddHeader("Content-Type", "application/json");
+                response = client.Execute(request);
+
+                dynamic data = JsonConvert.DeserializeObject(response.Content);
+                foreach (var item in data)
+                {
+                    VacancyModel vacancy = new VacancyModel
+                    {
+                        ID = Convert.ToInt32(item.id),
+                        Name = item.name.ToString(),
+                        Contact = item.contact.ToString()
+                    };
+                    List<VacancyBlock> blocks = new List<VacancyBlock>();
+                    foreach (var block in item.vacancy_blocks)
+                    {
+                        blocks.Add(new VacancyBlock
+                        {
+                            ID = Convert.ToInt32(block.id),
+                            Title = block.title.ToString(),
+                            Description = block.description.ToString()
+                        });
+                    }
+                    vacancy.VacancyBlocks = blocks;
+                    vacancies.Add(vacancy);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            return vacancies;
+        }
     }
 }

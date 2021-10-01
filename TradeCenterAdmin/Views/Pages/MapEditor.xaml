@@ -13,7 +13,7 @@
 
     <Grid>
         <Viewbox>
-            <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Width="916" Height="599">
+            <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Width="1059" Height="700">
                 <Canvas ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible"
                     x:Name="canvasMap" VerticalAlignment="Top" Width="9000" Height="9000" Margin="0,0,-0.4,0">
                     <i:Interaction.Triggers>
@@ -21,44 +21,53 @@
                             <i:InvokeCommandAction Command="{Binding LeftMouseButtonClick}"></i:InvokeCommandAction>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Image x:Name="img" MouseDown="click"  Source="{Binding CurrentFloorImage,Mode=TwoWay}" Width="9000" Height="9000">
+                    <Image x:Name="img" MouseDown="click"  Source="{Binding CurrentFloorImage,Mode=TwoWay}" Width="9000" Height="9000" Canvas.Left="0" Canvas.Top="0">
 
                     </Image>
+            
 
                 </Canvas>
             </ScrollViewer>
-
+          
         </Viewbox>
-        <Button Command="{Binding ZoomOut}" Content="-" Canvas.Left="534" Canvas.Top="139" Width="70" Height="46" Margin="876,509,113.2,145"/>
-        <Button Command="{Binding ZoomIn}" Content="+" Canvas.Left="535" Canvas.Top="205" Width="70" Height="46" Margin="876,560,113.2,94"/>
-
-        <Expander Header="Этажи" Height="100" Width="160" Margin="786,56,113.2,544">
+        <Expander Header="Этажи" Height="100" Width="160" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="828,90,0,0" >
             <Grid Background="#FFE5E5E5">
-                <TextBlock Text="Выбранный этаж :" FontSize="10" Margin="5,2,66.4,57.6" />
                 <ComboBox ItemsSource="{Binding Floors, Mode=TwoWay}" SelectedItem="{Binding SelectedFloor, Mode=TwoWay}" 
-                              HorizontalAlignment="Left" Margin="5,20,0,0" VerticalAlignment="Top" Width="148"/>
+                                HorizontalAlignment="Left" Margin="5,20,0,0" VerticalAlignment="Top" Width="148">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding RedrawFloorItems}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
                 <Button Command="{Binding OpenFloors}" Content="Изменить этажи" HorizontalAlignment="Left" Margin="5,47,0,0" VerticalAlignment="Top" Width="148" Height="21"/>
+                <TextBlock Text="Выбранный этаж :" FontSize="10" Margin="5,2,66.4,57.6" />
             </Grid>
         </Expander>
-        <Expander Header="Инструменты" Width="160" Margin="786,161,113.2,221" Height="318">
+
+        <Button Command="{Binding ZoomOut}" Content="-"  Width="70" Height="46" Margin="755,488,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Command="{Binding ZoomIn}" Content="+" Width="70" Height="46" Margin="755,539,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Expander Header="Инструменты" Height="329" Width="160" Margin="828,195,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Grid Background="#FFE5E5E5">
                 <Button Command="{Binding UseCursor}"  Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
                 <TextBlock HorizontalAlignment="Left" Margin="10,61,0,0" TextWrapping="Wrap" Text="Курсор" VerticalAlignment="Top"/>
-                <Button Command="{Binding UseKiosk}" Content="Button" HorizontalAlignment="Left" Margin="83,10,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
-                <TextBlock HorizontalAlignment="Left" Margin="83,61,0,0" TextWrapping="Wrap" Text="Киоск" VerticalAlignment="Top"/>
+                <Button Command="{Binding UseKiosk}" Content="Button" HorizontalAlignment="Left" Margin="10,216,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
+                <TextBlock HorizontalAlignment="Left" Margin="10,267,0,0" TextWrapping="Wrap" Text="Киоск" VerticalAlignment="Top"/>
                 <Button Command="{Binding UseArea}" Content="Button" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
                 <TextBlock HorizontalAlignment="Left" Margin="10,130,0,0" TextWrapping="Wrap" Text="Область" VerticalAlignment="Top"/>
                 <Button Command="{Binding UseEntry}" Content="Button" HorizontalAlignment="Left" Margin="83,79,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
                 <TextBlock HorizontalAlignment="Left" Margin="83,130,0,0" TextWrapping="Wrap" Text="Вход" VerticalAlignment="Top"/>
-                <Button Command="{Binding UseLift}" Content="Button" HorizontalAlignment="Left" Margin="244,117,-144.6,0" VerticalAlignment="Top" Width="59" Height="51"/>
-                <TextBlock HorizontalAlignment="Left" Margin="244,167,-114.6,0" TextWrapping="Wrap" Text="Лифт" VerticalAlignment="Top"/>
-                <Button Command="{Binding UseStairs}" Content="Button" HorizontalAlignment="Left" Margin="83,149,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
+                <Button Command="{Binding UseHand}" Content="Button" HorizontalAlignment="Left" Margin="83,10,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
+                <TextBlock HorizontalAlignment="Left" Margin="83,60,0,0" TextWrapping="Wrap" Text="Рука" VerticalAlignment="Top"/>
+                <Button Command="{Binding UseStairs}" Content="Button" HorizontalAlignment="Left" Margin="83,149,0,0" VerticalAlignment="Top" Width="59" Height="51" Click="Button_Click"/>
                 <TextBlock HorizontalAlignment="Left" Margin="83,199,0,0" TextWrapping="Wrap" Text="Лестница" VerticalAlignment="Top"/>
                 <Button Command="{Binding UseWay}" Content="Button" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
                 <TextBlock HorizontalAlignment="Left" Margin="10,199,0,0" TextWrapping="Wrap" Text="Путь" VerticalAlignment="Top"/>
 
             </Grid>
         </Expander>
+        <Button Command="{Binding SaveChanges}" Content="Сохранить изменения"  Width="160" Height="46" Margin="828,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBlock x:Name="hints" Text="Подсказки" TextAlignment="Center" TextWrapping="Wrap" Margin="310,475,354.2,91"/>
 
 
 

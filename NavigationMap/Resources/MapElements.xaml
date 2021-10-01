@@ -27,7 +27,7 @@
             <Polygon
                 x:Name="Logo"
                 Points="{Binding PointCollection}"
-                Visibility="Visible" Fill="Black">
+                Visibility="Visible" Fill="Beige">
             </Polygon>
             <ItemsControl Focusable="False">
                 <ItemsControl.Style>

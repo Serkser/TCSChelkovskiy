@@ -24,6 +24,7 @@ namespace TradeCenterAdmin
         {
             InitializeComponent();
             frame.Navigate(new Views.Pages.MapEditor());
+      
         }
     }
 }

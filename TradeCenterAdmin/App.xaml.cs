@@ -13,5 +13,9 @@ namespace TradeCenterAdmin
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            Storage.KioskObjects.LoadAllObjects().Wait();
+        }
     }
 }

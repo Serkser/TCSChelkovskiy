@@ -83,7 +83,18 @@ namespace NavigationMap.Models
                 OnPropertyChanged();
             }
         }
-        
+
+        private int _innerId;
+
+        public int InnerId
+        {
+            get => _innerId;
+            set
+            {
+                _innerId = value;
+                OnPropertyChanged();
+            }
+        }
         private Point _position;
 
         public Point Position

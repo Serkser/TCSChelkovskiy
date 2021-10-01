@@ -124,6 +124,9 @@
     <Compile Include="Views\Windows\AddShop.xaml.cs">
       <DependentUpon>AddShop.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Windows\AssingShop.xaml.cs">
+      <DependentUpon>AssingShop.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Windows\EditCategory.xaml.cs">
       <DependentUpon>EditCategory.xaml</DependentUpon>
     </Compile>
@@ -199,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Windows\AddShop.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\AssingShop.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
