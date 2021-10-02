@@ -46,7 +46,7 @@
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <Image Width="40" Height="40" Source="/SearchNavButton.png"></Image>
-                            <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="Поиск" Height="46"></TextBlock>
+                            <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="{Binding SearchText,Mode=TwoWay}" Height="46" Width="271"></TextBlock>
                         </StackPanel>
 
                     </Button.Content>

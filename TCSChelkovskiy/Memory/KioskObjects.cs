@@ -19,6 +19,7 @@ namespace TCSChelkovskiy.Memory
         public static ObservableCollection<Station> Stations { get; set; } = new ObservableCollection<Station>();
         public static ObservableCollection<ShopModel> Shops { get; set; } = new ObservableCollection<ShopModel>();
         public static ObservableCollection<ShopGalleryModel> Gallery { get; set; } = new ObservableCollection<ShopGalleryModel>();
+        public static ObservableCollection<VacancyModel> Vacancies { get; set; } = new ObservableCollection<VacancyModel>();
 
         public static ContactsModel Contacts { get; set; } = new ContactsModel();
         public static AboutMallModel AboutMall { get; set; } = new AboutMallModel();
@@ -31,8 +32,11 @@ namespace TCSChelkovskiy.Memory
               //  Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
                 Shops = new ObservableCollection<ShopModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShops());
                 Gallery = new ObservableCollection<ShopGalleryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShopsGallery());
+                Vacancies = new ObservableCollection<VacancyModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetVacancies());
+
                 Contacts = TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetContacts();
                 AboutMall = TCSchelkovskiyAPI.TCSchelkovskiyAPI.AboutMall();
+          
                 RestoreSettings();
             });
 
@@ -46,7 +50,6 @@ namespace TCSChelkovskiy.Memory
                 using (StreamReader file = File.OpenText(FilePath))
                 {
                     Floors = (ObservableCollection<Floor>)serializer.Deserialize(file, typeof(ObservableCollection<Floor>));
-                    MessageBox.Show(Floors[0].Areas.Count.ToString());
                 }
             }
 

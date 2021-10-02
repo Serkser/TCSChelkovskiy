@@ -3,17 +3,23 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
       xmlns:syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TCSChelkovskiy.Views.Search" 
       xmlns:controls="clr-namespace:TCSChelkovskiy.Controls"
       mc:Ignorable="d" 
       d:DesignHeight="830" d:DesignWidth="1440"
       Title="Search">
     <Grid Background="#E5E5e5">
-        <ListView Margin="38,49,38,415">
-
+        <ListView Margin="38,49,0,0" Style="{DynamicResource listView}"  ItemsSource="{Binding ShopsByCategory,Mode=TwoWay}" SelectedItem="{Binding CurrentShop,Mode=TwoWay}" 
+                  HorizontalAlignment="Left" Height="366" Width="1326" VerticalAlignment="Top">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding GoShopPage}"></i:InvokeCommandAction>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <WrapPanel Orientation="Horizontal">
+                    <WrapPanel Width="331" Height="138" Orientation="Horizontal">
                         <controls:ShopItemTemplate  Width="331" Height="138" Icon="{Binding Path=Icon, Mode=TwoWay}"
                             IconURI="{Binding Path=IconURI, Mode=TwoWay}"
                             Title="{Binding Path=Name, Mode=TwoWay}"
@@ -23,7 +29,9 @@
             </ListView.ItemTemplate>
 
         </ListView>
-        <controls:Keyboard Margin="188,463,188,102"></controls:Keyboard>
+        <controls:Keyboard x:Name="keyboard" ButtonPressed="buttonPressed" Margin="188,463,188,102">
+
+        </controls:Keyboard>
     </Grid>
 </Page>
 

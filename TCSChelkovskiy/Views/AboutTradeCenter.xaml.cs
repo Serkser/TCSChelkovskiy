@@ -24,19 +24,28 @@ namespace TCSChelkovskiy.Views
 
         public AboutTradeCenter()
         {
-            InitializeComponent();
+            InitializeComponent();         
+        }
+
+        private void loaded(object sender, RoutedEventArgs e)
+        {
             string url = "https://navigator.useful.su";
             string prefix = ((MainWindowViewModel)this.DataContext).AboutMall.ImagesPrefix;
             var images = ((MainWindowViewModel)this.DataContext).AboutMall.Images;
             List<BitmapImage> bitmaps = new List<BitmapImage>(20);
             foreach (var i in images)
             {
-               var bitmap = Services.ImageDownloader.DownloadImage($"{url}{prefix}{i}",i);
-               var bitmapImage = Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap);
-               bitmaps.Add(bitmapImage);
+                var bitmap = Services.ImageDownloader.DownloadImage($"{url}{prefix}{i}", i);
+                var bitmapImage = Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap, System.IO.Path.Combine(Environment.CurrentDirectory, i));
+                bitmaps.Add(bitmapImage);
             }
-            image1.Source = bitmaps[0];
-            image2.Source = bitmaps[1];
+            try
+            {
+                image1.Source = bitmaps[0];
+                image2.Source = bitmaps[1];
+            }
+            catch { }
+          
         }
     }
 }

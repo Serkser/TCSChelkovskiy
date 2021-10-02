@@ -39,8 +39,10 @@ namespace TCSChelkovskiy.Controls
         }
 
         private bool isUppercase = false;
-        private void Click(object sender, MouseButtonEventArgs e)
+        private bool isInitiliazed = false;
+        private void Click(object sender, RoutedEventArgs e)
         {
+            if (!IsInitialized) { CurrentText = ""; isInitiliazed = true; }
             Button button = sender as Button;
             string btnText = button.Content.ToString();
             switch (btnText)
@@ -50,7 +52,10 @@ namespace TCSChelkovskiy.Controls
                     break;
                 case "Backspace":
                     CurrentKey = "Backspace";
-                    CurrentText = CurrentText.Remove(CurrentText.Length - 1);
+                    if (CurrentText.Length > 0)
+                    {
+                        CurrentText = CurrentText.Remove(CurrentText.Length - 1);
+                    }                
                     break;
                 case "Shift":
                     CurrentKey = "Shift";
@@ -67,13 +72,22 @@ namespace TCSChelkovskiy.Controls
                     }
                     CurrentText += CurrentKey;
                     break;
-
             }
+            ButtonPressed?.Invoke(this,new KeyboardEventArgs { CurrentKey=CurrentKey,CurrentText=CurrentText});
         }
 
         private void touch(object sender, TouchEventArgs e)
         {
             Click(sender, null);
         }
+
+        public event EventHandler ButtonPressed;
+
+       
+    }
+    public class KeyboardEventArgs : EventArgs
+    {
+        public string CurrentKey { get; set; }
+        public string CurrentText { get; set; }
     }
 }

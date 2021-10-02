@@ -24,5 +24,37 @@ namespace TCSChelkovskiy.Views
         {
             InitializeComponent();
         }
+
+        TextBox selectedTextBox;
+        private void buttonPressed(object sender, EventArgs e)
+        {
+            if (selectedTextBox != null)
+            {
+                TCSChelkovskiy.Controls.KeyboardEventArgs args = e as TCSChelkovskiy.Controls.KeyboardEventArgs;
+                switch (args.CurrentKey)
+                {
+                    case "Lang":
+                    
+                        break;
+                    case "Backspace":                    
+                        if (selectedTextBox.Text.Length > 0)
+                        {
+                            selectedTextBox.Text = selectedTextBox.Text.Remove(selectedTextBox.Text.Length - 1);
+                        }
+                        break;
+                    case "Shift":
+                     
+                        break;
+                    default:
+                        selectedTextBox.Text += args.CurrentKey;
+                        break;
+                }
+            }
+        }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            selectedTextBox = sender as TextBox;
+        }
     }
 }
