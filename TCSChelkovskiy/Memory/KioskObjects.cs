@@ -46,7 +46,7 @@ namespace TCSChelkovskiy.Memory
                 using (StreamReader file = File.OpenText(FilePath))
                 {
                     Floors = (ObservableCollection<Floor>)serializer.Deserialize(file, typeof(ObservableCollection<Floor>));
-                    MessageBox.Show(Floors[0].Areas.Count.ToString());
+                    //MessageBox.Show(Floors[0].Areas.Count.ToString());
                 }
             }
 
@@ -63,7 +63,7 @@ namespace TCSChelkovskiy.Memory
 
 
         }
-        public static string FilePath = @"C:\Users\Arturbipolar\Desktop\проекты\TCSChelkovskiy\TradeCenterAdmin\bin\Debug\settings.json";
+        public static string FilePath = @"settings.json";
 
         private static ObservableCollection<Floor> ConvertToFloors(List<FloorModel> floors)
         {

@@ -21,7 +21,7 @@
                             <i:InvokeCommandAction Command="{Binding LeftMouseButtonClick}"></i:InvokeCommandAction>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Image x:Name="img" MouseDown="click"  Source="{Binding CurrentFloorImage,Mode=TwoWay}" Width="9000" Height="9000" Canvas.Left="0" Canvas.Top="0">
+                    <Image x:Name="img" MouseDown="click" Stretch="Uniform"  Source="{Binding CurrentFloorImage,Mode=TwoWay}" Width="9000" Height="9000" Canvas.Left="0" Canvas.Top="0">
 
                     </Image>
             

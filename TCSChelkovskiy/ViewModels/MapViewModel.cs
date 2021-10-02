@@ -32,7 +32,6 @@ namespace TCSChelkovskiy.ViewModels
             if (Floors.Count > 0)
             {
                 CurrentFloor = Floors.FirstOrDefault();
-             
             }
             This.Map.SelectedStation = CurrentFloor.Stations.FirstOrDefault();
 

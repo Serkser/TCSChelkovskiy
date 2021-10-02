@@ -19,7 +19,7 @@
                         IterationCount="3"
                         Points="{Binding PointCollection}"
                         Stroke="{Binding WayStrokeColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                        StrokeThickness="4"
+                        StrokeThickness="30"
                         Tension=".2" />
                 </Grid>
             </DataTemplate>

@@ -11,7 +11,8 @@
       Title="MapPage">
 
     <Grid>
-        <Controls:Map   x:Name="Map" Margin="0,0,-0,-0" Floors="{Binding Floors,Mode=TwoWay}" OnAreaSelected="ss" SelectedFloor="{Binding CurrentFloor,Mode=TwoWay}">
+        <Controls:Map   x:Name="Map" Margin="0,0,-0,-0" Floors="{Binding Floors,Mode=TwoWay}" OnAreaSelected="ss" SelectedFloor="{Binding CurrentFloor,Mode=TwoWay}"
+                          WayStrokeColor="#EC84D3">
            
 
         </Controls:Map>

@@ -23,7 +23,7 @@ namespace TradeCenterAdmin.Storage
 
         static KioskObjects()
         {
-            Floors.Add(new Floor { Height = 9000, Width = 9000, Id = 1, Image = @"C:\Users\Arturbipolar\Desktop\Новая папка\2.png" });
+            Floors.Add(new Floor { Height = 9000, Width = 9000, Id = 1, Image = @"D:\Работы на заказ\TCSChelkovskiy\TradeCenterAdmin\bin\Debug\0.png" });
             RestoreSettings();
         }
 

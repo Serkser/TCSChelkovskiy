@@ -8,52 +8,52 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920" WindowStyle="None" Background="#E5E5E5" WindowState="Maximized">
     <Grid >
-        <Viewbox Margin="10,36,352,136">
-            <Grid>
-                <Rectangle HorizontalAlignment="Left" Height="140" Margin="480,940,0,0" Stroke="#D8D5CC" Fill="#D8D5CC" VerticalAlignment="Top" Width="1463"/>
-                <Image HorizontalAlignment="Left" Height="360" VerticalAlignment="Top" Width="480" Source="/adv1.png" Stretch="Fill"/>
-                <Image HorizontalAlignment="Left" Height="360" VerticalAlignment="Top" Width="480" Margin="0,360,0,0" Source="/Images/Samples/adv2.png" Stretch="Fill" />
-                <Image HorizontalAlignment="Left" Height="360" VerticalAlignment="Top" Width="480" Margin="0,720,0,0" Source="/Images/Samples/adv3.png" Stretch="Fill"/>
-                <Rectangle HorizontalAlignment="Left" Height="164" Margin="480,0,0,0" Fill="#D3C59F" Stroke="#D3C59F" VerticalAlignment="Top" Width="1463"/>
-                <Image HorizontalAlignment="Left" Height="124" Margin="516,20,0,0" VerticalAlignment="Top" Width="504" Source="/Images/MainWindow/Logo.png"/>
-                <Button Command="{Binding GoShops}" Style="{StaticResource FooterButton}" Content="МАГАЗИНЫ" 
+        <!--<Viewbox Margin="10,36,352,136">-->
+        <Grid>
+            <Rectangle HorizontalAlignment="Left" Height="140" Margin="480,940,0,0" Stroke="#D8D5CC" Fill="#D8D5CC" VerticalAlignment="Top" Width="1463"/>
+            <Image HorizontalAlignment="Left" Height="360" VerticalAlignment="Top" Width="480" Source="/adv1.png" Stretch="Fill"/>
+            <Image HorizontalAlignment="Left" Height="360" VerticalAlignment="Top" Width="480" Margin="0,360,0,0" Source="/Images/Samples/adv2.png" Stretch="Fill" />
+            <Image HorizontalAlignment="Left" Height="360" VerticalAlignment="Top" Width="480" Margin="0,720,0,0" Source="/Images/Samples/adv3.png" Stretch="Fill"/>
+            <Rectangle HorizontalAlignment="Left" Height="164" Margin="480,0,0,0" Fill="#D3C59F" Stroke="#D3C59F" VerticalAlignment="Top" Width="1463"/>
+            <Image HorizontalAlignment="Left" Height="124" Margin="516,20,0,0" VerticalAlignment="Top" Width="504" Source="/Images/MainWindow/Logo.png"/>
+            <Button Command="{Binding GoShops}" Style="{StaticResource FooterButton}" Content="МАГАЗИНЫ" 
             FontSize="20"  Margin="534,960,1074,0" VerticalAlignment="Top" Width="335" Height="100">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/shops.png"/>
-                    </Button.Background>
-                </Button>
-                <Frame x:Name="frame" Panel.ZIndex="2" Content="Frame" Margin="482,164,3,145"/>
-                <Button  Command="{Binding GoCategories}"  Style="{StaticResource FooterButton}" Content="КАТЕГОРИИ"
+                <Button.Background>
+                    <ImageBrush ImageSource="/shops.png"/>
+                </Button.Background>
+            </Button>
+            <Frame x:Name="frame" Panel.ZIndex="2" Content="Frame" Margin="482,164,3,145"/>
+            <Button  Command="{Binding GoCategories}"  Style="{StaticResource FooterButton}" Content="КАТЕГОРИИ"
                     FontSize="20"  Margin="879,960,729,0" VerticalAlignment="Top" Width="335" Height="100">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/categories.png"/>
-                    </Button.Background>
-                </Button>
-                <Button  Command="{Binding GoInfo}"  Style="{StaticResource FooterButton}" Content="ИНФОРМАЦИЯ"
+                <Button.Background>
+                    <ImageBrush ImageSource="/categories.png"/>
+                </Button.Background>
+            </Button>
+            <Button  Command="{Binding GoInfo}"  Style="{StaticResource FooterButton}" Content="ИНФОРМАЦИЯ"
                     FontSize="20"  Margin="1230,960,378,0" VerticalAlignment="Top" Width="335" Height="100">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/info.png"/>
-                    </Button.Background>
-                </Button>
-                <Button  Command="{Binding GoNews}"  Style="{StaticResource FooterButton}" Content="НОВОСТИ"
+                <Button.Background>
+                    <ImageBrush ImageSource="/info.png"/>
+                </Button.Background>
+            </Button>
+            <Button  Command="{Binding GoNews}"  Style="{StaticResource FooterButton}" Content="НОВОСТИ"
                     FontSize="20"  Margin="1585,960,23,0" VerticalAlignment="Top" Width="335" Height="100">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/news.png"/>
-                    </Button.Background>
-                </Button>
-                <Button Command="{Binding TapSearch}" Style="{StaticResource HeaderSearchButton}" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
+                <Button.Background>
+                    <ImageBrush ImageSource="/news.png"/>
+                </Button.Background>
+            </Button>
+            <Button Command="{Binding TapSearch}" Style="{StaticResource HeaderSearchButton}" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
                          HorizontalAlignment="Left" Margin="1556,50,0,0" VerticalAlignment="Top" Height="64" Width="345">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="40" Height="40" Source="/SearchNavButton.png"></Image>
-                            <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="Поиск" Height="46"></TextBlock>
-                        </StackPanel>
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="40" Height="40" Source="/SearchNavButton.png"></Image>
+                        <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="Поиск" Height="46"></TextBlock>
+                    </StackPanel>
 
-                    </Button.Content>
-                </Button>
+                </Button.Content>
+            </Button>
 
-            </Grid>
-        </Viewbox>
+        </Grid>
+        <!--</Viewbox>-->
 
     </Grid>
 </Window>
