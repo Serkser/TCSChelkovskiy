@@ -51,7 +51,7 @@ namespace TCSChelkovskiy.Controls
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             Bitmap bitmap = Services.ImageDownloader.DownloadImage(IconURI, Icon);
-            image.Source = Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap);
+            image.Source = Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap, System.IO.Path.Combine(Environment.CurrentDirectory, Icon));
             bitmap.Dispose();
             title.Text = Title;
         }

@@ -18,22 +18,22 @@
         </Controls:Map>
         <Button Command="{Binding NavigateTo}"   Style="{StaticResource FooterButton}" Content=""
             FontSize="20"  Margin="1296,603,24,0" VerticalAlignment="Top" Width="120" Height="120">
-            <d:Button.Background>
+            <Button.Background>
                 <ImageBrush ImageSource="/NavigateButton.png"/>
-            </d:Button.Background>
+            </Button.Background>
 
         </Button>
         <Button  Command="{Binding ZoomOut}" Panel.ZIndex="1"  Style="{StaticResource FooterButton}" Content=""
             FontSize="20"  Margin="1296,436,24,0" VerticalAlignment="Top" Width="120" Height="120">
-            <d:Button.Background>
+            <Button.Background>
                 <ImageBrush ImageSource="/ZoomOut.png"/>
-            </d:Button.Background>
+            </Button.Background>
         </Button>
         <Button  Command="{Binding ZoomIn}"  Style="{StaticResource FooterButton}" Content=""
             FontSize="20"  Margin="1296,320,24,0" VerticalAlignment="Top" Width="120" Height="120">
-            <d:Button.Background>
+            <Button.Background>
                 <ImageBrush ImageSource="/ZoomIn.png"/>
-            </d:Button.Background>
+            </Button.Background>
         </Button>
         <Image HorizontalAlignment="Left" Height="110" Margin="83,72,0,0" VerticalAlignment="Top" Width="646" Source="/Views/FloorsPanel.png" Stretch="Fill"/>
         <Button  Command="{Binding GoNews}" IsEnabled="False" Style="{StaticResource FloorButtonPink}" Content="1"

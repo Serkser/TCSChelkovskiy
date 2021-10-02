@@ -12,7 +12,20 @@
             <Grid Margin="0,0,0,0">
                 <TextBlock HorizontalAlignment="Left" Margin="475,37,0,0" Text="Вакансии" FontFamily="Manrope" TextAlignment="Center" 
                     FontSize="35px" Foreground="Black" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="47"/>
-                <syncfusion:SfAccordion Margin="62,90,77,0" Height="555" />
+                <ListView HorizontalAlignment="Center" VerticalAlignment="Top" Height="544" Width="1154" Margin="0,89,0,0"
+                          ItemsSource="{Binding Vacancies,Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <WrapPanel Width="681" Height="413">
+                                <Controls:VacancyItemTemplate Width="681" Height="413"
+                                                           Title="{Binding Name,Mode=TwoWay}" 
+                                                           Contacts="{Binding Contact,Mode=TwoWay}"    
+                                                           VacancyBlocks="{Binding VacancyBlocks,Mode=TwoWay}"></Controls:VacancyItemTemplate>
+                            </WrapPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
             </Grid>
         </Border>
         <Button  Command="{Binding GoBack}" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"

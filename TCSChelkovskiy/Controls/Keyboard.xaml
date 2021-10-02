@@ -6,53 +6,51 @@
              xmlns:local="clr-namespace:TCSChelkovskiy.Controls"
              mc:Ignorable="d" Height="202" Width="468">
     <Grid>
-
-
-        <Button MouseDown="Click" Style="{DynamicResource KeyboardButton}" Content="q"  Margin="10,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="w"  Margin="55,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="e"  Margin="98,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="r"  Margin="141,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="t"  Margin="186,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="y"  Margin="231,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="u"  Margin="278,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="i"  Margin="324,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="o"  Margin="370,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="p"  Margin="416,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="a"  Margin="22,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="s"  Margin="67,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40" RenderTransformOrigin="2.298,0.575"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="d"  Margin="112,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="f"  Margin="158,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="g"  Margin="206,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="h"  Margin="252,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="j"  Margin="298,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="k"  Margin="344,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="l"  Margin="390,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" BorderThickness="0" Content="Backspace" Foreground="Transparent" Margin="370,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="86">
+        <Button Click="Click" TouchDown="touch" Style="{DynamicResource KeyboardButton}" Content="q"  Margin="10,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch" Style="{DynamicResource KeyboardButton}" Content="w"  Margin="55,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="e"  Margin="98,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="r"  Margin="141,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="t"  Margin="186,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="y"  Margin="231,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="u"  Margin="278,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="i"  Margin="324,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="o"  Margin="370,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="p"  Margin="416,15,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="a"  Margin="22,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="s"  Margin="67,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40" RenderTransformOrigin="2.298,0.575"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="d"  Margin="112,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="f"  Margin="158,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="g"  Margin="206,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="h"  Margin="252,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="j"  Margin="298,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="k"  Margin="344,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="l"  Margin="390,60,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" BorderThickness="1" Content="Backspace" Foreground="Transparent" Margin="370,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="86">
             <Button.Background>
                 <ImageBrush ImageSource="/Controls/Backspace.png"/>
             </Button.Background>
         </Button>
-        <Button Style="{DynamicResource KeyboardButton}" Content="z"  Margin="52,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="x"  Margin="93,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="c"  Margin="138,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="v"  Margin="186,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="b"  Margin="231,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="n"  Margin="278,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="m"  Margin="324,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="Shift" Foreground="Transparent" BorderThickness="0"  Margin="10,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40">
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="z"  Margin="52,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="x"  Margin="93,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="c"  Margin="138,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="v"  Margin="186,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="b"  Margin="231,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="n"  Margin="278,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"   Style="{DynamicResource KeyboardButton}" Content="m"  Margin="324,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"   Style="{DynamicResource KeyboardButton}" Content="Shift" Foreground="Transparent" BorderThickness="1"  Margin="10,105,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40">
             <Button.Background>
                 <ImageBrush ImageSource="/Controls/Shift.png"/>
             </Button.Background>
         </Button>
-        <Button Style="{DynamicResource KeyboardButton}" Content="@"  Margin="370,150,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="."  Margin="416,150,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
-        <Button Style="{DynamicResource KeyboardButton}" Content="123"  Margin="75,150,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="58"/>
-        <Button Style="{DynamicResource KeyboardButton}" BorderThickness="0" Content="Lang" Foreground="Transparent"  Margin="10,150,0,0" VerticalAlignment="Top" Height="40" RenderTransformOrigin="0.944,0.487" HorizontalAlignment="Left" Width="60">
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="@"  Margin="370,150,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="."  Margin="416,150,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="40"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content="123"  Margin="75,150,0,0" VerticalAlignment="Top" Height="40" HorizontalAlignment="Left" Width="58"/>
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" BorderThickness="1" Content="Lang" Foreground="Transparent"  Margin="10,150,0,0" VerticalAlignment="Top" Height="40" RenderTransformOrigin="0.944,0.487" HorizontalAlignment="Left" Width="60">
             <Button.Background>
                 <ImageBrush ImageSource="/Controls/Lang.png" Stretch="Fill"/>
             </Button.Background>
         </Button>
-        <Button Style="{DynamicResource KeyboardButton}" Content=" "  Margin="138,150,0,0" VerticalAlignment="Top" TouchDown="touch"
+        <Button Click="Click" TouchDown="touch"  Style="{DynamicResource KeyboardButton}" Content=" "  Margin="138,150,0,0" VerticalAlignment="Top"
                 Height="40" RenderTransformOrigin="0.944,0.487" HorizontalAlignment="Left" Width="226"/>
 
     </Grid>

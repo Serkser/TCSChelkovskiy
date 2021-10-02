@@ -13,9 +13,11 @@ namespace TCSchelkovskiyAPI
     {
         static RestRequest request;
         static IRestResponse response;
+
+        public const string HOST = "https://navigator.useful.su";
         public static List<FloorModel> GetFloors()
         {
-            string url = "https://navigator.useful.su/api/v1/floors";
+            string url = HOST+"/api/v1/floors";
             List<FloorModel> floors = new List<FloorModel>();
             try
             {
@@ -82,7 +84,7 @@ namespace TCSchelkovskiyAPI
         }
         public static List<CategoryModel> GetCategories()
         {
-            string url = $"https://navigator.useful.su/api/v1/categories";
+            string url = HOST + $"/api/v1/categories";
             List<CategoryModel> categories = new List<CategoryModel>();
             try
             {
@@ -107,30 +109,30 @@ namespace TCSchelkovskiyAPI
                     {
                         ShopModel shopModel = new ShopModel
                         {
-                            IconURI = shop.iconUri.ToString(),
+                            IconURI = shop.imagesPrefix.ToString()+ shop.iconUri.ToString(),
                             ID = Convert.ToInt32(shop.id),
                             Name = shop.name.ToString(),
                             Icon = shop.icon.ToString(),
                             Description = shop.description.ToString(),
                             Phone = shop.phone.ToString(),
-                            Floor = new FloorModel
-                            {
-                                ID = Convert.ToInt32(shop.floor.id),
-                                Floor = Convert.ToInt32(shop.floor.floor),
-                                Name = shop.floor.name.ToString(),
-                                Shops = null
-                            },
+                            //Floor = new FloorModel
+                            //{
+                            //    ID = Convert.ToInt32(shop.floor.id),
+                            //    Floor = Convert.ToInt32(shop.floor.floor),
+                            //    Name = shop.floor.name.ToString(),
+                            //    Shops = null
+                            //},
                         };
-                        List<PhotoModel> shopPhotos = new List<PhotoModel>();
-                        foreach (var photo in shop.photos)
-                        {
-                            PhotoModel shopPhoto = new PhotoModel
-                            {
-                                Image = photo.image.ToString(),
-                                ImageURI = photo.imageUri.ToString(),
-                            };
-                        }
-                        shopModel.Photos = shopPhotos;
+                        //List<PhotoModel> shopPhotos = new List<PhotoModel>();
+                        //foreach (var photo in shop.images)
+                        //{
+                        //    PhotoModel shopPhoto = new PhotoModel
+                        //    {
+                        //        Image = photo.image.ToString(),
+                        //        ImageURI = photo.imageUri.ToString(),
+                        //    };
+                        //}
+                        //shopModel.Photos = shopPhotos;
                         shopModels.Add(shopModel);
                     }
                     categories.Add(category);
@@ -140,13 +142,16 @@ namespace TCSchelkovskiyAPI
             }
             catch (Exception ex)
             {
+                Debug.WriteLine("Искл");
                 Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+                
             }
             return categories;
         }
         public static CategoryModel GetCategory(int id)
         {
-            string url = $"https://navigator.useful.su/api/v1/categories/{id}";
+            string url = HOST + $"/api/v1/categories/{id}";
             try
             {
                 RestClient client = new RestClient(url);
@@ -207,7 +212,7 @@ namespace TCSchelkovskiyAPI
         }
         public static List<ShopModel> GetShops()
         {
-            string url = "https://navigator.useful.su/api/v1/shop";
+            string url = HOST + "/api/v1/shop";
             List<ShopModel> shops = new List<ShopModel>();
             try
             {
@@ -275,7 +280,7 @@ namespace TCSchelkovskiyAPI
         }
         public static ShopModel GetShop(int id)
         {
-            string url = $"https://navigator.useful.su/api/v1/shop/{id}";
+            string url = HOST + $"/api/v1/shop/{id}";
             try
             {
                 RestClient client = new RestClient(url);
@@ -335,11 +340,11 @@ namespace TCSchelkovskiyAPI
             string url = "";
             if (id == null)
             {
-                url = $"https://navigator.useful.su/api/v1/shopphotos";
+                url = HOST + $"/api/v1/shopphotos";
             }
             else
             {
-                url = $"https://navigator.useful.su/api/v1/shopphotos/{id}";
+                url = HOST + $"/api/v1/shopphotos/{id}";
             }
 
             
@@ -414,7 +419,7 @@ namespace TCSchelkovskiyAPI
         public static void GetBanners() { }
         public static ContactsModel GetContacts()
         {
-            string url = $"https://navigator.useful.su/api/v1/contacts";
+            string url = HOST + $"/api/v1/contacts";
             try
             {
                 RestClient client = new RestClient(url);
@@ -443,7 +448,7 @@ namespace TCSchelkovskiyAPI
 
         public static AboutMallModel AboutMall() 
         {
-            string url = $"https://navigator.useful.su/api/v1/aboutmall";
+            string url = HOST + $"/api/v1/aboutmall";
             try
             {
                 RestClient client = new RestClient(url);
@@ -455,12 +460,12 @@ namespace TCSchelkovskiyAPI
                 dynamic data = JsonConvert.DeserializeObject(response.Content);
                 AboutMallModel aboutMallModel = new AboutMallModel()
                 {
-                    Description = data.description.ToString(),
-                    ImagesPrefix = data.imagesPrefix.ToString(),
-                    MallName = data.mall_name.ToString(),
+                    Description = data[0].description.ToString(),
+                    ImagesPrefix = data[0].imagesPrefix.ToString(),
+                    MallName = data[0].mall_name.ToString(),
                 };
                 List<string> images = new List<string>();
-                foreach (var img in data.images)
+                foreach (var img in data[0].images)
                 {
                     images.Add(img.ToString());
                 }
@@ -479,11 +484,11 @@ namespace TCSchelkovskiyAPI
             string url = "";
             if (id == null)
             {
-                url = $"https://navigator.useful.su/api/v1/vacancy";
+                url = HOST + $"/api/v1/vacancy";
             }
             else
             {
-                url = $"https://navigator.useful.su/api/v1/vacancy/{id}";
+                url = HOST + $"/api/v1/vacancy/{id}";
             }
             List<VacancyModel> vacancies = new List<VacancyModel>();
             try

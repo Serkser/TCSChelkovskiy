@@ -160,4 +160,67 @@
         <Setter Property="Background" Value="White"></Setter>
     </Style>
     
+    
+    
+    
+    <!--ЛИСТ-->
+    
+
+    <Style x:Key="listView" TargetType="{x:Type ListView}">
+
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="1" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListView}">
+                    <Grid>
+                        <Border x:Name="Border"
+                            Background="{DynamicResource ControlBackgroundBrush}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="1">
+                            <ScrollViewer Margin="{TemplateBinding Padding}">
+                                <WrapPanel Focusable="False"
+                                   Height="{Binding ActualHeight,
+                                                    RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
+                                   MinWidth="{Binding (ListView.View).MinWidth,
+                                                      RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                     AncestorType={x:Type ListView}}}"
+                                   IsItemsHost="True"
+                                   ItemWidth="{Binding (ListView.View).ItemWidth,
+                                                       RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                      AncestorType={x:Type ListView}}}"
+                                   KeyboardNavigation.DirectionalNavigation="Cycle"
+                                   Orientation="Vertical" />
+                            </ScrollViewer>
+                        </Border>
+                        <Border x:Name="DisabledVisualElement"
+                            Background="#A5FFFFFF"
+                            BorderBrush="#66FFFFFF"
+                            BorderThickness="1"
+                            IsHitTestVisible="false"
+                            Opacity="0" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsGrouping" Value="true">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

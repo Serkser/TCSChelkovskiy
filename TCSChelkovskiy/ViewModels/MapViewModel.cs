@@ -19,11 +19,10 @@ namespace TCSChelkovskiy.ViewModels
     {
         Views.MapPage This { get; set; }
         MainWindow MainWindow { get; set; }
-        public MapViewModel(Views.MapPage _this, MainWindow main)
+        
+        void InitMap()
         {
-            This = _this;
-            MainWindow = main;
-
+          
             Floors = KioskObjects.Floors;
             Categories = KioskObjects.Categories;
             Stations = KioskObjects.Stations;
@@ -32,12 +31,42 @@ namespace TCSChelkovskiy.ViewModels
             if (Floors.Count > 0)
             {
                 CurrentFloor = Floors.FirstOrDefault();
+
             }
             This.Map.SelectedStation = CurrentFloor.Stations.FirstOrDefault();
-
+        }
+        public MapViewModel(Views.MapPage _this, MainWindow main)
+        {
+            This = _this;
+            MainWindow = main;
+            InitMap();
 
         }
+        public MapViewModel(Views.MapPage _this, MainWindow main,ShopModel selectedShop)
+        {
+            bool isShopFound = false;
 
+            This = _this;
+            MainWindow = main;
+            InitMap();
+            CurrentShop = selectedShop;
+            foreach (var floor in Floors)
+            {
+                foreach (var area in floor.Areas)
+                {
+                    if (selectedShop.ID == area.Id)
+                    {
+                        CurrentFloorShop = area;
+                        CurrentFloor = floor;
+                        isShopFound = true;
+                        This.Map.Navigate(CurrentFloorShop.Id);
+                        break;
+                    }
+                }
+
+                if (isShopFound) { break; }
+            }
+        }
 
         #region Свойства карты и навигации
         private Floor currentFloor;
@@ -212,12 +241,10 @@ namespace TCSChelkovskiy.ViewModels
                 return navigateTo ??
                     (navigateTo = new RelayCommand(obj =>
                     {
-                        var area = Floors[0].Areas[0];
-                        This.Map.Navigate(area.Id);
-                            //if (obj != null)
-                            //{
-                            //    This.Map.Navigate(Convert.ToInt32(obj));
-                            //}
+                        if (CurrentFloorShop != null)
+                        {
+                            This.Map.Navigate(CurrentFloorShop.Id);
+                        }
                     }));
             }
         }

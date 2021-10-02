@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TCEvropeyskiy.ViewModels;
+using TCSchelkovskiyAPI.Models;
 
 namespace TCSChelkovskiy.Views
 {
@@ -27,7 +29,7 @@ namespace TCSChelkovskiy.Views
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            ((MainWindowViewModel)this.DataContext).GoShopPage.Execute(null);
         }
     }
 }

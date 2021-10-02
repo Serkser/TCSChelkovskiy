@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TCEvropeyskiy;
+using TCSchelkovskiyAPI.Models;
 
 namespace TCSChelkovskiy.Views
 {
@@ -28,6 +29,11 @@ namespace TCSChelkovskiy.Views
             DataContext = new ViewModels.MapViewModel(this,main);
          
            
+        }
+        public MapPage(MainWindow main,ShopModel shop)
+        {
+            InitializeComponent();
+            DataContext = new ViewModels.MapViewModel(this, main,shop);
         }
 
         private void ss(Area obj)

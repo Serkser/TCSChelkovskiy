@@ -24,5 +24,7 @@ namespace TCSChelkovskiy.Views
         {
             InitializeComponent();
         }
+
+        
     }
 }

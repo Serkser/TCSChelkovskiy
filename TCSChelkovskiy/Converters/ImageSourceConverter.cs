@@ -15,7 +15,7 @@ namespace TCSChelkovskiy.Converters
             string val = (string)value;
             string[] filenameParts = val.Split('/','\\');
             var bitmap = Services.ImageDownloader.DownloadImage(val, filenameParts[filenameParts.Length-1]);
-            return Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap);
+            return Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap, System.IO.Path.Combine(Environment.CurrentDirectory, filenameParts[filenameParts.Length - 1]));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

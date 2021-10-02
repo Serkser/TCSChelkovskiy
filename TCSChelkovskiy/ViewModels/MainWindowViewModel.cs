@@ -13,6 +13,11 @@ using System.Collections.ObjectModel;
 using TCSchelkovskiyAPI.Models;
 using TCSChelkovskiy.Memory;
 using NavigationMap.Core;
+using TCSChelkovskiy.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Net.Mail;
+using System.Net;
+using System.Windows.Controls;
 
 namespace TCEvropeyskiy.ViewModels
 {
@@ -27,9 +32,15 @@ namespace TCEvropeyskiy.ViewModels
             Categories = KioskObjects.Categories;
             Stations = KioskObjects.Stations;
             Shops = KioskObjects.Shops;
+            ShopsByCategory = KioskObjects.Shops;
             Gallery = KioskObjects.Gallery;
+            Vacancies = KioskObjects.Vacancies;
+
             Contacts = KioskObjects.Contacts;
             AboutMall = KioskObjects.AboutMall;
+
+            FeedbackModel = new FeedbackModel();
+            SearchText = "Поиск";
              
         }
 
@@ -44,6 +55,7 @@ namespace TCEvropeyskiy.ViewModels
                 return tapSearch ??
                     (tapSearch = new RelayCommand(obj =>
                     {
+                        ShopsByCategory = Shops;
                         Search page = new Search();
                         page.DataContext = this;
                         This.frame.Navigate(page);
@@ -83,7 +95,19 @@ namespace TCEvropeyskiy.ViewModels
         #endregion
 
         #region Колллекции сущностей
-
+        private ObservableCollection<VacancyModel> vacancies;
+        public ObservableCollection<VacancyModel> Vacancies
+        {
+            get
+            {
+                return vacancies;
+            }
+            set
+            {
+                vacancies = value;
+                OnPropertyChanged("Vacancies");
+            }
+        }
         private ObservableCollection<CategoryModel> categories;
         public ObservableCollection<CategoryModel> Categories
         {
@@ -124,6 +148,21 @@ namespace TCEvropeyskiy.ViewModels
                 OnPropertyChanged("Shops");
             }
         }
+
+        //По умолчанию здесь находятся все магазины, свойства выборки по поиску или категории
+        private ObservableCollection<ShopModel> shopsByCategory;
+        public ObservableCollection<ShopModel> ShopsByCategory
+        {
+            get
+            {
+                return shopsByCategory;
+            }
+            set
+            {
+                shopsByCategory = value;
+                OnPropertyChanged("ShopsByCategory");
+            }
+        }
         private ObservableCollection<ShopGalleryModel> gallery;
         public ObservableCollection<ShopGalleryModel> Gallery
         {
@@ -139,6 +178,22 @@ namespace TCEvropeyskiy.ViewModels
         }
         #endregion
         #region Выбранные объекты
+
+        //Текст для поиска, отображается в кнопке поиск. По умолчанию - Поиск
+        private string searchText;
+        public string SearchText
+        {
+            get
+            {
+                return searchText;
+            }
+            set
+            {
+                searchText = value;
+                OnPropertyChanged("SearchText");
+            }
+        }
+
         private Floor currentFloor;
         public Floor CurrentFloor
         {
@@ -216,6 +271,7 @@ namespace TCEvropeyskiy.ViewModels
                 return goBack ??
                     (goBack = new RelayCommand(obj =>
                     {
+                        FeedbackModel.MakeDefaultValues();
                         if (This.frame.CanGoBack)
                         {                          
                             This.frame.GoBack();
@@ -236,6 +292,7 @@ namespace TCEvropeyskiy.ViewModels
                 return goShops ??
                     (goShops = new RelayCommand(obj =>
                     {
+                        ShopsByCategory = Shops;
                         This.frame.Navigate(new ShopsView() { DataContext = this });
                     }));
             }
@@ -345,6 +402,110 @@ namespace TCEvropeyskiy.ViewModels
                     }));
             }
         }
+        #endregion
+        #region Навигация к объектам из ListView
+        private RelayCommand goShopPage;
+        public RelayCommand GoShopPage
+        {
+            get
+            {
+                return goShopPage ??
+                    (goShopPage = new RelayCommand(obj =>
+                    {
+                        if (CurrentShop != null)
+                        {
+                            This.frame.Navigate(new ShopPage() { DataContext = this });
+                        }                    
+                    }));
+            }
+        }
+        private RelayCommand goShopsByCategory;
+        public RelayCommand GoShopsByCategory
+        {
+            get
+            {
+                return goShopsByCategory ??
+                    (goShopsByCategory = new RelayCommand(obj =>
+                    {
+                        if (CurrentCategory != null)
+                        {
+                            ShopsByCategory = new ObservableCollection<ShopModel>(Shops.Where(o => o.Category.ID == CurrentCategory.ID).ToList());
+                            This.frame.Navigate(new ShopsView() { DataContext = this });
+                        }
+                    }));
+            }
+        }
+        private RelayCommand goMapShopRoute;
+        public RelayCommand GoMapShopRoute
+        {
+            get
+            {
+                return goMapShopRoute ??
+                    (goMapShopRoute = new RelayCommand(obj =>
+                    {
+                        if (CurrentShop != null)
+                        {
+                            This.frame.Navigate(new MapPage(This, CurrentShop));
+                        }
+                    }));
+            }
+        }
+        #endregion
+
+        #region Обратная связь
+        private FeedbackModel feedbackModel;
+        public FeedbackModel FeedbackModel
+        {
+            get
+            {
+                return feedbackModel;
+            }
+            set
+            {
+                feedbackModel = value;
+                OnPropertyChanged("FeedbackModel");
+            }
+        }
+
+        private RelayCommand sendFeedback;
+        public RelayCommand SendFeedback
+        {
+            get
+            {
+                return sendFeedback ??
+                    (sendFeedback = new RelayCommand(obj =>
+                    {
+                        FeedbackModel.ValidationErrors = new List<string>();
+                        var results = new List<System.ComponentModel.DataAnnotations.ValidationResult>();
+                        var context = new ValidationContext(FeedbackModel);
+                        if (!Validator.TryValidateObject(FeedbackModel, context, results, true))
+                        {                           
+                            foreach (var error in results)
+                            {
+                                FeedbackModel.ValidationErrors.Add(error.ErrorMessage);
+                            }
+                            FeedbackModel.FirstValidationError = FeedbackModel.ValidationErrors.FirstOrDefault();
+                        }
+                        else
+                        {
+                            FeedbackModel.FirstValidationError = string.Empty;
+
+                            MailAddress from = new MailAddress("", FeedbackModel.EmailOrPhone);                       
+                            MailAddress to = new MailAddress("");
+                            MailMessage message = new MailMessage(from, to);
+                            message.Subject = FeedbackModel.Topic;
+                            message.Body =FeedbackModel.Text;
+                            SmtpClient smtp = new SmtpClient("", 587);
+                            // логин и пароль
+                            smtp.Credentials = new NetworkCredential("", "");
+                            smtp.EnableSsl = true;
+                            smtp.Send(message);
+                        }
+                       
+                    }));
+            }
+        }
+
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
