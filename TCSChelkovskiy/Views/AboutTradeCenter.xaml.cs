@@ -35,7 +35,7 @@ namespace TCSChelkovskiy.Views
             List<BitmapImage> bitmaps = new List<BitmapImage>(20);
             foreach (var i in images)
             {
-                var bitmap = Services.ImageDownloader.DownloadImage($"{url}{prefix}{i}", i);
+                var bitmap = Services.ImageDownloader.DownloadImage($"{prefix}{i}", i);
                 var bitmapImage = Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap, System.IO.Path.Combine(Environment.CurrentDirectory, i));
                 bitmaps.Add(bitmapImage);
             }

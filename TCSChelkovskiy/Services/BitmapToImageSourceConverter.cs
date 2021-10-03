@@ -39,9 +39,6 @@ namespace TCSChelkovskiy.Services
             }
         }
 
-        internal static ImageSource BitmapToImageSource(Bitmap bitmap, object p)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

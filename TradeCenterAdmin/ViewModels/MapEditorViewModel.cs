@@ -31,7 +31,7 @@ namespace TradeCenterAdmin.ViewModels
             if (Floors.Count > 0)
             {
                 SelectedFloor = Floors.FirstOrDefault();
-                LoadFloorObjects();
+
                
             }
             MakeStartZoom();
@@ -40,21 +40,29 @@ namespace TradeCenterAdmin.ViewModels
         public void LoadFloorObjects()
         {
             //очистка старых элементов
-            for (int i=0; i< This.canvasMap.Children.Count;i++)
+            for (int a = 0; a < 5; a++)
             {
-                UIElement obj = This.canvasMap.Children[i];
-                if (obj is Image)
+                for (int i = 0; i < This.canvasMap.Children.Count; i++)
                 {
-                    if (((Image)obj).Name == "img")
+                    UIElement obj = This.canvasMap.Children[i];
+                    if (obj is Image)
                     {
-                        continue;
+                        if (((Image)obj).Name == "img")
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            This.canvasMap.Children.Remove(obj);
+                        }
+                    }
+                    else
+                    {
+                        This.canvasMap.Children.Remove(obj);
                     }
                 }
-                else
-                {
-                    This.canvasMap.Children.Remove(obj);
-                }
             }
+        
 
             foreach (var obj in SelectedFloor.Stations)
             {
@@ -75,17 +83,28 @@ namespace TradeCenterAdmin.ViewModels
                         break;
                 }
             }
-            //Рисуем области магазинов и их пути
+            //Рисуем области магазинов
             foreach (var obj in SelectedFloor.Areas)
             {
                 This.DrawAreaPerimeter(obj);
-                if (obj.Ways.Count > 0)
+             
+            }
+            //Рисуем пути магазинов
+            foreach (var floor in Floors)
+            {
+                foreach (var area in floor.Areas)
                 {
-                    for (int i= 0;i< obj.Ways.Count; i++)
-                    {
-                        var way = obj.Ways[i];
-                        This.DrawWays(way);
+                    //foreach (var currentFloorFrea in SelectedFloor.Areas)
+                    //{
+                        foreach (var way in area.Ways)
+                        {
+                            if (way.WayPoints.Where(o => o.FloorId == SelectedFloor.Id).FirstOrDefault() != null)
+                            {
+                                This.DrawWays(area.Ways[0], SelectedFloor.Id);
+                            }
                     }
+                       
+                    //}
                 }
             }
         }
@@ -141,8 +160,10 @@ namespace TradeCenterAdmin.ViewModels
                 selectedFloor = value;
                 if (value != null)
                 {
+                    LoadFloorObjects();
                     Bitmap img = (Bitmap)System.Drawing.Image.FromFile(selectedFloor.Image);
                     CurrentFloorImage = Services.BitmapToImageSourceConverter.BitmapToImageSource(img);
+                 
                 }
                 OnPropertyChanged("SelectedFloor");
             }

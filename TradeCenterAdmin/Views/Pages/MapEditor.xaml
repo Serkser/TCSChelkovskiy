@@ -24,13 +24,13 @@
                     <Image x:Name="img" MouseDown="click" Stretch="Uniform"  Source="{Binding CurrentFloorImage,Mode=TwoWay}" Width="9000" Height="9000" Canvas.Left="0" Canvas.Top="0">
 
                     </Image>
-            
+
 
                 </Canvas>
             </ScrollViewer>
-          
+
         </Viewbox>
-        <Expander Header="Этажи" Height="100" Width="160" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="828,90,0,0" >
+        <Expander Header="Этажи" Height="100" Width="160" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="778,90,0,0" >
             <Grid Background="#FFE5E5E5">
                 <ComboBox ItemsSource="{Binding Floors, Mode=TwoWay}" SelectedItem="{Binding SelectedFloor, Mode=TwoWay}" 
                                 HorizontalAlignment="Left" Margin="5,20,0,0" VerticalAlignment="Top" Width="148">
@@ -45,9 +45,9 @@
             </Grid>
         </Expander>
 
-        <Button Command="{Binding ZoomOut}" Content="-"  Width="70" Height="46" Margin="755,488,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Button Command="{Binding ZoomIn}" Content="+" Width="70" Height="46" Margin="755,539,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Expander Header="Инструменты" Height="329" Width="160" Margin="828,195,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Button Command="{Binding ZoomOut}" Content="-"  Width="70" Height="46" Margin="685,424,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Command="{Binding ZoomIn}" Content="+" Width="70" Height="46" Margin="685,475,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Expander Header="Инструменты" Height="329" Width="160" Margin="778,195,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Grid Background="#FFE5E5E5">
                 <Button Command="{Binding UseCursor}"  Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
                 <TextBlock HorizontalAlignment="Left" Margin="10,61,0,0" TextWrapping="Wrap" Text="Курсор" VerticalAlignment="Top"/>
@@ -66,8 +66,8 @@
 
             </Grid>
         </Expander>
-        <Button Command="{Binding SaveChanges}" Content="Сохранить изменения"  Width="160" Height="46" Margin="828,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBlock x:Name="hints" Text="Подсказки" TextAlignment="Center" TextWrapping="Wrap" Margin="310,475,354.2,91"/>
+        <Button Command="{Binding SaveChanges}" Content="Сохранить изменения"  Width="160" Height="46" Margin="778,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBlock x:Name="hints" Text="Подсказки" TextAlignment="Center" TextWrapping="Wrap" Margin="285,511,379.2,106"/>
 
 
 
