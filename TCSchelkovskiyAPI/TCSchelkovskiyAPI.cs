@@ -123,16 +123,19 @@ namespace TCSchelkovskiyAPI
                             //    Shops = null
                             //},
                         };
-                        //List<PhotoModel> shopPhotos = new List<PhotoModel>();
-                        //foreach (var photo in shop.images)
-                        //{
-                        //    PhotoModel shopPhoto = new PhotoModel
-                        //    {
-                        //        Image = photo.image.ToString(),
-                        //        ImageURI = photo.imageUri.ToString(),
-                        //    };
-                        //}
-                        //shopModel.Photos = shopPhotos;
+                        List<PhotoModel> shopPhotos = new List<PhotoModel>();
+                        if (shop.images != null)
+                        {
+                            foreach (var photo in shop.images)
+                            {
+                                PhotoModel shopPhoto = new PhotoModel
+                                {
+                                    Image = photo.image.ToString(),
+                                    ImageURI = photo.imageUri.ToString(),
+                                };
+                            }
+                        }                      
+                        shopModel.Photos = shopPhotos;
                         shopModels.Add(shopModel);
                     }
                     categories.Add(category);

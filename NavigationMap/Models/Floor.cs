@@ -48,6 +48,17 @@ namespace NavigationMap.Models
                 OnPropertyChanged();
             }
         }
+        private string _floorNumber;
+
+        public string FloorNumber
+        {
+            get => _floorNumber;
+            set
+            {
+                _floorNumber = value;
+                OnPropertyChanged();
+            }
+        }
 
         private string _image;
 

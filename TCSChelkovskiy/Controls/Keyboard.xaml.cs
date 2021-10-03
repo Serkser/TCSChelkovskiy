@@ -20,9 +20,17 @@ namespace TCSChelkovskiy.Controls
     /// </summary>
     public partial class Keyboard : UserControl
     {
+        enum CustomKeyboardMode
+        {
+            Russian = 1,
+            English = 2,
+            Digits = 3
+        }
+
         public Keyboard()
         {
             InitializeComponent();
+            tabs.SelectedIndex = 0;
         }
 
         public static readonly DependencyProperty CurrentKeyProperty = DependencyProperty.Register("CurrentKey", typeof(string), typeof(CategoryItemTemplate));
@@ -38,8 +46,10 @@ namespace TCSChelkovskiy.Controls
             set { SetValue(CurrentTextProperty, value); }
         }
 
+        
         private bool isUppercase = false;
         private bool isInitiliazed = false;
+        private CustomKeyboardMode KeyboardMode = CustomKeyboardMode.English;
         private void Click(object sender, RoutedEventArgs e)
         {
             if (!IsInitialized) { CurrentText = ""; isInitiliazed = true; }
@@ -49,6 +59,25 @@ namespace TCSChelkovskiy.Controls
             {
                 case "Lang":
                     CurrentKey = "Lang";
+                    if (KeyboardMode == CustomKeyboardMode.English)
+                    {
+                        KeyboardMode = CustomKeyboardMode.Russian;
+                        tabs.SelectedIndex = 1; 
+                    }
+                    else
+                    {
+                        KeyboardMode = CustomKeyboardMode.English;
+                        tabs.SelectedIndex = 0;
+                    }
+                    break;
+                case "123":
+                    KeyboardMode = CustomKeyboardMode.Digits;
+                    CurrentKey = "123";
+                    tabs.SelectedIndex = 2;
+                    break;
+                case "АБВ":
+                    KeyboardMode = CustomKeyboardMode.English;
+                    tabs.SelectedIndex = 1;
                     break;
                 case "Backspace":
                     CurrentKey = "Backspace";
@@ -56,6 +85,15 @@ namespace TCSChelkovskiy.Controls
                     {
                         CurrentText = CurrentText.Remove(CurrentText.Length - 1);
                     }                
+                    break;
+                case "Enter":
+                    CurrentKey = "Enter";
+                    break;
+                case "ArrowLeft":
+                    CurrentKey = "ArrowLeft";
+                    break;
+                case "ArrowRight":
+                    CurrentKey = "ArrowRight";
                     break;
                 case "Shift":
                     CurrentKey = "Shift";
@@ -83,7 +121,10 @@ namespace TCSChelkovskiy.Controls
 
         public event EventHandler ButtonPressed;
 
-       
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
     public class KeyboardEventArgs : EventArgs
     {

@@ -31,7 +31,7 @@ namespace TradeCenterAdmin.Views.Pages
 
 
         Area currentArea = null;
-        Way currentWay = null;
+        Way currentWay = null; Floor firstFloor = null; Floor currentFloor = null;
 
 
         public void DrawKiosk(Station station,Point coords= default,bool createNew = true)
@@ -72,10 +72,12 @@ namespace TradeCenterAdmin.Views.Pages
             endRouteBtn.Click += (sender1, e1) => {
                 if (currentWay != null)
                 {
-                    ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Areas.Where(o => o.Id == currentArea.Id).FirstOrDefault()
+                    ((ViewModels.MapEditorViewModel)this.DataContext).Floors.Where(o => o.Id == firstFloor.Id).FirstOrDefault()
+                    .Areas.Where(o => o.Id == currentArea.Id).FirstOrDefault()
                     .Ways.Where(o => o.Id == currentWay.Id).FirstOrDefault().StationId = station.Id;
                     currentWay = null;
                     currentArea = null;
+                    currentFloor = null;
                     hints.Text = "Маршрут успешно добавлен";
                 }
                 else
@@ -85,7 +87,44 @@ namespace TradeCenterAdmin.Views.Pages
             };
             kiosk.ContextMenu.Items.Add(endRouteBtn);
             #endregion
+            #region перетаскивание киоска
+            Point p = new Point();
+            bool canmove = false;
+            Point oldPosition = new Point();
+            kiosk.MouseDown += (o1, e1) =>
+            {
+                if (((ViewModels.MapEditorViewModel)this.DataContext).MapEditorTool == Enums.MapEditorTool.Hand)
+                {
+                    Control c = o1 as Control;
+                    oldPosition = new Point();
+                    oldPosition.X = c.Margin.Left;
+                    oldPosition.Y = c.Margin.Top;
+                    Mouse.Capture(c);
+                    p = Mouse.GetPosition(c);
+                    canmove = true;
+                }
+            };
+            kiosk.MouseUp += (o1, e1) =>
+            {
+                if (((ViewModels.MapEditorViewModel)this.DataContext).MapEditorTool == Enums.MapEditorTool.Hand)
+                {
+                    Mouse.Capture(null);
+                    canmove = false;
+                }
+            };
 
+            kiosk.MouseMove += (o1, e1) =>
+            {
+                if (((ViewModels.MapEditorViewModel)this.DataContext).MapEditorTool == Enums.MapEditorTool.Hand)
+                {
+                    if (canmove)
+                    {
+                        Control c = o1 as Control;
+                        c.Margin = new Thickness(e1.GetPosition(canvasMap).X - p.X, e1.GetPosition(canvasMap).Y - p.Y, 0, 0);
+                    }
+                }
+            };
+            #endregion
             canvasMap.Children.Add(kiosk);
             
 
@@ -108,6 +147,7 @@ namespace TradeCenterAdmin.Views.Pages
 
             entry.ContextMenu = new ContextMenu();
 
+            #region Удаление входа
             MenuItem deleteButton = new MenuItem
             {
                 Header = "Удалить",
@@ -119,7 +159,46 @@ namespace TradeCenterAdmin.Views.Pages
                 ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Remove(thisItem);
             };
             entry.ContextMenu.Items.Add(deleteButton);
+            #endregion
 
+            #region перетаскивание входа
+            Point p = new Point();
+            bool canmove = false;
+            Point oldPosition = new Point();
+            entry.MouseDown += (o1, e1) =>
+            {
+                if (((ViewModels.MapEditorViewModel)this.DataContext).MapEditorTool == Enums.MapEditorTool.Hand)
+                {
+                    Control c = o1 as Control;
+                    oldPosition = new Point();
+                    oldPosition.X = c.Margin.Left;
+                    oldPosition.Y = c.Margin.Top;
+                    Mouse.Capture(c);
+                    p = Mouse.GetPosition(c);
+                    canmove = true;
+                }
+            };
+            entry.MouseUp += (o1, e1) =>
+            {
+                if (((ViewModels.MapEditorViewModel)this.DataContext).MapEditorTool == Enums.MapEditorTool.Hand)
+                {
+                    Mouse.Capture(null);
+                    canmove = false;
+                }
+            };
+
+            entry.MouseMove += (o1, e1) =>
+            {
+                if (((ViewModels.MapEditorViewModel)this.DataContext).MapEditorTool == Enums.MapEditorTool.Hand)
+                {
+                    if (canmove)
+                    {
+                        Control c = o1 as Control;
+                        c.Margin = new Thickness(e1.GetPosition(canvasMap).X - p.X, e1.GetPosition(canvasMap).Y - p.Y, 0, 0);
+                    }
+                }
+            };
+            #endregion
             canvasMap.Children.Add(entry);
         }
         public void DrawStairs(Station station, Point coords = default, bool createNew = true)
@@ -139,6 +218,7 @@ namespace TradeCenterAdmin.Views.Pages
             entry.Uid = station.Id.ToString();
             entry.ContextMenu = new ContextMenu();
 
+            #region Удаление лестницы
             MenuItem deleteButton = new MenuItem
             {
                 Header = "Удалить",
@@ -150,11 +230,67 @@ namespace TradeCenterAdmin.Views.Pages
                 ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Remove(thisItem);
             };
             entry.ContextMenu.Items.Add(deleteButton);
+            #endregion
+            #region Переход на другой этаж при выделенном пути
+            MenuItem goToOtherFloor = new MenuItem
+            {
+                Header = "Перейти на другой этаж",
+            };
+            goToOtherFloor.Click += (sender1, e1) => {
+                Views.Windows.SelectNextFloorForWay f = new Windows.SelectNextFloorForWay();
+                f.DataContext = this.DataContext;
+                if (f.ShowDialog() == true)
+                {
+                    currentFloor = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor;
+                }
+
+            };
+            entry.ContextMenu.Items.Add(goToOtherFloor);
+            #endregion
+            #region перетаскивание входа
+            Point p = new Point();
+            bool canmove = false;
+            Point oldPosition = new Point();
+            entry.MouseDown += (o1, e1) =>
+            {
+                if (((ViewModels.MapEditorViewModel)this.DataContext).MapEditorTool == Enums.MapEditorTool.Hand)
+                {
+                    Control c = o1 as Control;
+                    oldPosition = new Point();
+                    oldPosition.X = c.Margin.Left;
+                    oldPosition.Y = c.Margin.Top;
+                    Mouse.Capture(c);
+                    p = Mouse.GetPosition(c);
+                    canmove = true;
+                }
+            };
+            entry.MouseUp += (o1, e1) =>
+            {
+                if (((ViewModels.MapEditorViewModel)this.DataContext).MapEditorTool == Enums.MapEditorTool.Hand)
+                {
+                    Mouse.Capture(null);
+                    canmove = false;
+                }
+            };
+
+            entry.MouseMove += (o1, e1) =>
+            {
+                if (((ViewModels.MapEditorViewModel)this.DataContext).MapEditorTool == Enums.MapEditorTool.Hand)
+                {
+                    if (canmove)
+                    {
+                        Control c = o1 as Control;
+                        c.Margin = new Thickness(e1.GetPosition(canvasMap).X - p.X, e1.GetPosition(canvasMap).Y - p.Y, 0, 0);
+                    }
+                }
+            };
+            #endregion
+
 
             canvasMap.Children.Add(entry);
         }
 
-        public void DrawWays(Way way)
+        public void DrawWays(Way way,int floorID)
         {
             #region Убираем старый путь
             for (int i = 0; i < canvasMap.Children.Count; i++)
@@ -176,9 +312,27 @@ namespace TradeCenterAdmin.Views.Pages
 
                 PathFigure figure = new PathFigure()
                 {
-                    StartPoint = new Point(way.WayPoints[0].X, way.WayPoints[0].Y),
+                  
                     IsClosed = false
                 };
+
+                if (way.WayPoints[0].FloorId == floorID)
+                {
+                    figure.StartPoint = new Point(way.WayPoints[0].X, way.WayPoints[0].Y);
+                }
+                else
+                {
+                    //Получаем последнюю точку предыдущего этажа через 1-ю точку следующего этажа
+                    var firstPointOfNextFloot = way.WayPoints.Where(o => o.FloorId == floorID).FirstOrDefault();
+                    int firstPointOfNextFlootIndex = way.WayPoints.IndexOf(firstPointOfNextFloot);
+
+                    figure.StartPoint = new Point(way.WayPoints[firstPointOfNextFlootIndex-1].X, way.WayPoints[firstPointOfNextFlootIndex-1].Y);
+                }
+              
+
+
+
+
                 geometry.Figures.Add(figure);
                 Path perimeter = new Path
                 {
@@ -199,9 +353,10 @@ namespace TradeCenterAdmin.Views.Pages
 
                 if (way.PointCollection.Count > 1)
                 {
-                    for (int i = 0; i < way.PointCollection.Count; i++)
+                    var selectedFloorPoints2 = way.WayPoints.Where(o => o.FloorId == floorID).ToList();
+                    for (int i = 0; i < selectedFloorPoints2.Count; i++)
                     {
-                        figure.Segments.Add(new LineSegment() { Point = new Point(way.PointCollection[i].X, way.PointCollection[i].Y) });
+                        figure.Segments.Add(new LineSegment() { Point = new Point(selectedFloorPoints2[i].X, selectedFloorPoints2[i].Y) });
                     }
                 }
                 canvasMap.Children.Add(perimeter);
@@ -224,7 +379,8 @@ namespace TradeCenterAdmin.Views.Pages
             #endregion
             #region Делаем кнопки для изменения пути
             int counter = 1;
-            foreach (var point in way.WayPoints)
+            var selectedFloorPoints = way.WayPoints.Where(o => o.FloorId == floorID).ToList();
+            foreach (var point in selectedFloorPoints)
             {
                 string uid = $"{way.Id}button{counter}";
                 Button entry = new Button();
@@ -284,7 +440,7 @@ namespace TradeCenterAdmin.Views.Pages
                                   
                                 }
                             }
-                            DrawWays(way);  ///!!!!!!!!!!!!
+                            DrawWays(way,floorID);  ///!!!!!!!!!!!!
 
                             
                         }
@@ -306,7 +462,7 @@ namespace TradeCenterAdmin.Views.Pages
                         if (wayPoint.X == entry.Margin.Left && wayPoint.Y == entry.Margin.Top)
                         {
                             way.WayPoints.Remove(wayPoint);
-                            DrawWays(way);
+                            DrawWays(way,floorID);
                         }
                     }
 
@@ -407,7 +563,7 @@ namespace TradeCenterAdmin.Views.Pages
                     f.DataContext = this.DataContext;
                     if (f.ShowDialog() == true)
                     {
-                        area.Id = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.ID;
+                        area.Id = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.ID;                     
                         area.Name = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.Name;
                         area.Description = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.Description;
                         CreateText();
@@ -628,7 +784,7 @@ namespace TradeCenterAdmin.Views.Pages
                         }
                     };
                     ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Add(entry);
-                    DrawKiosk(entry, coordinatesClick, true);
+                    DrawEntry(entry, coordinatesClick, true);
                 }
                 //Создание лестниц
                 else if (((ViewModels.MapEditorViewModel)this.DataContext).MapEditorTool == Enums.MapEditorTool.Stairs)
@@ -694,6 +850,8 @@ namespace TradeCenterAdmin.Views.Pages
                             currentWay.Id = rnd.Next(Int32.MinValue, Int32.MaxValue);
                             ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Areas.Where(o => o.Id == currentArea.Id).FirstOrDefault()
                          .Ways.Add(currentWay);
+                            currentFloor = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor;
+                            firstFloor = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor;
                         }
 
                         Point coordinatesClick = e.GetPosition(canvasMap);
@@ -704,12 +862,16 @@ namespace TradeCenterAdmin.Views.Pages
                             Id = randomId,
                             X = coordinatesClick.X,
                             Y = coordinatesClick.Y,
+                            AreaId = currentArea.Id,
+                            FloorId = currentFloor.Id
                         };
                         currentWay.WayPoints.Add(wayPoint);
-                        ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Areas.Where(o => o.Id == currentArea.Id).FirstOrDefault()
+                        ((ViewModels.MapEditorViewModel)this.DataContext).Floors.Where(o => o.Id == firstFloor.Id).FirstOrDefault()
+                            .Areas.Where(o => o.Id == currentArea.Id).FirstOrDefault()
                                 .Ways.Where(o => o.Id == currentWay.Id).FirstOrDefault().WayPoints.Add(wayPoint);
 
-                        DrawWays(currentWay);
+                        DrawWays(currentWay, 
+                            ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Id);
                     }
                     else
                     {

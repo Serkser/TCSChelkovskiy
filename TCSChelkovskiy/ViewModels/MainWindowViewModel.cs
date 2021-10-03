@@ -258,6 +258,7 @@ namespace TCEvropeyskiy.ViewModels
                 return goHome ??
                     (goHome = new RelayCommand(obj =>
                     {
+                        FeedbackModel.MakeDefaultValues();
                         This.frame.Navigate(new MapPage(This));
                     }));
             }

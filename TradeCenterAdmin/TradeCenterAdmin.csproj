@@ -145,6 +145,9 @@
     <Compile Include="Views\Windows\Floors.xaml.cs">
       <DependentUpon>Floors.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Windows\SelectNextFloorForWay.xaml.cs">
+      <DependentUpon>SelectNextFloorForWay.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -230,6 +233,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Windows\Floors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\SelectNextFloorForWay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
