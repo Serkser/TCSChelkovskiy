@@ -563,7 +563,7 @@ namespace TradeCenterAdmin.Views.Pages
                     f.DataContext = this.DataContext;
                     if (f.ShowDialog() == true)
                     {
-                        area.Id = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.ID;
+                        area.Id = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.ID;                     
                         area.Name = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.Name;
                         area.Description = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.Description;
                         CreateText();

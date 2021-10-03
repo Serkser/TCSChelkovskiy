@@ -21,6 +21,8 @@
         <TextBlock HorizontalAlignment="Left" Margin="30,297,0,0" TextWrapping="Wrap" Text="Разрешение изображения должно быть 9000*9000px " VerticalAlignment="Top" Height="40" Width="217"/>
         <Button  Command="{Binding RemoveFloor}" Content="Удалить выбранный этаж" HorizontalAlignment="Left" Margin="380,227,0,0" VerticalAlignment="Top" Width="148"/>
         <Button  Command="{Binding OpenEditFloor}" Content="Изменить выбранный этаж" HorizontalAlignment="Left" Margin="206,228,0,0" VerticalAlignment="Top" Width="169"/>
+        <TextBlock HorizontalAlignment="Left" Margin="323,252,0,0" TextWrapping="Wrap" Text="Цифра этажа" VerticalAlignment="Top"/>
+        <TextBox  HorizontalAlignment="Left" Height="23" Margin="323,268,0,0" TextWrapping="Wrap" Text="{Binding NewFloor.FloorNumber, Mode=TwoWay}" VerticalAlignment="Top" Width="37"/>
 
     </Grid>
 </Window>

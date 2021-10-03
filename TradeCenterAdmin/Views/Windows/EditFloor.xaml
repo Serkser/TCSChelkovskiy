@@ -16,6 +16,8 @@
         <Button Command="{Binding SelectMap}" Content="Обзор" HorizontalAlignment="Left" Margin="368,91,0,0" VerticalAlignment="Top" Width="75"/>
         <Button  Command="{Binding RemoveMap}" Content="Удалить" HorizontalAlignment="Left" Margin="448,91,0,0" VerticalAlignment="Top" Width="75"/>
         <TextBlock HorizontalAlignment="Left" Margin="18,87,0,0" TextWrapping="Wrap" Text="Разрешение изображения должно быть 9000*9000px " VerticalAlignment="Top" Height="40" Width="217"/>
+        <TextBlock HorizontalAlignment="Left" Margin="368,38,0,0" TextWrapping="Wrap" Text="Цифра этажа" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="368,59,0,0" TextWrapping="Wrap" Text="{Binding SelectedFloor.FloorNumber, Mode=TwoWay}" VerticalAlignment="Top" Width="40"/>
 
     </Grid>
 </Window>
