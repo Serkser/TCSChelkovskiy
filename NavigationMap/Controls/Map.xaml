@@ -149,7 +149,7 @@
                                             <Image
                                                 Focusable="True"
                                                 SnapsToDevicePixels="True"
-                                                Source="{Binding Image}"
+                                                Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=MapImageDisposable.Source}"
                                                 Stretch="Uniform">
                                                 <Image.CacheMode>
                                                     <BitmapCache EnableClearType="True" RenderAtScale="1" SnapsToDevicePixels="True"/>

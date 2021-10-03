@@ -16,6 +16,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using NavigationMap.Helpers;
 
 namespace NavigationMap.Controls
 {
@@ -28,6 +29,8 @@ namespace NavigationMap.Controls
         {
             InitializeComponent();
         }
+
+
 
         private const double ZOOM_MAX = 4.0;
 
@@ -312,12 +315,22 @@ namespace NavigationMap.Controls
             Map map = d as Map;
 
             map?.SelectedAreaToStationWays?.Clear();
+            map.MapImageDisposable = new DisposableImage((e.NewValue as Floor).Image);
         }
 
         public Floor SelectedFloor
         {
             get => (Floor)GetValue(SelectedFloorProperty);
             set => SetValue(SelectedFloorProperty, value);
+        }
+
+        public static readonly DependencyProperty MapImageDisposableProperty = DependencyProperty.Register(
+            "MapImageDisposable", typeof(DisposableImage), typeof(Map), new PropertyMetadata(default(DisposableImage)));
+
+        public DisposableImage MapImageDisposable
+        {
+            get => (DisposableImage) GetValue(MapImageDisposableProperty);
+            set => SetValue(MapImageDisposableProperty, value);
         }
 
         public static readonly DependencyProperty WayStrokeColorProperty = DependencyProperty.Register(
@@ -481,6 +494,7 @@ namespace NavigationMap.Controls
             ScenarioCommands.CollectionChanged += ScenarioCommandsOnCollectionChanged;
 
             _state.OnAreaSelected += _state_OnAreaSelected;
+            MapImageDisposable = new DisposableImage(SelectedFloor.Image);
         }
 
         private void Map_OnUnloaded(object sender, RoutedEventArgs e)
@@ -492,6 +506,8 @@ namespace NavigationMap.Controls
             ScenarioCommands.DisposeAndClear();
 
             _state = null;
+            MapImageDisposable?.Dispose();
+
         }
 
         private void ScenarioCommandsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

@@ -246,8 +246,8 @@ namespace TCSchelkovskiyAPI
                         {
                             IconURI = shop.category.ToString(),
                             ID = Convert.ToInt32(shop.category.id),
-                            Name = shop.name.ToString(),
-                            Icon = shop.icon.ToString(),
+                            Name = shop.category.name.ToString(),
+                            Icon = shop.category.icon.ToString(),
                             Shops = null
                         }
                     };

@@ -4,65 +4,204 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TCSChelkovskiy.Views"
-      xmlns:converters="clr-namespace:TCSChelkovskiy.Converters"
       mc:Ignorable="d" 
-      d:DesignHeight="830" d:DesignWidth="1440"
-      Title="ShopPage">
-    <Page.Resources>
-        <ResourceDictionary Source="../Resources/Converters.xaml"></ResourceDictionary>
-    </Page.Resources>
+      Height="776" Width="1440"
+      Title="ShopPage"
+      DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid Background="#E5E5E5">
-        <Border Background="White" CornerRadius="20" Margin="74,66,74,67">
+        <Border Background="White" CornerRadius="10" Margin="54,119,0,0"
+                Width="1336"
+                Height="619">
             <Grid Margin="0,0,0,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="69*"/>
-                    <ColumnDefinition Width="254*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button FontWeight="SemiBold" Command="{Binding GoMapShopRoute}" Style="{StaticResource ButtonBlue}" Content="КАК ПРОЙТИ?" HorizontalAlignment="Left"
-                FontSize="30" Margin="723,52,0,0" VerticalAlignment="Top" Width="260" Height="100" RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
-                <Button FontWeight="SemiBold" Command="{Binding GoHome}" Style="{StaticResource ButtonBordered}" Content="ЗАКРЫТЬ" HorizontalAlignment="Left"
-                FontSize="30"  Margin="723,174,0,0" VerticalAlignment="Top" Width="260" Height="100" RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
-                <Image Width="25" Height="25" Margin="52,256,939,416" Source="/Views/PhoneIcon.png" Grid.Column="1" Stretch="Fill"></Image>
-                <Border Width="140" Height="140"  CornerRadius="15" BorderThickness="1"  BorderBrush="Black" Background="Transparent" Margin="63,45,73,512">
-                    <Image Source="{Binding CurrentShop.IconURI, Converter={StaticResource ImageSourceConverter}}" HorizontalAlignment="Left" Height="140" Margin="-3,-3,0,0" VerticalAlignment="Top" Width="140"/>
-                </Border>
-                <TextBlock HorizontalAlignment="Left" Margin="55,55,0,0" Text="{Binding CurrentShop.Name, Mode=TwoWay}" FontFamily="Manrope" TextAlignment="Left" 
-                    FontSize="35px" Foreground="Black" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" Width="641" Height="47" Grid.Column="1"/>
-                <TextBlock HorizontalAlignment="Left" Margin="55,101,0,0" Text="{Binding CurrentShop.Category.Name, Mode=TwoWay}" FontFamily="Manrope" TextAlignment="Left" 
-                    FontSize="14px" Foreground="Black" FontWeight="Regular" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" Height="18" Grid.Column="1"/>
-                <TextBlock HorizontalAlignment="Left" Margin="55,124,0,0" Text="{Binding CurrentShop.Description, Mode=TwoWay}" FontFamily="Manrope"
-                           TextAlignment="Left" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="True"
-                    FontSize="18px" Foreground="Black" FontWeight="Regular" TextWrapping="Wrap" VerticalAlignment="Top" Width="641" Height="101" Grid.Column="1"/>
-                <Image Width="25" Height="25" Margin="52,324,0,0" Source="/Views/ClockIcon.png" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Fill"/>
-                <TextBlock HorizontalAlignment="Left" Margin="88,294,0,0" Text="КОСМЕТИКА" FontFamily="Manrope" TextAlignment="Left" 
-                    FontSize="16px" Foreground="Black" FontWeight="Medium" TextWrapping="Wrap" VerticalAlignment="Top" Width="292" Height="18" Grid.Column="1"/>
-                <TextBlock HorizontalAlignment="Left" Margin="88,330,0,0" Text="КОСМЕТИКА" FontFamily="Manrope" TextAlignment="Left" 
-                    FontSize="16px" Foreground="Black" FontWeight="Medium" TextWrapping="Wrap" VerticalAlignment="Top" Width="292" Height="18" Grid.Column="1"/>
-                <ListView Margin="49,371,0,0" Padding="10,0,0,0" Height="297" ItemsSource="{Binding CurrentShop.Photos,Mode=TwoWay}"
-                          Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="1210">
-                    <ListView.ItemTemplate>
+
+                <StackPanel  Grid.Column="1"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Top"
+                             Margin="0,40,40,0">
+                <Button FontWeight="SemiBold" 
+                        Command="{Binding GoMapShopRoute}" 
+                        Style="{StaticResource ButtonBlue}"
+                        Content="КАК ПРОЙТИ?" 
+                        HorizontalAlignment="Left"
+                        FontSize="30" 
+                        VerticalAlignment="Top" 
+                        Width="260" 
+                        Height="100" 
+                        RenderTransformOrigin="0.5,0.5" 
+                        />
+
+                <Button FontWeight="SemiBold" 
+                        Command="BrowseBack" 
+                        Style="{StaticResource ButtonBordered}" 
+                        Content="ЗАКРЫТЬ" 
+                        HorizontalAlignment="Left"
+                        FontSize="30"  
+                        VerticalAlignment="Top" 
+                        Width="260" 
+                        Height="100" 
+                        RenderTransformOrigin="0.5,0.5" 
+                        Margin="0,20,0,0"/>
+
+                </StackPanel>
+
+                <StackPanel Grid.Column="0"
+                            HorizontalAlignment="Left"
+                           Margin="40,38,0,0" 
+                            VerticalAlignment="Top">
+
+                    <Image Source="{Binding Logo.Source}" 
+                           HorizontalAlignment="Left" 
+                           Height="140" 
+                           VerticalAlignment="Top" 
+                           Width="140"/>
+
+                    <TextBlock HorizontalAlignment="Left"
+                               FontFamily="{StaticResource Montserrat}" 
+                               TextAlignment="Left" 
+                               Margin="0,16,0,0"
+                               FontSize="18px" 
+                               Foreground="Black" 
+                               FontWeight="Regular" 
+                               TextWrapping="Wrap" 
+                               VerticalAlignment="Top" 
+                               >
+                        <Run Text="{Binding Model.Floor.Floor}"/>
+                        <Run Text="этаж" />
+                    </TextBlock>
+                </StackPanel>
+
+                <ScrollViewer Height="142"
+                           VerticalAlignment="Top" 
+                              HorizontalAlignment="Left" 
+                           Margin="157,37,0,0"
+                           Width="657"
+                           Grid.Column="1"
+                           PanningMode="VerticalOnly"
+                           VerticalScrollBarVisibility="Hidden"
+                           HorizontalScrollBarVisibility="Hidden">
+                    <TextBlock 
+                        FontFamily="{StaticResource Montserrat}" 
+                        TextAlignment="Left" 
+                        MaxWidth="655"
+                        Foreground="Black" 
+                        FontWeight="SemiBold" 
+                        TextWrapping="Wrap" 
+                        VerticalAlignment="Top">
+                        <Run Text="{Binding Model.Name}" 
+                             FontWeight="SemiBold"
+                             FontSize="36"/><LineBreak/>
+                        <Run Text="{Binding Model.Category.Name}"
+                             FontWeight="Regular"
+                             FontSize="14"/><LineBreak/><LineBreak/>
+                        <Run Text="{Binding Model.Description}"
+                             FontWeight="Regular"
+                             FontSize="18"/>
+                    </TextBlock>
+                </ScrollViewer>
+
+
+              <Grid Grid.Column="1" Width="274"
+                    Height="91"
+                    HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Margin="157, 221">
+                  <Grid.Resources>
+                      <Style TargetType="TextBlock">
+                          <Setter Property="FontFamily" Value="{StaticResource Montserrat}"/>
+                          <Setter Property="FontWeight" Value="Medium"/>
+                          <Setter Property="FontSize" Value="16"/>
+                      </Style>
+                  </Grid.Resources>
+                  <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!--<RowDefinition/>-->
+                      <RowDefinition Height="Auto"/>
+                  </Grid.RowDefinitions>
+                  <StackPanel Orientation="Horizontal">
+                      <StackPanel.Style>
+                          <Style TargetType="StackPanel">
+                              <Setter Property="Visibility" Value="Visible"/>
+                              <Style.Triggers>
+                                  <DataTrigger Binding="{Binding Model.Phone.Length}" Value="0">
+                                      <Setter Property="Visibility" Value="Collapsed"/>
+                                  </DataTrigger>
+                              </Style.Triggers>
+                          </Style>
+                      </StackPanel.Style>
+                      <Image Source="../Images/Shared/PhoneIcon.png"
+                             Width="21"/>
+                      <TextBlock Text="{Binding Model.Phone}"
+                                 Margin="44.93,0,0,0"/>
+                  </StackPanel>
+
+                  <!--<StackPanel Orientation="Horizontal"
+                              Grid.Row="1"
+                              Margin="0,16,0,0">
+                      <Image Source="../Images/Shared/SiteIcon.png"
+                             />
+                      <TextBlock Text="{Binding Model.}"
+                                 Margin="44.93,0,0,0"/>
+                  </StackPanel>-->
+
+                  <!--<StackPanel Orientation="Horizontal"
+                              Grid.Row="1"
+                              Margin="0,16,0,0">
+                      <Image Source="../Images/Shared/ClockIcon.png"
+                             Width="21"/>
+                        <TextBlock Text="{Binding Model.}"
+                                 Margin="44.93,0,0,0"/>
+                    </StackPanel>-->
+                </Grid>
+
+                <ItemsControl 
+                    Height="180" 
+                    Grid.Column="0"
+                    ItemsSource="{Binding ImagesShop}"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Left"
+                    Margin="40,0,0,40"
+                    VerticalAlignment="Bottom" 
+                    Width="1210">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <WrapPanel Orientation="Vertical">
-                                <Image  Width="250" Height="250" 
-                                    Source="{Binding ImageURI, Converter={StaticResource ImageSourceConverter}}"></Image>
-                            </WrapPanel>
+                                <Image  Width="270" 
+                                    Source="{Binding Source}"
+                                    Margin="0,0,20,0"/>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <TextBlock HorizontalAlignment="Left" Margin="88,260,0,0" Text="{Binding CurrentShop.Phone, Mode=TwoWay}" FontFamily="Manrope" TextAlignment="Left" 
-                    FontSize="16px" Foreground="Black" FontWeight="Medium" TextWrapping="Wrap" VerticalAlignment="Top" Width="292" Height="18" Grid.Column="1"/>
-                <TextBlock HorizontalAlignment="Left" Margin="78,192,0,0" Text="этаж" FontFamily="Manrope" TextAlignment="Left" 
-                    FontSize="18px" Foreground="Black" FontWeight="Regular" TextWrapping="Wrap" VerticalAlignment="Top" Width="152" Height="80"/>
-                <TextBlock HorizontalAlignment="Left" Margin="63,192,0,0" Text="{Binding CurrentShop.Floor.Floor, Mode=TwoWay}" FontFamily="Manrope" TextAlignment="Left" 
-                    FontSize="18px" Foreground="Black" FontWeight="Regular" TextWrapping="NoWrap" VerticalAlignment="Top" Width="14" Height="80"/>
-                <Image Width="25" Height="25" Margin="52,291,939,381" Source="/Views/SiteIcon.png" Grid.Column="1" Stretch="Fill"/>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+           
             </Grid>
         </Border>
-        <Button Style="{StaticResource HeaderSearchButton}"  Command="{Binding GoBack}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
-            HorizontalAlignment="Left" Margin="62,2,0,0" VerticalAlignment="Top" Height="64" Width="345" >
+        <Button Style="{StaticResource HeaderSearchButton}"  
+                Command="BrowseBack" 
+                Foreground="Black" 
+                Background="Transparent" 
+                FontSize="20" 
+                HorizontalContentAlignment="Left"
+                HorizontalAlignment="Left" 
+                Margin="56,49,0,0" 
+                VerticalAlignment="Top" >
             <StackPanel Orientation="Horizontal">
-                <Image Width="40" Height="40" Source="/Views/ToHomeButton.png"/>
-                <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="Назад" FontWeight="SemiBold" Height="46"/>
+                <Image Width="40" 
+                       Height="40" 
+                       Source="/Images/Navigation/ToHomeButton.png"/>
+                <TextBlock FontSize="30" 
+                           Margin="40,0,0,0"
+                           TextAlignment="Left"
+                           FontFamily="{StaticResource Montserrat}"
+                           Text="НАЗАД"
+                           VerticalAlignment="Center"
+                           FontWeight="SemiBold"
+                           />
             </StackPanel>
         </Button>
 

@@ -5,6 +5,5 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary Source="Resources/Styles.xaml"></ResourceDictionary>
-     
     </Application.Resources>
 </Application>

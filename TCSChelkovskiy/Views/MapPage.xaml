@@ -11,7 +11,8 @@
       Title="MapPage">
 
     <Grid>
-        <Controls:Map   x:Name="Map" Margin="0,0,-0,-0" Floors="{Binding Floors,Mode=TwoWay}" OnAreaSelected="ss" SelectedFloor="{Binding CurrentFloor,Mode=TwoWay}"
+        <Controls:Map   x:Name="Map" Margin="0,0,-0,-0" 
+                        Floors="{Binding Floors,Mode=TwoWay}" OnAreaSelected="Map_OnOnAreaSelected" SelectedFloor="{Binding CurrentFloor,Mode=TwoWay}"
                           WayStrokeColor="#EC84D3">
            
 
@@ -19,23 +20,23 @@
         <Button Command="{Binding NavigateTo}"   Style="{StaticResource FooterButton}" Content=""
             FontSize="20"  Margin="1296,603,24,0" VerticalAlignment="Top" Width="120" Height="120">
             <Button.Background>
-                <ImageBrush ImageSource="/NavigateButton.png"/>
+                <ImageBrush ImageSource="/Images/ForViewImages/NavigateButton.png"/>
             </Button.Background>
 
         </Button>
         <Button  Command="{Binding ZoomOut}" Panel.ZIndex="1"  Style="{StaticResource FooterButton}" Content=""
             FontSize="20"  Margin="1296,436,24,0" VerticalAlignment="Top" Width="120" Height="120">
             <Button.Background>
-                <ImageBrush ImageSource="/ZoomOut.png"/>
+                <ImageBrush ImageSource="/Images/ForViewImages/ZoomOut.png"/>
             </Button.Background>
         </Button>
         <Button  Command="{Binding ZoomIn}"  Style="{StaticResource FooterButton}" Content=""
             FontSize="20"  Margin="1296,320,24,0" VerticalAlignment="Top" Width="120" Height="120">
             <Button.Background>
-                <ImageBrush ImageSource="/ZoomIn.png"/>
+                <ImageBrush ImageSource="/Images/ForViewImages/ZoomIn.png"/>
             </Button.Background>
         </Button>
-        <Image HorizontalAlignment="Left" Height="110" Margin="83,72,0,0" VerticalAlignment="Top" Width="646" Source="/Views/FloorsPanel.png" Stretch="Fill"/>
+        <Image HorizontalAlignment="Left" Height="110" Margin="83,72,0,0" VerticalAlignment="Top" Width="646" Source="/Images/Map/FloorsPanel.png" Stretch="Fill"/>
         <Button  Command="{Binding GoNews}" IsEnabled="False" Style="{StaticResource FloorButtonPink}" Content="1"
             FontSize="20"  Margin="254,80,1110,0" VerticalAlignment="Top" Height="81"/>
         <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonPink}" Content="2"

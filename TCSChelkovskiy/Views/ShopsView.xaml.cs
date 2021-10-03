@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,9 +28,22 @@ namespace TCSChelkovskiy.Views
             InitializeComponent();
         }
 
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public static readonly DependencyProperty AllShopsProperty = DependencyProperty.Register(
+            "AllShops", typeof(ObservableCollection<ShopModel>), typeof(ShopsView), new PropertyMetadata(default(ObservableCollection<ShopModel>)));
+
+        public ObservableCollection<ShopModel> AllShops
         {
-            ((MainWindowViewModel)this.DataContext).GoShopPage.Execute(null);
+            get => (ObservableCollection<ShopModel>) GetValue(AllShopsProperty);
+            set => SetValue(AllShopsProperty, value);
         }
+
+        private ICommand _goShopPage;
+
+        public ICommand GoShopPage => _goShopPage ??= new RelayCommand(f =>
+        {
+            var shop = f as ShopModel;
+            NavigationService?.Navigate(new ShopPage(shop));
+        });
+
     }
 }

@@ -5,17 +5,47 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TCSChelkovskiy.Views"
       mc:Ignorable="d" Loaded="loaded"
-        d:DesignHeight="830" d:DesignWidth="1440"
-      Title="AboutTradeCenter">
+      Height="776" Width="1440"
+      Title="AboutTradeCenter"
+      DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Grid Background="#E5E5E5">
-        <Border Background="White" CornerRadius="20" Margin="122,74,26,59">
-            <Grid Margin="0,0,0,0">
-                <Image  HorizontalAlignment="Left" Height="295" Margin="48,46,0,0" VerticalAlignment="Top" Width="313"/>
-                <TextBlock HorizontalAlignment="Left" Margin="373,46,0,0" Text="{Binding AboutMall.MallName,Mode=TwoWay}" FontFamily="Manrope" TextAlignment="Left" 
-                FontSize="35px" Foreground="Black" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" Width="556" Height="120"/>
-                <TextBlock HorizontalAlignment="Left" Margin="373,171,0,0" Text="{Binding AboutMall.Description,Mode=TwoWay}" FontFamily="Manrope" TextAlignment="Left" 
-                FontSize="20px" Foreground="Black" TextWrapping="Wrap" VerticalAlignment="Top" Width="556" Height="210"/>
+        <Border Background="White" CornerRadius="10" 
+                Margin="45,119,0,0"
+                Width="1336"
+                Height="619">
+            <Grid>
+
+                <Image  HorizontalAlignment="Left"
+                        Height="295" 
+                        Panel.ZIndex="10000"
+                        Source="../Images/Shared/logoShelkovskiy.png"
+                        Margin="48,46,0,0"
+                        VerticalAlignment="Top" 
+                        Width="313"/>
+
+                <ScrollViewer HorizontalAlignment="Left"
+                               Margin="373,46,0,0" 
+                               VerticalAlignment="Top" 
+                               Width="556"
+                               Height="321"
+                               HorizontalScrollBarVisibility="Hidden"
+                               VerticalScrollBarVisibility="Hidden"
+                               PanningMode="VerticalOnly">
+                    <TextBlock FontFamily="{StaticResource Montserrat}" 
+                               TextAlignment="Left" 
+                               Foreground="Black" 
+                               Width="556"
+
+                               TextWrapping="Wrap">
+                        <Run Text="{Binding Model.MallName}"
+                             FontWeight="SemiBold"
+                             FontSize="36"/><LineBreak/><LineBreak/>
+                        <Run Text="{Binding Model.Description}"
+                             FontWeight="Regular"
+                             FontSize="16"/>
+                    </TextBlock>
+                </ScrollViewer>
 
                 <Grid>
                     <Button Command="{Binding GoHome}" Style="{StaticResource ButtonBordered}" Content="ПАРКОВКА" HorizontalAlignment="Left"
@@ -29,15 +59,35 @@
                     <Button Command="{Binding GoContacts}" Style="{StaticResource ButtonBordered}" Content="КОНТАКТЫ" HorizontalAlignment="Left"
                     FontSize="25"  Margin="963,377,0,0" VerticalAlignment="Top" Width="260" Height="54" RenderTransformOrigin="0.5,0.5" FontWeight="Bold"/>
                 </Grid>
-                <Image x:Name="image1"  HorizontalAlignment="Left" Height="220" Margin="210,405,0,0" VerticalAlignment="Top" Width="347"/>
-                <Image x:Name="image2" HorizontalAlignment="Left" Height="220" Margin="603,405,0,0" VerticalAlignment="Top" Width="347"/>
+
+                <Image Source="{Binding Image1.Source}"
+                       HorizontalAlignment="Left" 
+                       Height="220" Margin="210,390,0,0" 
+                       VerticalAlignment="Top" Width="347"/>
+                <Image  Source="{Binding Image2.Source}"
+                    HorizontalAlignment="Left" 
+                       Height="220" 
+                       Margin="603,390,0,0" 
+                       VerticalAlignment="Top"
+                       Width="347"/>
             </Grid>
         </Border>
-        <Button Command="{Binding GoBack}" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
-            HorizontalAlignment="Left" Margin="110,10,0,0" VerticalAlignment="Top" Height="64" Width="345" >
+        <Button Command="BrowseBack" 
+                Style="{StaticResource HeaderSearchButton}" 
+                Foreground="Black" 
+                Background="Transparent" 
+                FontSize="20" 
+                 HorizontalContentAlignment="Left"
+            HorizontalAlignment="Left"
+                Margin="56,49,0,0" VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal">
-                <Image Width="40" Height="40" Source="/Views/ToHomeButton.png"/>
-                <TextBlock  FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="ИНФОРМАЦИЯ" FontWeight="SemiBold" Height="46"/>
+                <Image Width="40" Height="40" Source="/Images/Navigation/ToHomeButton.png"/>
+                <TextBlock  FontSize="30" Padding="20,0,0,0" 
+                            TextAlignment="Left" 
+                            Text="ИНФОРМАЦИЯ"
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource Montserrat}"
+                            FontWeight="SemiBold" />
             </StackPanel>
         </Button>
     </Grid>

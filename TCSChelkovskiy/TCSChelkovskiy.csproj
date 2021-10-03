@@ -59,6 +59,7 @@
     <None Remove="Images\Shared\ClockIcon.png" />
     <None Remove="Images\Shared\CloseButton.png" />
     <None Remove="Images\Shared\LocationIcon.png" />
+    <None Remove="Images\Shared\logoShelkovskiy.png" />
     <None Remove="Images\Shared\Metro.png" />
     <None Remove="Images\Shared\PhoneIcon.png" />
     <None Remove="Images\Slider\SliderArrowLeft.png" />
@@ -71,23 +72,12 @@
     <None Remove="shops.png" />
     <None Remove="Views\ClockIcon.png" />
     <None Remove="Views\Contacts.png" />
-    <None Remove="Views\FloopMarker.png" />
-    <None Remove="Views\FloorButton.png" />
-    <None Remove="Views\FloorButtonActive.png" />
-    <None Remove="Views\FloorsPanel.png" />
-    <None Remove="Views\LocationIcon.png" />
-    <None Remove="Views\Metro.png" />
-    <None Remove="Views\PhoneIcon.png" />
-    <None Remove="Views\SearchNavButton.png" />
-    <None Remove="Views\SiteIcon.png" />
-    <None Remove="Views\ToHomeButton.png" />
-    <None Remove="Views\WC.png" />
     <None Remove="ZoomIn.png" />
     <None Remove="ZoomOut.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="categories.png" />
+    <Resource Include="Images\ForViewImages\categories.png" />
     <Resource Include="Controls\Shift.png" />
     <Resource Include="Images\ItemTemplates\CategoryItemTemplate.png" />
     <Resource Include="Images\ItemTemplates\ShopItemTemplate.png" />
@@ -110,6 +100,7 @@
     <Resource Include="Images\Samples\adv3.png" />
     <Resource Include="Images\Shared\CloseButton.png" />
     <Resource Include="Images\Shared\LocationIcon.png" />
+    <Resource Include="Images\Shared\logoShelkovskiy.png" />
     <Resource Include="Images\Shared\PhoneIcon.png" />
   </ItemGroup>
 
@@ -131,7 +122,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="adv1.png" />
+    <Resource Include="Images\ForViewImages\adv1.png" />
     <Resource Include="Controls\ArrowLeft.png" />
     <Resource Include="Controls\ArrowRight.png" />
     <Resource Include="Controls\Backspace.png">
@@ -154,26 +145,15 @@
     <Resource Include="Images\Slider\SliderArrowLeft.png" />
     <Resource Include="Images\Slider\SliderArrowRight.png" />
     <Resource Include="Images\Slider\SliderPressButton.png" />
-    <Resource Include="info.png" />
-    <Resource Include="NavigateButton.png" />
-    <Resource Include="news.png" />
-    <Resource Include="SearchNavButton.png" />
-    <Resource Include="shops.png" />
-    <Resource Include="Views\ClockIcon.png" />
-    <Resource Include="Views\Contacts.png" />
-    <Resource Include="Views\FloopMarker.png" />
-    <Resource Include="Views\FloorButton.png" />
-    <Resource Include="Views\FloorButtonActive.png" />
-    <Resource Include="Views\FloorsPanel.png" />
-    <Resource Include="Views\LocationIcon.png" />
-    <Resource Include="Views\Metro.png" />
-    <Resource Include="Views\PhoneIcon.png" />
-    <Resource Include="Views\SearchNavButton.png" />
-    <Resource Include="Views\SiteIcon.png" />
-    <Resource Include="Views\ToHomeButton.png" />
-    <Resource Include="Views\WC.png" />
-    <Resource Include="ZoomIn.png" />
-    <Resource Include="ZoomOut.png" />
+    <Resource Include="Images\ForViewImages\info.png" />
+    <Resource Include="Images\ForViewImages\NavigateButton.png" />
+    <Resource Include="Images\ForViewImages\news.png" />
+    <Resource Include="Images\ForViewImages\SearchNavButton.png" />
+    <Resource Include="Images\ForViewImages\shops.png" />
+    <Resource Include="Images\ForViewImages\ClockIcon.png" />
+    <Resource Include="Images\ForViewImages\Contacts.png" />
+    <Resource Include="Images\ForViewImages\ZoomIn.png" />
+    <Resource Include="Images\ForViewImages\ZoomOut.png" />
   </ItemGroup>
 
 

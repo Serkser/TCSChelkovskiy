@@ -7,35 +7,70 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
       xmlns:Controls="clr-namespace:TCSChelkovskiy.Controls" x:Class="TCSChelkovskiy.Views.ShopsView"
       mc:Ignorable="d" 
-      d:DesignHeight="830" d:DesignWidth="1297"
+        Height="776" 
+      Width="1440"
       Title="ProductsView">
     <Grid Background="#E5E5E5">
-        <Button  Command="{Binding GoHome}" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
-            HorizontalAlignment="Left" Margin="38,29,0,0" VerticalAlignment="Top" Height="64" Width="345" >
+        <Button  Command="BrowseBack" 
+                 Style="{StaticResource HeaderSearchButton}" 
+                 Foreground="Black" 
+                 Background="Transparent" 
+                 FontSize="20" 
+                 HorizontalContentAlignment="Left"
+            HorizontalAlignment="Left" 
+                 Margin="51,49,0,0" 
+                 VerticalAlignment="Top"  >
             <StackPanel Orientation="Horizontal">
-                <Image Width="40" Height="40" Source="/Views/ToHomeButton.png"/>
-                <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="МАГАЗИНЫ" FontWeight="SemiBold" Height="46"/>
+                <Image Width="40" Height="40" Source="/Images/Navigation/ToHomeButton.png"/>
+                <TextBlock FontSize="30" Padding="20,0,0,0" 
+                           TextAlignment="Left" 
+                           Text="МАГАЗИНЫ" 
+                           FontWeight="SemiBold" 
+                           Height="46"/>
             </StackPanel>
         </Button>
 
-        <ListView ItemsSource="{Binding ShopsByCategory,Mode=TwoWay}" Style="{DynamicResource listView}" SelectedItem="{Binding CurrentShop,Mode=TwoWay}" 
-                  Margin="38,98,0,0" Width="1215" Height="659"  HorizontalAlignment="Left" VerticalAlignment="Top">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding GoShopPage}"></i:InvokeCommandAction>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <WrapPanel Orientation="Horizontal"  Width="331" Height="138">
-                        <Controls:ShopItemTemplate  Width="331" Height="138" Icon="{Binding Path=Icon, Mode=TwoWay}"
-                            IconURI="{Binding Path=IconURI, Mode=TwoWay}"
-                            Title="{Binding Path=Name, Mode=TwoWay}"
-                            Category="{Binding Path=Category.Name,Mode=TwoWay}"/>
-                    </WrapPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <ScrollViewer VerticalScrollBarVisibility="Disabled"
+                 HorizontalAlignment="Left"
+                 PanningMode="HorizontalOnly"
+                 Margin="29,113,0,0" 
+                 Width="1381" 
+                 VerticalAlignment="Top"
+                 Height="663">
+            <ListBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=AllShops}" 
+                 Background="#E5E5E5" 
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                 BorderThickness="0">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Controls:ShopItemTemplate  Width="331" Height="138" Icon="{Binding Path=Icon, Mode=TwoWay}"
+                                                            IconURI="{Binding Path=IconURI, Mode=TwoWay}"
+                                                            Margin="7"
+                                                            Title="{Binding Path=Name, Mode=TwoWay}"
+                                                            Category="{Binding Path=Category.Name,Mode=TwoWay}"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Vertical"
+                                 />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=GoShopPage}"
+                                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=SelectedItem}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ListBox>
 
+        </ScrollViewer>
+        
     </Grid>
 </Page>

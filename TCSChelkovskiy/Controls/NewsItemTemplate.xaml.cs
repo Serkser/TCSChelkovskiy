@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TCSChelkovskiy.Utilities;
 
 namespace TCSChelkovskiy.Controls
 {
@@ -24,6 +25,12 @@ namespace TCSChelkovskiy.Controls
         public NewsItemTemplate()
         {
             InitializeComponent();
+            Unloaded+= OnUnloaded;
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            _disposableImage.Dispose();
         }
 
         public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(string), typeof(NewsItemTemplate));
@@ -45,11 +52,11 @@ namespace TCSChelkovskiy.Controls
             set { SetValue(IconProperty, value); }
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private DisposableImage _disposableImage;
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            Bitmap bitmap = Services.ImageDownloader.DownloadImage(IconURI, Icon);
-            image.Source = Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap, System.IO.Path.Combine(Environment.CurrentDirectory, Icon));
-            bitmap.Dispose();
+            _disposableImage =await Services.ImageDownloader.DownloadImage(IconURI, Icon);
+            image.Source = _disposableImage.Source;
             description.Text = Description;
         }
     }

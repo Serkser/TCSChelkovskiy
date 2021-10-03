@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,8 +12,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TCEvropeyskiy.ViewModels;
+using TCSChelkovskiy.Utilities;
+using TCSchelkovskiyAPI.Models;
 
 namespace TCSChelkovskiy.Views
 {
@@ -22,30 +24,64 @@ namespace TCSChelkovskiy.Views
     public partial class AboutTradeCenter : Page
     {
 
-        public AboutTradeCenter()
+        public AboutTradeCenter(AboutMallModel aboutMallModel)
         {
             InitializeComponent();         
+            Unloaded+= OnUnloaded;
+            Model = aboutMallModel;
         }
 
-        private void loaded(object sender, RoutedEventArgs e)
+        public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
+            "Model", typeof(AboutMallModel), typeof(AboutTradeCenter), new PropertyMetadata(default(AboutMallModel)));
+
+        public AboutMallModel Model
         {
-            string url = "https://navigator.useful.su";
-            string prefix = ((MainWindowViewModel)this.DataContext).AboutMall.ImagesPrefix;
-            var images = ((MainWindowViewModel)this.DataContext).AboutMall.Images;
-            List<BitmapImage> bitmaps = new List<BitmapImage>(20);
+            get => (AboutMallModel) GetValue(ModelProperty);
+            set => SetValue(ModelProperty, value);
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            Image1.Dispose();
+            Image2?.Dispose();
+        }
+
+        public static readonly DependencyProperty Image1Property = DependencyProperty.Register(
+            "Image1", typeof(DisposableImage), typeof(AboutTradeCenter), new PropertyMetadata(default(DisposableImage)));
+
+        public DisposableImage Image1
+        {
+            get { return (DisposableImage) GetValue(Image1Property); }
+            set { SetValue(Image1Property, value); }
+        }
+
+        public static readonly DependencyProperty Image2Property = DependencyProperty.Register(
+            "Image2", typeof(DisposableImage), typeof(AboutTradeCenter), new PropertyMetadata(default(DisposableImage)));
+
+        public DisposableImage Image2
+        {
+            get { return (DisposableImage) GetValue(Image2Property); }
+            set { SetValue(Image2Property, value); }
+        }
+
+        private async void loaded(object sender, RoutedEventArgs e)
+        {
+            string prefix = Model.ImagesPrefix;
+            var images = Model.Images;
             foreach (var i in images)
             {
-                var bitmap = Services.ImageDownloader.DownloadImage($"{url}{prefix}{i}", i);
-                var bitmapImage = Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap, System.IO.Path.Combine(Environment.CurrentDirectory, i));
-                bitmaps.Add(bitmapImage);
+                var disposableImage = await Services.ImageDownloader.DownloadImage(Path.Combine(prefix,i), Path.GetFileName(i));
+                allImage.Add(disposableImage);
             }
             try
             {
-                image1.Source = bitmaps[0];
-                image2.Source = bitmaps[1];
+                Image1 = allImage[0];
+                Image2 = allImage[1];
             }
             catch { }
           
         }
+
+        private List<DisposableImage> allImage = new List<DisposableImage>();
     }
 }

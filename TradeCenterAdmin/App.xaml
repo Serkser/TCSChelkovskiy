@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:TradeCenterAdmin"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <FontFamily x:Key="Montserrat">pack://application:,,,/Fonts/#Montserrat</FontFamily>
     </Application.Resources>
 </Application>

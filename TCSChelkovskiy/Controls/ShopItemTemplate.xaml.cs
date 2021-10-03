@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TCSChelkovskiy.Utilities;
 using TCSchelkovskiyAPI.Models;
 
 namespace TCSChelkovskiy.Controls
@@ -25,6 +26,12 @@ namespace TCSChelkovskiy.Controls
         public ShopItemTemplate()
         {
             InitializeComponent();
+            Unloaded+= OnUnloaded;
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            ImageBind.Dispose();
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(ShopItemTemplate));
@@ -52,11 +59,18 @@ namespace TCSChelkovskiy.Controls
             set { SetValue(IconProperty, value); }
         }
 
-        private void image_Loaded(object sender, RoutedEventArgs e)
+        public static readonly DependencyProperty ImageBindProperty = DependencyProperty.Register(
+            "ImageBind", typeof(DisposableImage), typeof(ShopItemTemplate), new PropertyMetadata(default(DisposableImage)));
+
+        public DisposableImage ImageBind
         {
-            Bitmap bitmap = Services.ImageDownloader.DownloadImage(IconURI, Icon);
-            image.Source = Services.BitmapToImageSourceConverter.BitmapToImageSource(bitmap, System.IO.Path.Combine(Environment.CurrentDirectory, Icon));
-            bitmap.Dispose();
+            get => (DisposableImage) GetValue(ImageBindProperty);
+            set => SetValue(ImageBindProperty, value);
+        }
+
+        private async void ShopItemTemplate_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            ImageBind = await Services.ImageDownloader.DownloadImage(IconURI, Icon);
             category.Text = Category;
             title.Text = Title;
         }

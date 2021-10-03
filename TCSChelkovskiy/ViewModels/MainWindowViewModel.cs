@@ -75,7 +75,7 @@ namespace TCEvropeyskiy.ViewModels
             set
             {
                 aboutMall = value;
-                OnPropertyChanged("AboutMall");
+                OnPropertyChanged();
             }
         }
         private ContactsModel contacts;
@@ -88,7 +88,7 @@ namespace TCEvropeyskiy.ViewModels
             set
             {
                 contacts = value;
-                OnPropertyChanged("Contacts");
+                OnPropertyChanged();
             }
         }
 
@@ -190,7 +190,7 @@ namespace TCEvropeyskiy.ViewModels
             set
             {
                 searchText = value;
-                OnPropertyChanged("SearchText");
+                OnPropertyChanged();
             }
         }
 
@@ -204,7 +204,7 @@ namespace TCEvropeyskiy.ViewModels
             set
             {
                 currentFloor = value;
-                OnPropertyChanged("CurrentFloor");
+                OnPropertyChanged();
             }
         }
 
@@ -218,7 +218,7 @@ namespace TCEvropeyskiy.ViewModels
             set
             {
                 currentCategory = value;
-                OnPropertyChanged("CurrentCategory");
+                OnPropertyChanged();
             }
         }
 
@@ -232,7 +232,7 @@ namespace TCEvropeyskiy.ViewModels
             set
             {
                 currentShop = value;
-                OnPropertyChanged("CurrentShop");
+                OnPropertyChanged();
             }
         }
         private ShopGalleryModel currentGallery;
@@ -245,7 +245,7 @@ namespace TCEvropeyskiy.ViewModels
             set
             {
                 currentGallery = value;
-                OnPropertyChanged("CurrentGallery");
+                OnPropertyChanged();
             }
         }
         #endregion
@@ -285,171 +285,91 @@ namespace TCEvropeyskiy.ViewModels
         }
 
         private RelayCommand goShops;
-        public RelayCommand GoShops
-        {
-            get
-            {
-                return goShops ??
-                    (goShops = new RelayCommand(obj =>
-                    {
-                        ShopsByCategory = Shops;
-                        This.frame.Navigate(new ShopsView() { DataContext = this });
-                    }));
-            }
-        }
+        public RelayCommand GoShops => goShops ??= new RelayCommand(obj =>
+                {
+                    ShopsByCategory = Shops;
+                    This.frame.Navigate(new ShopsView(){AllShops = shops});
+                });
 
         private RelayCommand goCategories;
-        public RelayCommand GoCategories
-        {
-            get
-            {
-                return goCategories ??
-                    (goCategories = new RelayCommand(obj =>
-                    {
-                        This.frame.Navigate(new Categories() { DataContext = this });
+        public RelayCommand GoCategories=> goCategories ??= new RelayCommand(obj =>
+                {
+                    This.frame.Navigate(new Categories() { DataContext = this });
                         
-                    }));
-            }
-        }
+                });
 
         private RelayCommand goInfo;
-        public RelayCommand GoInfo
-        {
-            get
-            {
-                return goInfo ??
-                    (goInfo = new RelayCommand(obj =>
-                    {
-                        This.frame.Navigate(new AboutTradeCenter() { DataContext = this });
-                    }));
-            }
-        }
+        public RelayCommand GoInfo => goInfo ??= new RelayCommand(obj =>
+                {
+                    This.frame.Navigate(new AboutTradeCenter(AboutMall) );
+                });
 
         private RelayCommand goNews;
-        public RelayCommand GoNews
+        public RelayCommand GoNews => goNews ??= new RelayCommand(obj =>
         {
-            get
-            {
-                return goNews ??
-                    (goNews = new RelayCommand(obj =>
-                    {
-                        This.frame.Navigate(new News() { DataContext = this });
-                    }));
-            }
-        }
+            This.frame.Navigate(new News() { DataContext = this });
+        });
+
 
         private RelayCommand goContacts;
-        public RelayCommand GoContacts
-        {
-            get
-            {
-                return goContacts ??
-                    (goContacts = new RelayCommand(obj =>
-                    {
-                        This.frame.Navigate(new Contacts() { DataContext = this });
-                    }));
-            }
-        }
+        public RelayCommand GoContacts => goContacts ??= new RelayCommand(obj =>
+                {
+                    This.frame.Navigate(new Contacts() { DataContext = this });
+                });
 
         private RelayCommand goFeedback;
-        public RelayCommand GoFeedback
-        {
-            get
-            {
-                return goFeedback ??
-                    (goFeedback = new RelayCommand(obj =>
-                    {
-                        This.frame.Navigate(new Feedback() { DataContext = this });
-                    }));
-            }
-        }
+        public RelayCommand GoFeedback => goFeedback ??= new RelayCommand(obj =>
+                {
+                    This.frame.Navigate(new Feedback() { DataContext = this });
+                });
 
         private RelayCommand goRules;
-        public RelayCommand GoRules
+        public RelayCommand GoRules => goRules ??= new RelayCommand(obj =>
         {
-            get
-            {
-                return goRules ??
-                    (goRules = new RelayCommand(obj =>
-                    {
-                        This.frame.Navigate(new Rules() { DataContext = this });
-                    }));
-            }
-        }
+            This.frame.Navigate(new Rules() { DataContext = this });
+        });
 
         private RelayCommand goVacancies;
-        public RelayCommand GoVacancies
+        public RelayCommand GoVacancies => goVacancies ??= new RelayCommand(obj =>
         {
-            get
-            {
-                return goVacancies ??
-                    (goVacancies = new RelayCommand(obj =>
-                    {
-                        This.frame.Navigate(new Vacancies() {DataContext = this });
-                    }));
-            }
-        }
+            This.frame.Navigate(new Vacancies() {DataContext = this });
+        });
 
         private RelayCommand goWC;
-        public RelayCommand GoWC
-        {
-            get
-            {
-                return goWC ??
-                    (goWC = new RelayCommand(obj =>
-                    {
-                        This.frame.Navigate(new WCPage() { DataContext = this });
-                    }));
-            }
-        }
+        public RelayCommand GoWC => goWC ??= new RelayCommand(obj =>
+                {
+                    This.frame.Navigate(new WCPage() { DataContext = this });
+                });
+
         #endregion
         #region Навигация к объектам из ListView
-        private RelayCommand goShopPage;
-        public RelayCommand GoShopPage
-        {
-            get
-            {
-                return goShopPage ??
-                    (goShopPage = new RelayCommand(obj =>
-                    {
-                        if (CurrentShop != null)
-                        {
-                            This.frame.Navigate(new ShopPage() { DataContext = this });
-                        }                    
-                    }));
-            }
-        }
+        //private RelayCommand goShopPage;
+        //public RelayCommand GoShopPage => goShopPage ??= new RelayCommand(obj =>
+        //        {
+        //            if (CurrentShop != null)
+        //            {
+        //                This.frame.Navigate(new ShopPage() );
+        //            }                    
+        //        });
         private RelayCommand goShopsByCategory;
-        public RelayCommand GoShopsByCategory
-        {
-            get
-            {
-                return goShopsByCategory ??
-                    (goShopsByCategory = new RelayCommand(obj =>
+        public RelayCommand GoShopsByCategory => goShopsByCategory ??= new RelayCommand(obj =>
+                {
+                    if (CurrentCategory != null)
                     {
-                        if (CurrentCategory != null)
-                        {
-                            ShopsByCategory = new ObservableCollection<ShopModel>(Shops.Where(o => o.Category.ID == CurrentCategory.ID).ToList());
-                            This.frame.Navigate(new ShopsView() { DataContext = this });
-                        }
-                    }));
-            }
-        }
+                        ShopsByCategory = new ObservableCollection<ShopModel>(Shops.Where(o => o.Category.ID == CurrentCategory.ID).ToList());
+                        This.frame.Navigate(new ShopsView() { DataContext = this });
+                    }
+                });
+
+
         private RelayCommand goMapShopRoute;
-        public RelayCommand GoMapShopRoute
-        {
-            get
-            {
-                return goMapShopRoute ??
-                    (goMapShopRoute = new RelayCommand(obj =>
+        public RelayCommand GoMapShopRoute => goMapShopRoute ??= new RelayCommand(obj =>
+                {
+                    if (CurrentShop != null)
                     {
-                        if (CurrentShop != null)
-                        {
-                            This.frame.Navigate(new MapPage(This, CurrentShop));
-                        }
-                    }));
-            }
-        }
+                        This.frame.Navigate(new MapPage(This, CurrentShop));
+                    }
+                });
         #endregion
 
         #region Обратная связь
@@ -463,7 +383,7 @@ namespace TCEvropeyskiy.ViewModels
             set
             {
                 feedbackModel = value;
-                OnPropertyChanged("FeedbackModel");
+                OnPropertyChanged();
             }
         }
 
