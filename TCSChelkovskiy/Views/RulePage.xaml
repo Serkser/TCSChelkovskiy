@@ -11,15 +11,51 @@
     <Grid Background="#E5E5E5">
         <Border Background="White" CornerRadius="20" Margin="74,66,74,67">
             <Grid Margin="0,0,0,0">
-                <TextBlock HorizontalAlignment="Left" Margin="73,45,0,0" Text="Правила парковки" FontFamily="Manrope" TextAlignment="Left" 
-                    FontSize="35px" Foreground="Black" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" Width="995" Height="120"/>
+                <TextBlock HorizontalAlignment="Left" Margin="70,27,0,0" Text="{Binding Model.Title,Mode=TwoWay}" FontFamily="Manrope" TextAlignment="Left" 
+                    FontSize="35px" Foreground="Black" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" Width="995" Height="84"/>
 
+                <ScrollViewer VerticalScrollBarVisibility="Disabled"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 Width="1181" 
+                 Height="532"
+                PanningMode="HorizontalOnly"
+                      Margin="46,105,0,0" >
+                    <ListBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=Images}"
+                 
+                 BorderThickness="0"
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                 Background="Transparent">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Vertical" 
+                  ScrollViewer.PanningMode="HorizontalOnly"
+                  ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                 />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Image
+                                                Height="500"
+                                                Width="500"
+                                                Source="{Binding Source}"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </ScrollViewer>
             </Grid>
         </Border>
-        <Button  Command="{Binding GoBack}" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
+        <Button  Command="BrowseBack" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
             HorizontalAlignment="Left" Margin="62,2,0,0" VerticalAlignment="Top" Height="64" Width="345" >
             <StackPanel Orientation="Horizontal">
-                <Image Width="40" Height="40" Source="/Views/ToHomeButton.png"/>
+                <Image Width="40" Height="40" Source="/Images/Navigation/ToHomeButton.png"/>
                 <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="Назад" FontWeight="SemiBold" Height="46"/>
             </StackPanel>
         </Button>

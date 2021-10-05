@@ -166,7 +166,16 @@
     
     
     <!--ЛИСТ-->
-    
+    <Style x:Key="listViewItems" TargetType="{x:Type ListViewItem}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                    <ContentPresenter />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key="listView" TargetType="{x:Type ListView}">
 
@@ -329,5 +338,88 @@
         <Setter Property="Template" Value="{StaticResource VerticalScrollBar}"/>
     </Style>
 
+
+    <Style TargetType="RadioButton" x:Key="CircleCheckbox">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="Content" Value=""></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Grid>
+                        <Border Margin="0" x:Name="highlightCircle" BorderThickness="0" CornerRadius="10" BorderBrush="Gray">
+                            <Border.Background >
+                                <LinearGradientBrush >
+                                    <GradientStop Offset="0" Color="White"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+
+                        </Border>
+
+                        <ContentPresenter x:Name="content" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="highlightCircle" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0.3,0" EndPoint="0.7,1">
+                                        <GradientStop Offset="0" Color="#EC84D3"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="highlightCircle" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0.3,0" EndPoint="0.7,1">
+                                        <GradientStop Offset="0" Color="White"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style TargetType="RadioButton" x:Key="FloorFilterRadioButton">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="Content" Value=""></Setter>
+        <Setter Property="FontSize" Value="20"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Grid>
+                        <Border Margin="0" x:Name="highlightCircle" BorderThickness="0" CornerRadius="0" BorderBrush="Gray">
+
+                        </Border>
+
+                        <ContentPresenter x:Name="content" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Foreground" Value="Black"></Setter>
+                            <Setter TargetName="highlightCircle" Property="Background">
+                                <Setter.Value>
+                                    <ImageBrush ImageSource="/Views/FloorButton.png" Stretch="Fill"/>
+                                </Setter.Value>
+                            </Setter>
+
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Foreground" Value="White"></Setter>
+                            <Setter TargetName="highlightCircle" Property="Background">
+                                <Setter.Value>
+                                    <ImageBrush ImageSource="/Views/FloorButtonActive.png" Stretch="Fill"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <!--//-->
 </ResourceDictionary>

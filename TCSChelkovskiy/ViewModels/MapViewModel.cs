@@ -9,8 +9,10 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Navigation;
 using TCEvropeyskiy;
 using TCSChelkovskiy.Memory;
+using TCSChelkovskiy.Views;
 using TCSchelkovskiyAPI.Models;
 
 namespace TCSChelkovskiy.ViewModels
@@ -31,9 +33,10 @@ namespace TCSChelkovskiy.ViewModels
             if (Floors.Count > 0)
             {
                 CurrentFloor = Floors.FirstOrDefault();
+                This.Map.SelectedStation = CurrentFloor.Stations.FirstOrDefault();
 
             }
-            This.Map.SelectedStation = CurrentFloor.Stations.FirstOrDefault();
+         
         }
         public MapViewModel(Views.MapPage _this, MainWindow main)
         {
@@ -266,7 +269,32 @@ namespace TCSChelkovskiy.ViewModels
                     }));
             }
         }
-     
+        private RelayCommand goParking;
+        public RelayCommand GoParking
+        {
+            get
+            {
+                return goParking ??
+                    (goParking = new RelayCommand(obj =>
+                    {
+                        Parking nextPage = new Parking();
+                        MainWindow.frame.Navigate(nextPage);
+                    }));
+            }
+        }
+        private RelayCommand goHome;
+        public RelayCommand GoHome
+        {
+            get
+            {
+                return goHome ??
+                    (goHome = new RelayCommand(obj =>
+                    {
+                        MapPage nextPage = new MapPage(MainWindow); nextPage.DataContext = this;
+                        MainWindow.frame.Navigate(nextPage);
+                    }));
+            }
+        }
         #endregion
 
 

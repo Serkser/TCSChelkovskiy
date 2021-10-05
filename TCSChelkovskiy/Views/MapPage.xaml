@@ -14,9 +14,8 @@
         <Controls:Map   x:Name="Map" Margin="0,0,-0,-0" 
                         Floors="{Binding Floors,Mode=TwoWay}" OnAreaSelected="Map_OnOnAreaSelected" SelectedFloor="{Binding CurrentFloor,Mode=TwoWay}"
                           WayStrokeColor="#EC84D3">
-           
-
         </Controls:Map>
+
         <Button Command="{Binding NavigateTo}"   Style="{StaticResource FooterButton}" Content=""
             FontSize="20"  Margin="1296,603,24,0" VerticalAlignment="Top" Width="120" Height="120">
             <Button.Background>
@@ -30,29 +29,28 @@
                 <ImageBrush ImageSource="/Images/ForViewImages/ZoomOut.png"/>
             </Button.Background>
         </Button>
+        <Image HorizontalAlignment="Left" Height="103" Margin="102,75,0,0" VerticalAlignment="Top" Width="646" Source="/Images/Map/FloorsPanel.png" Stretch="Fill"/>
         <Button  Command="{Binding ZoomIn}"  Style="{StaticResource FooterButton}" Content=""
             FontSize="20"  Margin="1296,320,24,0" VerticalAlignment="Top" Width="120" Height="120">
             <Button.Background>
                 <ImageBrush ImageSource="/Images/ForViewImages/ZoomIn.png"/>
             </Button.Background>
         </Button>
-        <Image HorizontalAlignment="Left" Height="110" Margin="83,72,0,0" VerticalAlignment="Top" Width="646" Source="/Images/Map/FloorsPanel.png" Stretch="Fill"/>
-        <Button  Command="{Binding GoNews}" IsEnabled="False" Style="{StaticResource FloorButtonPink}" Content="1"
-            FontSize="20"  Margin="254,80,1110,0" VerticalAlignment="Top" Height="81"/>
-        <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonPink}" Content="2"
-            FontSize="20"  Margin="330,80,1034,0" VerticalAlignment="Top" Height="81"/>
-        <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonPink}" Content="0"
-            FontSize="20"  Margin="178,80,1186,0" VerticalAlignment="Top" Height="80"/>
-        <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonPink}" Content="3"
-            FontSize="20"  Margin="406,80,958,0" VerticalAlignment="Top" Height="81"/>
-        <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonPink}" Content="4"
-            FontSize="20"  Margin="482,80,882,0" VerticalAlignment="Top" Height="80"/>
-        <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonPink}" Content="5"
-            FontSize="20"  Margin="559,80,805,0" VerticalAlignment="Top" Height="81"/>
-        <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonRight}" Content="6"
-            FontSize="20"  Margin="635,80,729,0" VerticalAlignment="Top" Height="80"/>
-        <Button  Command="{Binding GoNews}" IsEnabled="True" Style="{StaticResource FloorButtonLeft}" Content="P"
+        <Button  Command="{Binding GoParking}" IsEnabled="True" Style="{StaticResource FloorButtonLeft}" Content="P"
             FontSize="20"  Margin="102,80,1262,0" VerticalAlignment="Top" Height="80"/>
+        <ListView Margin="180,78,0,0" BorderThickness="0" ItemsSource="{Binding Floors, Mode=TwoWay}"  Style="{DynamicResource listView}" ItemContainerStyle="{StaticResource listViewItems}"
+                  SelectedItem="{Binding CurrentFloor, Mode=TwoWay}" 
+            HorizontalAlignment="Left" VerticalAlignment="Top" Width="556" Height="86">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel Orientation="Horizontal"  Height="80" Width="80" >
+                        <RadioButton IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}, Mode=FindAncestor}}"
+                                    Content="{Binding FloorNumber, Mode=TwoWay}"  Style="{StaticResource CircleCheckbox}"
+                      FontSize="20" Background="AntiqueWhite" HorizontalAlignment="Left" VerticalAlignment="Top" Height="80" Width="80" Cursor="Hand" Margin="0,0,0,0"/>
+                    </WrapPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
     </Grid>
 </Page>

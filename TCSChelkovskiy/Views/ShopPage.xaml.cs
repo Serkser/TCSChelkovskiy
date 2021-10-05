@@ -80,5 +80,8 @@ namespace TCSChelkovskiy.Views
             get => (ShopModel) GetValue(ModelProperty);
             set => SetValue(ModelProperty, value);
         }
+
+
+
     }
 }

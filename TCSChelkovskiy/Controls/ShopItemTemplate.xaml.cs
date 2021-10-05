@@ -31,7 +31,7 @@ namespace TCSChelkovskiy.Controls
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            ImageBind.Dispose();
+            ImageBind?.Dispose();
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(ShopItemTemplate));

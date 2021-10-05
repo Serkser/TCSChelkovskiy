@@ -29,7 +29,6 @@ namespace TCSChelkovskiy.Views
         }
 
         private ICommand _goToShopsCommand;
-
         public ICommand GoToShopsCommand => _goToShopsCommand ??= new RelayCommand(f =>
         {
             var category = f as CategoryModel;

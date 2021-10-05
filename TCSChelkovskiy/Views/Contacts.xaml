@@ -15,10 +15,10 @@
 
             </Grid>
         </Border>
-        <Button  Command="{Binding GoBack}" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
+        <Button  Command="BrowseBack" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
             HorizontalAlignment="Left" Margin="110,10,0,0" VerticalAlignment="Top" Height="64" Width="345" >
             <StackPanel Orientation="Horizontal">
-                <Image Width="40" Height="40" Source="/Views/ToHomeButton.png"/>
+                <Image Width="40" Height="40" Source="/Images/Navigation/ToHomeButton.png"/>
                 <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="Назад" FontWeight="SemiBold" Height="46"/>
             </StackPanel>
         </Button>

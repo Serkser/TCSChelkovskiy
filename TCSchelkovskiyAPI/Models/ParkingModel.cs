@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 
 namespace TCSchelkovskiyAPI.Models
 {
-    public class FloorModel : IComparable
+    public class ParkingModel : IComparable
     {
+        public string ImagesPrefix { get; set; }
         public int ID { get; set; }
         public int Floor { get; set; }
-        public string Name { get; set; }
-        public string ImagesPrefix { get; set; }
-        public List<ShopModel> Shops { get; set; }
+        public string Image { get; set; }
 
         public int CompareTo(object obj)
         {
-            FloorModel p = obj as FloorModel;
+            ParkingModel p = obj as ParkingModel;
             if (p != null)
                 return this.Floor.CompareTo(p.Floor);
             else

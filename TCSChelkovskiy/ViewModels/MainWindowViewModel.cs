@@ -18,6 +18,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using System.Net;
 using System.Windows.Controls;
+using TCSChelkovskiy.Utilities;
+using TCSChelkovskiy.Services;
+using System.IO;
 
 namespace TCEvropeyskiy.ViewModels
 {
@@ -39,11 +42,79 @@ namespace TCEvropeyskiy.ViewModels
             Contacts = KioskObjects.Contacts;
             AboutMall = KioskObjects.AboutMall;
 
-            FeedbackModel = new FeedbackModel();
+            
             SearchText = "Поиск";
-             
+            BannersUrls = KioskObjects.Banners;
+            FilterFloors = KioskObjects.FilterFloors;
+            Promos = KioskObjects.Promos;
+
+            SearchText = "Поиск";
+
+           
+
+            ParkingUrls = new ObservableCollection<ParkingModel>
+            {
+
+            };
+            if (ParkingUrls.Count > 0)
+            {
+                CurrentParkingFloor = ParkingUrls.FirstOrDefault();
+            }
+
+           // LoadBanners();   /// ПРОВЕРИТЬ !!!
         }
 
+        async Task LoadBanners()
+        {
+            try
+            {
+                BannerImage1 = ImageDownloader.DownloadImage(Path.Combine("uploads/banners/" + BannersUrls[0]), Path.GetFileName(BannersUrls[0])).Result;
+                BannerImage2 = ImageDownloader.DownloadImage(Path.Combine("uploads/banners/" + BannersUrls[1]), Path.GetFileName(BannersUrls[1])).Result;
+                BannerImage3 = ImageDownloader.DownloadImage(Path.Combine("uploads/banners/" + BannersUrls[2]), Path.GetFileName(BannersUrls[2])).Result;
+            }
+            catch { }
+        }
+        #region картинка баннера
+        private DisposableImage bannerImage1;
+        public DisposableImage BannerImage1
+        {
+            get
+            {
+                return bannerImage1;
+            }
+            set
+            {
+                bannerImage1 = value;
+                OnPropertyChanged("BannerImage1");
+            }
+        }
+        private DisposableImage bannerImage2;
+        public DisposableImage BannerImage2
+        {
+            get
+            {
+                return bannerImage2;
+            }
+            set
+            {
+                bannerImage2 = value;
+                OnPropertyChanged("BannerImage2");
+            }
+        }
+        private DisposableImage bannerImage3;
+        public DisposableImage BannerImage3
+        {
+            get
+            {
+                return bannerImage3;
+            }
+            set
+            {
+                bannerImage3 = value;
+                OnPropertyChanged("BannerImage3");
+            }
+        }
+        #endregion
 
 
         #region Методы и команды для хедера
@@ -93,8 +164,64 @@ namespace TCEvropeyskiy.ViewModels
         }
 
         #endregion
-
         #region Колллекции сущностей
+        //Эти этажи не для карты, а для фильтрации магазинов по этажам
+
+        private ObservableCollection<FloorModel> filterFloors;
+        public ObservableCollection<FloorModel> FilterFloors
+        {
+            get
+            {
+                return filterFloors;
+            }
+            set
+            {
+                filterFloors = value;
+                OnPropertyChanged("FilterFloors");
+            }
+        }
+        //Изображения парковочных этажей
+        private ObservableCollection<ParkingModel> parkingUrls;
+        public ObservableCollection<ParkingModel> ParkingUrls
+        {
+            get
+            {
+                return parkingUrls;
+            }
+            set
+            {
+                parkingUrls = value;
+                OnPropertyChanged("ParkingUrls");
+            }
+        }
+        //Баннеры в левой стороне главного окна
+        private ObservableCollection<string> bannersUrls;
+        public ObservableCollection<string> BannersUrls
+        {
+            get
+            {
+                return bannersUrls;
+            }
+            set
+            {
+                bannersUrls = value;
+                OnPropertyChanged("BannersUrls");
+            }
+        }
+        private ObservableCollection<PromoModel> promos;
+        public ObservableCollection<PromoModel> Promos
+        {
+            get
+            {
+                return promos;
+            }
+            set
+            {
+                promos = value;
+                OnPropertyChanged("Promos");
+            }
+        }
+       
         private ObservableCollection<VacancyModel> vacancies;
         public ObservableCollection<VacancyModel> Vacancies
         {
@@ -178,7 +305,20 @@ namespace TCEvropeyskiy.ViewModels
         }
         #endregion
         #region Выбранные объекты
-
+        //Выбранный парковочный этаж
+        private ParkingModel currentParkingFloor;
+        public ParkingModel CurrentParkingFloor
+        {
+            get
+            {
+                return currentParkingFloor;
+            }
+            set
+            {
+                currentParkingFloor = value;
+                OnPropertyChanged("CurrentParkingFloor");
+            }
+        }
         //Текст для поиска, отображается в кнопке поиск. По умолчанию - Поиск
         private string searchText;
         public string SearchText
@@ -258,7 +398,7 @@ namespace TCEvropeyskiy.ViewModels
                 return goHome ??
                     (goHome = new RelayCommand(obj =>
                     {
-                        FeedbackModel.MakeDefaultValues();
+   
                         This.frame.Navigate(new MapPage(This));
                     }));
             }
@@ -272,7 +412,7 @@ namespace TCEvropeyskiy.ViewModels
                 return goBack ??
                     (goBack = new RelayCommand(obj =>
                     {
-                        FeedbackModel.MakeDefaultValues();
+                      
                         if (This.frame.CanGoBack)
                         {                          
                             This.frame.GoBack();
@@ -302,46 +442,28 @@ namespace TCEvropeyskiy.ViewModels
         private RelayCommand goInfo;
         public RelayCommand GoInfo => goInfo ??= new RelayCommand(obj =>
                 {
-                    This.frame.Navigate(new AboutTradeCenter(AboutMall) );
+                    This.frame.Navigate(new AboutTradeCenter(AboutMall));
                 });
 
         private RelayCommand goNews;
         public RelayCommand GoNews => goNews ??= new RelayCommand(obj =>
         {
-            This.frame.Navigate(new News() { DataContext = this });
+            This.frame.Navigate(new News() { AllNews = promos, DataContext = this }) ;
         });
 
 
-        private RelayCommand goContacts;
-        public RelayCommand GoContacts => goContacts ??= new RelayCommand(obj =>
-                {
-                    This.frame.Navigate(new Contacts() { DataContext = this });
-                });
-
-        private RelayCommand goFeedback;
-        public RelayCommand GoFeedback => goFeedback ??= new RelayCommand(obj =>
-                {
-                    This.frame.Navigate(new Feedback() { DataContext = this });
-                });
-
-        private RelayCommand goRules;
-        public RelayCommand GoRules => goRules ??= new RelayCommand(obj =>
-        {
-            This.frame.Navigate(new Rules() { DataContext = this });
-        });
-
-        private RelayCommand goVacancies;
-        public RelayCommand GoVacancies => goVacancies ??= new RelayCommand(obj =>
-        {
-            This.frame.Navigate(new Vacancies() {DataContext = this });
-        });
 
         private RelayCommand goWC;
         public RelayCommand GoWC => goWC ??= new RelayCommand(obj =>
-                {
-                    This.frame.Navigate(new WCPage() { DataContext = this });
-                });
-
+         {
+            This.frame.Navigate(new WCPage() { DataContext = this });
+         });
+        private RelayCommand goParking;
+        public RelayCommand GoParking => goParking ??= new RelayCommand(obj =>
+        {
+            This.frame.Navigate(new Parking() { DataContext = this});
+        });         
+       
         #endregion
         #region Навигация к объектам из ListView
         //private RelayCommand goShopPage;
@@ -373,62 +495,7 @@ namespace TCEvropeyskiy.ViewModels
                 });
         #endregion
 
-        #region Обратная связь
-        private FeedbackModel feedbackModel;
-        public FeedbackModel FeedbackModel
-        {
-            get
-            {
-                return feedbackModel;
-            }
-            set
-            {
-                feedbackModel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand sendFeedback;
-        public RelayCommand SendFeedback
-        {
-            get
-            {
-                return sendFeedback ??
-                    (sendFeedback = new RelayCommand(obj =>
-                    {
-                        FeedbackModel.ValidationErrors = new List<string>();
-                        var results = new List<System.ComponentModel.DataAnnotations.ValidationResult>();
-                        var context = new ValidationContext(FeedbackModel);
-                        if (!Validator.TryValidateObject(FeedbackModel, context, results, true))
-                        {                           
-                            foreach (var error in results)
-                            {
-                                FeedbackModel.ValidationErrors.Add(error.ErrorMessage);
-                            }
-                            FeedbackModel.FirstValidationError = FeedbackModel.ValidationErrors.FirstOrDefault();
-                        }
-                        else
-                        {
-                            FeedbackModel.FirstValidationError = string.Empty;
-
-                            MailAddress from = new MailAddress("", FeedbackModel.EmailOrPhone);                       
-                            MailAddress to = new MailAddress("");
-                            MailMessage message = new MailMessage(from, to);
-                            message.Subject = FeedbackModel.Topic;
-                            message.Body =FeedbackModel.Text;
-                            SmtpClient smtp = new SmtpClient("", 587);
-                            // логин и пароль
-                            smtp.Credentials = new NetworkCredential("", "");
-                            smtp.EnableSsl = true;
-                            smtp.Send(message);
-                        }
-                       
-                    }));
-            }
-        }
-
-        #endregion
-
+      
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {

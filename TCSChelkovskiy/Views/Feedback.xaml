@@ -58,7 +58,7 @@
         </CheckBox>
         <Button Command="{Binding SendFeedback}" Style="{DynamicResource ButtonBlue}" Content="ОТПРАВИТЬ" HorizontalAlignment="Left" Foreground="White"
             FontSize="27"  Margin="280,261,0,0" VerticalAlignment="Top" Width="240" Height="100" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="1" FontWeight="Bold"/>
-        <Button  Command="{Binding GoBack}" Style="{DynamicResource ButtonBordered}" Content="ОТМЕНА" HorizontalAlignment="Left"
+        <Button  Command="BrowseBack" Style="{DynamicResource ButtonBordered}" Content="ОТМЕНА" HorizontalAlignment="Left"
             FontSize="27" Margin="10,261,0,0" VerticalAlignment="Top" Width="240" Height="100" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.Column="1" FontWeight="Bold"/>
         <Controls:Keyboard ButtonPressed="buttonPressed" Grid.Column="1" Margin="550,83,66,45" Grid.Row="1"/>
 

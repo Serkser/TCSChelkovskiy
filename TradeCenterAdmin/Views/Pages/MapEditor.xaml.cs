@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TradeCenterAdmin.ViewModels;
 
 namespace TradeCenterAdmin.Views.Pages
 {
@@ -24,11 +25,8 @@ namespace TradeCenterAdmin.Views.Pages
         public MapEditor()
         {
             InitializeComponent();
-            this.DataContext = new ViewModels.MapEditorViewModel(this);
-
-          
+            this.DataContext = new ViewModels.MapEditorViewModel(this);        
         }
-
 
         Area currentArea = null;
         Way currentWay = null; Floor firstFloor = null; Floor currentFloor = null;
@@ -290,7 +288,7 @@ namespace TradeCenterAdmin.Views.Pages
             canvasMap.Children.Add(entry);
         }
 
-        public void DrawWays(Way way,int floorID)
+        public void DrawWays(Way way, int floorID, Brush brush = null)
         {
             #region Убираем старый путь
             for (int i = 0; i < canvasMap.Children.Count; i++)
@@ -309,10 +307,9 @@ namespace TradeCenterAdmin.Views.Pages
             PathGeometry geometry = new PathGeometry();
             if (way.WayPoints.Count > 0)
             {
-
                 PathFigure figure = new PathFigure()
                 {
-                  
+                    IsFilled = false,
                     IsClosed = false
                 };
 
@@ -334,13 +331,26 @@ namespace TradeCenterAdmin.Views.Pages
 
 
                 geometry.Figures.Add(figure);
+
+
+                //Подстановка выбранного цвета (необязательный параметр) и выделение машрута
+                Brush currentBrush = Brushes.Black;
+                double strokeThickness = 2;
+                if (brush != null)
+                {
+                    currentBrush = brush;
+                    strokeThickness = 20;
+                }
                 Path perimeter = new Path
                 {
                     Uid = way.Id.ToString(),
                     Fill = Brushes.Transparent,
-                    Stroke = Brushes.Black,
-                    StrokeThickness = 2,
+                    Stroke = currentBrush,
+                    StrokeThickness = strokeThickness,
                 };
+               
+
+               
                 perimeter.Data = geometry;
                 //выбор объекта для редактирования
                 perimeter.MouseLeftButtonDown += (sender, e) =>
@@ -401,13 +411,17 @@ namespace TradeCenterAdmin.Views.Pages
                 {
                     if (((ViewModels.MapEditorViewModel)this.DataContext).MapEditorTool == Enums.MapEditorTool.Hand)
                     {
-                        Control c = o1 as Control;
-                        oldPosition = new Point();
-                        oldPosition.X = c.Margin.Left;
-                        oldPosition.Y = c.Margin.Top;
-                        Mouse.Capture(c);
-                        p = Mouse.GetPosition(c);
-                        canmove = true;
+                        if (!canmove)
+                        {
+                            Control c = o1 as Control;
+                            oldPosition = new Point();
+                            oldPosition.X = c.Margin.Left;
+                            oldPosition.Y = c.Margin.Top;
+                            Mouse.Capture(c);
+                            p = Mouse.GetPosition(c);
+                            canmove = true;
+                        }
+                     
                     }
                 };
                 entry.MouseUp += (o1, e1) =>
@@ -416,6 +430,21 @@ namespace TradeCenterAdmin.Views.Pages
                     {
                         Mouse.Capture(null);
                         canmove = false;
+                        for (int i = 0; i < way.WayPoints.Count; i++)
+                        {
+                            var wayPoint = way.WayPoints[i];
+                            if (wayPoint.X == oldPosition.X && wayPoint.Y == oldPosition.Y)
+                            {
+                                wayPoint.X = e1.GetPosition(canvasMap).X - p.X;
+                                wayPoint.Y = e1.GetPosition(canvasMap).Y - p.Y;
+                                way.WayPoints[i] = wayPoint;
+
+                            }
+                        }
+                        for (int i = 0; i < 5; i++)
+                        {
+                            DrawWays(way, floorID);
+                        }
                     }
                 };
            
@@ -429,20 +458,9 @@ namespace TradeCenterAdmin.Views.Pages
                             c.Margin = new Thickness(e1.GetPosition(canvasMap).X - p.X, e1.GetPosition(canvasMap).Y - p.Y, 0, 0);
 
 
-                            for (int i = 0; i < way.WayPoints.Count; i++)
-                            {
-                                var wayPoint = way.WayPoints[i];
-                                if (wayPoint.X == oldPosition.X && wayPoint.Y == oldPosition.Y)
-                                {
-                                    wayPoint.X = e1.GetPosition(canvasMap).X - p.X;
-                                    wayPoint.Y = e1.GetPosition(canvasMap).Y - p.Y;
-                                    way.WayPoints[i] = wayPoint;
-                                  
-                                }
-                            }
-                            DrawWays(way,floorID);  ///!!!!!!!!!!!!
 
-                            
+
+
                         }
                     }
                 };
@@ -508,6 +526,9 @@ namespace TradeCenterAdmin.Views.Pages
                     IsClosed = true
                 };
                 geometry.Figures.Add(figure);
+
+
+
                 Path perimeter = new Path
                 {
                     Uid = area.Id.ToString(),
@@ -518,10 +539,26 @@ namespace TradeCenterAdmin.Views.Pages
                 perimeter.ContextMenu = new ContextMenu();
 
                 //выбор объекта для редактирования
-                perimeter.MouseLeftButtonDown += (sender, e) =>
+                perimeter.MouseDown += (sender, e) =>
                 {
+                    #region Подсветка выбранной области
+
+                    //Убираем подсветку с других областей
+                    for (int i = 0; i < canvasMap.Children.Count; i++)
+                    {
+                        var uielement = canvasMap.Children[i];
+                        if (uielement is Path)
+                        {
+                            ((Path)uielement).Fill = Brushes.AliceBlue;
+                        }
+                    }
+
+                    //Подсвечиваем выбранную область
+                    perimeter.Fill = Brushes.Yellow;    
+                    #endregion
                     currentArea = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Areas
                     .Where(o => o.Id == Convert.ToInt32(perimeter.Uid)).FirstOrDefault();
+                    ShowAreaInfo(area);
                 };
                 #region Удаление области
                 MenuItem delButton = new MenuItem
@@ -559,6 +596,7 @@ namespace TradeCenterAdmin.Views.Pages
                 };
                 assignShop.Click += (sender1, e1) =>
                 {
+                  
                     Views.Windows.AssingShop f = new Windows.AssingShop();
                     f.DataContext = this.DataContext;
                     if (f.ShowDialog() == true)
@@ -568,7 +606,7 @@ namespace TradeCenterAdmin.Views.Pages
                         area.Description = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.Description;
                         CreateText();
                     }
-
+                    ShowAreaInfo(area);
                 };
 
 
@@ -655,6 +693,17 @@ namespace TradeCenterAdmin.Views.Pages
                     {
                         Mouse.Capture(null);
                         canmove = false;
+                        int number = Convert.ToInt32(entry.Uid.Replace($"{area.InnerId}button", "").Trim());
+                        area.Points[number - 1] = new AreaPoint
+                        {
+                            X = e1.GetPosition(canvasMap).X - p.X,
+                            Y = e1.GetPosition(canvasMap).Y - p.Y,
+                        };
+
+                        for (int i = 0; i < 5; i++)
+                        {
+                            DrawAreaPerimeter(area); 
+                        }
                     }
                 };
                 entry.MouseMove += (o1, e1) =>
@@ -664,16 +713,7 @@ namespace TradeCenterAdmin.Views.Pages
                         if (canmove)
                         {
                             Control c = o1 as Control;
-                            //c.SetValue(Canvas.LeftProperty, e1.GetPosition(null).X - p.X);
-                            //c.SetValue(Canvas.TopProperty, e1.GetPosition(null).Y - p.Y);
-                            c.Margin = new Thickness(e1.GetPosition(canvasMap).X - p.X, e1.GetPosition(canvasMap).Y - p.Y, 0, 0);
-                            int number = Convert.ToInt32(entry.Uid.Replace($"{area.InnerId}button", "").Trim());
-                            area.Points[number - 1] = new AreaPoint
-                            {
-                                X = e1.GetPosition(canvasMap).X - p.X,
-                                Y = e1.GetPosition(canvasMap).Y - p.Y,
-                            };
-                            DrawAreaPerimeter(area);  ///!!!!!!!!!!!!
+                            c.Margin = new Thickness(e1.GetPosition(canvasMap).X - p.X, e1.GetPosition(canvasMap).Y - p.Y, 0, 0);                    
                         }
                     }
                 };
@@ -749,21 +789,38 @@ namespace TradeCenterAdmin.Views.Pages
                 //Создание киоска
                 if (((ViewModels.MapEditorViewModel)this.DataContext).MapEditorTool == Enums.MapEditorTool.Kiosk)
                 {
-                    Point coordinatesClick = e.GetPosition(canvasMap);
-                    Random rnd = new Random(); int randomId = rnd.Next(0, Int32.MaxValue);
-                    var station = new NavigationMap.Models.Station
+                    if (((ViewModels.MapEditorViewModel)this.DataContext).SelectedTerminal != null)
                     {
-                        Id = randomId,
-                        Name = "Киоск " + randomId + " : " + ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Name,
-                        AreaPoint = new NavigationMap.Models.AreaPoint
+                        Point coordinatesClick = e.GetPosition(canvasMap);
+                        Random rnd = new Random(); int randomId = rnd.Next(0, Int32.MaxValue);
+                        foreach (var floor in ((ViewModels.MapEditorViewModel)this.DataContext).Floors)
                         {
-                            PointType = NavigationMap.Enums.PointTypeEnum.Station,
-                            X = coordinatesClick.X,
-                            Y = coordinatesClick.Y
+                            if (floor.Stations.Where(o=>o.Id == ((ViewModels.MapEditorViewModel)this.DataContext).SelectedTerminal.ID).FirstOrDefault() != null)
+                            {
+                                MessageBox.Show($"Этот киоск уже установлен на {floor.FloorNumber} этаже");
+                                return;
+                            }
                         }
-                    };
-                    ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Add(station);
-                    DrawKiosk(station,coordinatesClick,true);    
+                       
+                        var station = new NavigationMap.Models.Station
+                        {
+                            Id = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedTerminal.ID,
+                            Name = "Киоск " + randomId + " : " + ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Name,
+                            AreaPoint = new NavigationMap.Models.AreaPoint
+                            {
+                                PointType = NavigationMap.Enums.PointTypeEnum.Station,
+                                X = coordinatesClick.X,
+                                Y = coordinatesClick.Y
+                            }
+                        };
+                        ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Add(station);
+                        DrawKiosk(station, coordinatesClick, true);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Выберите киоск в списке, прежде чем его установить");
+                    }
+                   
                 }
                 //Создание входа
                 else if (((ViewModels.MapEditorViewModel)this.DataContext).MapEditorTool == Enums.MapEditorTool.Entry)
@@ -848,6 +905,9 @@ namespace TradeCenterAdmin.Views.Pages
                             currentWay.AreaId = currentArea.Id;
                             currentWay.FloorId = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Id;
                             currentWay.Id = rnd.Next(Int32.MinValue, Int32.MaxValue);
+                            if (((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Areas.Where(o => o.Id == currentArea.Id).FirstOrDefault() == null){
+                                return;
+                            }
                             ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Areas.Where(o => o.Id == currentArea.Id).FirstOrDefault()
                          .Ways.Add(currentWay);
                             currentFloor = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor;
@@ -892,45 +952,138 @@ namespace TradeCenterAdmin.Views.Pages
                 {
                     if (currentWay!= null && currentArea != null)
                     {
-                         if (((ViewModels.MapEditorViewModel)this.DataContext)
-                            .SelectedFloor.Areas.Where(o=> o.Id == o.Id).FirstOrDefault() != null)
+                        if (MessageBox.Show("Вы действительно хотите отменить создание маршрута?","Предупреждение",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                         {
-                          var way =  ((ViewModels.MapEditorViewModel)this.DataContext)
-                            .SelectedFloor.Areas.Where(o => o.Id == o.Id).FirstOrDefault()
-                            .Ways.Where(o => o.Id == currentWay.Id).FirstOrDefault();
+                            if (((ViewModels.MapEditorViewModel)this.DataContext)
+                           .SelectedFloor.Areas.Where(o => o.Id == o.Id).FirstOrDefault() != null)
+                            {
+                                var way = ((ViewModels.MapEditorViewModel)this.DataContext)
+                                  .SelectedFloor.Areas.Where(o => o.Id == o.Id).FirstOrDefault()
+                                  .Ways.Where(o => o.Id == currentWay.Id).FirstOrDefault();
 
-                            ((ViewModels.MapEditorViewModel)this.DataContext)
-                           .SelectedFloor.Areas.Where(o => o.Id == o.Id).FirstOrDefault()
-                           .Ways.Remove(way);
+                                ((ViewModels.MapEditorViewModel)this.DataContext)
+                               .SelectedFloor.Areas.Where(o => o.Id == o.Id).FirstOrDefault()
+                               .Ways.Remove(way);
 
-
-
-
-                            ((ViewModels.MapEditorViewModel)this.DataContext).LoadFloorObjects();
-                        }
+                                currentWay = null; currentArea = null;
+                                ((ViewModels.MapEditorViewModel)this.DataContext).LoadFloorObjects();
+                            }
+                        }                  
                     }
-                    currentWay = null; currentArea = null;
+                   
                 }
             }
 
         }
 
-     
+
+        #region Работа с левым меню, выделенная область
+        void ShowAreaInfo(Area area)
+        {
+            areaTitle.Text = area.Name;
+            areaFloor.Text = ((MapEditorViewModel)this.DataContext).Floors.Where(o => o.Id == area.FloorId).FirstOrDefault()?.Name;
+            areaWays.ItemsSource = null; areaWays.ItemsSource = area.Ways;
+        }
+        private void areaDeleteWayHandler(object sender, RoutedEventArgs e)
+        {
+            if (currentArea != null)
+            {
+                if (MessageBox.Show("Вы действительно хотите удалить этот маршрут?",
+                    "Подтверждение",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    for (int floor = 0; floor < ((MapEditorViewModel)this.DataContext).Floors.Count; floor++)
+                    {
+                        var floorAreas = ((MapEditorViewModel)this.DataContext).Floors[floor].Areas;
+                        if (floorAreas != null)
+                        {
+                            for (int area = 0; area < floorAreas.Count; area++)
+                            {
+                                if (floorAreas[area].Id == currentArea.Id)
+                                {
+                                    var way = areaWays.SelectedItem as Way;
+                                    if (way != null)
+                                    {
+                                        ((MapEditorViewModel)this.DataContext).Floors[floor].Areas[area].Ways.Remove(way);
+                                        ShowAreaInfo(((MapEditorViewModel)this.DataContext).Floors[floor].Areas[area]);
+                                        if (areaShowOwnWays.IsChecked == true)
+                                        {
+                                            ((MapEditorViewModel)this.DataContext).LoadFloorObjects(currentArea);
+                                        }
+                                        else
+                                        {
+                                            ((MapEditorViewModel)this.DataContext).LoadFloorObjects();
+                                        }
+                                    }                                  
+                                }
+                            }
+                        }
+                      
+                    }
+                }
+            }
+        }
+        private void areaDeleteAllWaysHandler(object sender, RoutedEventArgs e)
+        {
+            if (currentArea != null)
+            {
+                if (MessageBox.Show("Вы действительно хотите удалить все маршруты области?",
+                   "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    for (int floor = 0; floor < ((MapEditorViewModel)this.DataContext).Floors.Count; floor++)
+                    {
+                        var floorAreas = ((MapEditorViewModel)this.DataContext).Floors[floor].Areas;
+                        if (floorAreas != null)
+                        {
+                            for (int area = 0; area < floorAreas.Count; area++)
+                            {
+                                if (floorAreas[area].Id == currentArea.Id)
+                                {
+                                    ((MapEditorViewModel)this.DataContext).Floors[floor].Areas[area].Ways?.Clear();
+                                    ShowAreaInfo(((MapEditorViewModel)this.DataContext).Floors[floor].Areas[area]);
+                                    if (areaShowOwnWays.IsChecked == true)
+                                    {
+                                        ((MapEditorViewModel)this.DataContext).LoadFloorObjects(currentArea);
+                                    }
+                                    else
+                                    {
+                                        ((MapEditorViewModel)this.DataContext).LoadFloorObjects();
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        /// Подсвечивание выбранного маршута области
+        private void areaWaysSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var way = areaWays.SelectedItem as Way;
+            if (way != null)
+            {
+                ((MapEditorViewModel)this.DataContext).LoadFloorObjectsWithWayHighlighting(way);
+            }        
+        }
+        #region Показ маршрутов только выделенной области
+        private void areaCheckedOwnWays(object sender, RoutedEventArgs e)
+        {
+            ((MapEditorViewModel)this.DataContext).LoadFloorObjects(currentArea);
+        }
+
+        private void areaUncheckedOwnWays(object sender, RoutedEventArgs e)
+        {
+            ((MapEditorViewModel)this.DataContext).LoadFloorObjects();
+        }
+        #endregion
+        #endregion
 
         private void map_Loaded(object sender, RoutedEventArgs e)
         {
 
         }
 
-
-
-
-
-
-        #region обработчики объектов карты
-
-
-        #endregion
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -941,5 +1094,7 @@ namespace TradeCenterAdmin.Views.Pages
         {
 
         }
+
+       
     } 
 }

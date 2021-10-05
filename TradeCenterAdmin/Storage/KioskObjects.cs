@@ -19,6 +19,7 @@ namespace TradeCenterAdmin.Storage
         //public static ObservableCollection<CategoryModel> Categories { get; set; } = new ObservableCollection<CategoryModel>();
         //public static ObservableCollection<Station> Stations { get; set; } = new ObservableCollection<Station>();
         public static ObservableCollection<ShopModel> Shops { get; set; } = new ObservableCollection<ShopModel>();
+        public static ObservableCollection<TerminalModel> Terminals { get; set; } = new ObservableCollection<TerminalModel>();
         //public static ObservableCollection<ShopGalleryModel> Gallery { get; set; } = new ObservableCollection<ShopGalleryModel>();
 
         static KioskObjects()
@@ -31,7 +32,7 @@ namespace TradeCenterAdmin.Storage
         public static async Task LoadAllObjects()
         {
             Shops = new ObservableCollection<ShopModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShops());
-           
+            Terminals = new ObservableCollection<TerminalModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetTerminals());
             //await Task.Run(() =>
             //{
             //    //Categories = new ObservableCollection<CategoryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetCategories());

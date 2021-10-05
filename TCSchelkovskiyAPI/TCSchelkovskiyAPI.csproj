@@ -50,7 +50,11 @@
   <ItemGroup>
     <Compile Include="Models\AboutMallModel.cs" />
     <Compile Include="Models\ContactsModel.cs" />
+    <Compile Include="Models\ParkingModel.cs" />
+    <Compile Include="Models\PromoModel.cs" />
+    <Compile Include="Models\RuleModel.cs" />
     <Compile Include="Models\ShopGalleryModel.cs" />
+    <Compile Include="Models\TerminalModel.cs" />
     <Compile Include="Models\VacancyModel.cs" />
     <Compile Include="TCSchelkovskiyAPI.cs" />
     <Compile Include="Models\CategoryModel.cs" />

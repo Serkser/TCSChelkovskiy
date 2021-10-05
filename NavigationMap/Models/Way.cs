@@ -110,5 +110,10 @@ namespace NavigationMap.Models
 
             _disposed = true;
         }
+
+        public override string ToString()
+        {
+            return "Маршрут " + Id;
+        }
     }
 }

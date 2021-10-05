@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TCSchelkovskiyAPI.Models;
 
 namespace TCSChelkovskiy.Views
 {
@@ -20,9 +21,18 @@ namespace TCSChelkovskiy.Views
     /// </summary>
     public partial class Contacts : Page
     {
-        public Contacts()
+        public Contacts(ContactsModel contactsModel)
         {
             InitializeComponent();
+            ContactsModel = contactsModel;
+        }
+        public static readonly DependencyProperty ContactsModelProperty = DependencyProperty.Register(
+     "ContactsModel", typeof(ContactsModel), typeof(Contacts), new PropertyMetadata(default(ContactsModel)));
+
+        public ContactsModel ContactsModel
+        {
+            get => (ContactsModel)GetValue(ContactsModelProperty);
+            set => SetValue(ContactsModelProperty, value);
         }
     }
 }

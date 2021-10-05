@@ -3,31 +3,58 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
       xmlns:local="clr-namespace:TCSChelkovskiy.Views"
       xmlns:Controls="clr-namespace:TCSChelkovskiy.Controls"
       mc:Ignorable="d" 
-      d:DesignHeight="830" d:DesignWidth="1297"
+    d:DesignHeight="830" d:DesignWidth="1440"
       Title="Categories">
     <Grid Background="#E5E5E5">
 
-        <ListView Margin="38,119,39,48">
-          
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <WrapPanel>
-                        <Controls:NewsItemTemplate Width="324" Height="295"
-                            Icon="{Binding Path=Icon, Mode=TwoWay}"
-                            IconURI="{Binding Path=IconURI, Mode=TwoWay}"
+        <ScrollViewer VerticalScrollBarVisibility="Disabled"
+                 HorizontalAlignment="Left"
+                 PanningMode="HorizontalOnly"
+                 Margin="29,113,0,0" 
+                 Width="1381" 
+                 VerticalAlignment="Top"
+                 Height="663">
+            <ListBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=AllNews}" 
+                 Background="#E5E5E5" 
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                 BorderThickness="0" SelectionChanged="ListBox_SelectionChanged">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate >
+                                    <Controls:NewsItemTemplate Width="324" Margin="15" Height="295"
+                            Icon="{Binding Path=Shop.Icon, Mode=TwoWay}"
+                            IconURI="{Binding Path=Shop.IconURI, Mode=TwoWay}"
                             Description="{Binding Path=Description, Mode=TwoWay}"></Controls:NewsItemTemplate>
-                    </WrapPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Vertical"
+                                 />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=GoNewsPage}"
+                                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=SelectedItem}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ListBox>
 
-        </ListView>
+        </ScrollViewer>
         <Button  Command="{Binding GoHome}" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
             HorizontalAlignment="Left" Margin="38,29,0,0" VerticalAlignment="Top" Height="64" Width="345" >
             <StackPanel Orientation="Horizontal">
-                <Image Width="40" Height="40" Source="/Views/ToHomeButton.png"/>
+                <Image Width="40" Height="40" Source="/Images/Navigation/ToHomeButton.png"/>
                 <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="НОВОСТИ" FontWeight="SemiBold" Height="46"/>
             </StackPanel>
         </Button>

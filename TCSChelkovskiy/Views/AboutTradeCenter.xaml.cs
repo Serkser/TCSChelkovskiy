@@ -83,5 +83,41 @@ namespace TCSChelkovskiy.Views
         }
 
         private List<DisposableImage> allImage = new List<DisposableImage>();
+
+
+        private RelayCommand goContacts;
+        public RelayCommand GoContacts => goContacts ??= new RelayCommand(obj =>
+        {
+            NavigationService?.Navigate(new Contacts(Memory.KioskObjects.Contacts));
+        });
+
+        private RelayCommand goFeedback;
+        public RelayCommand GoFeedback => goFeedback ??= new RelayCommand(obj =>
+        {
+            NavigationService?.Navigate(new Feedback());
+        });
+
+        private RelayCommand goRules;
+        public RelayCommand GoRules => goRules ??= new RelayCommand(obj =>
+        {
+            NavigationService?.Navigate(new Rules());
+        });
+
+        private RelayCommand goVacancies;
+        public RelayCommand GoVacancies => goVacancies ??= new RelayCommand(obj =>
+        {
+            NavigationService?.Navigate(new Vacancies(Memory.KioskObjects.Vacancies));
+        });
+
+        private RelayCommand goWC;
+        public RelayCommand GoWC => goWC ??= new RelayCommand(obj =>
+        {
+            NavigationService?.Navigate(new WCPage());
+        });
+        private RelayCommand goParking;
+        public RelayCommand GoParking => goParking ??= new RelayCommand(obj =>
+        {
+            NavigationService?.Navigate(new Parking());
+        });
     }
 }

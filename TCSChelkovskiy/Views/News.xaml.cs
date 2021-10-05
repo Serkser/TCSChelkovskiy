@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TCSchelkovskiyAPI.Models;
 
 namespace TCSChelkovskiy.Views
 {
@@ -23,6 +25,27 @@ namespace TCSChelkovskiy.Views
         public News()
         {
             InitializeComponent();
+        }
+        public static readonly DependencyProperty AllNewsProperty = DependencyProperty.Register(
+         "AllNews", typeof(ObservableCollection<PromoModel>), typeof(News), new PropertyMetadata(default(ObservableCollection<PromoModel>)));
+
+        public ObservableCollection<PromoModel> AllNews
+        {
+            get => (ObservableCollection<PromoModel>)GetValue(AllNewsProperty);
+            set => SetValue(AllNewsProperty, value);
+        }
+
+        private ICommand _goNewsPage;
+
+        public ICommand GoNewsPage => _goNewsPage ??= new RelayCommand(f =>
+        {
+            var item = f as PromoModel;
+            NavigationService?.Navigate(new NewsItemsPage(item)) ;
+        });
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

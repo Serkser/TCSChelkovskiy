@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TCSChelkovskiy.Services;
+using TCSChelkovskiy.Utilities;
+using TCSchelkovskiyAPI.Models;
 
 namespace TCSChelkovskiy.Views
 {
@@ -20,9 +23,39 @@ namespace TCSChelkovskiy.Views
     /// </summary>
     public partial class NewsItemsPage : Page
     {
-        public NewsItemsPage()
+        public NewsItemsPage(PromoModel promoModel)
         {
             InitializeComponent();
+            Model = promoModel;
+            Loaded += OnLoaded;
+            Unloaded += OnUnloaded;
+        }
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            Logo?.Dispose();
+        }
+
+        private async void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Logo = await ImageDownloader.DownloadImage(Model.Shop.IconURI, System.IO.Path.GetFileName(Model.Shop.IconURI));
+        }
+
+        public static readonly DependencyProperty LogoProperty = DependencyProperty.Register(
+            "Logo", typeof(DisposableImage), typeof(ShopPage), new PropertyMetadata(default(DisposableImage)));
+
+        public DisposableImage Logo
+        {
+            get => (DisposableImage)GetValue(LogoProperty);
+            set => SetValue(LogoProperty, value);
+        }
+
+        public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
+       "Model", typeof(PromoModel), typeof(NewsItemsPage), new PropertyMetadata(default(PromoModel)));
+
+        public PromoModel Model
+        {
+            get => (PromoModel)GetValue(ModelProperty);
+            set => SetValue(ModelProperty, value);
         }
     }
 }

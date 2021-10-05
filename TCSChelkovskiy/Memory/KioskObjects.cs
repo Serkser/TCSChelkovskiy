@@ -14,12 +14,17 @@ namespace TCSChelkovskiy.Memory
 {
     public static class KioskObjects
     {
+        public static ObservableCollection<FloorModel> FilterFloors { get; set; } = new ObservableCollection<FloorModel>();
         public static ObservableCollection<Floor> Floors { get; set; } = new ObservableCollection<Floor>();
         public static ObservableCollection<CategoryModel> Categories { get; set; } = new ObservableCollection<CategoryModel>();
         public static ObservableCollection<Station> Stations { get; set; } = new ObservableCollection<Station>();
         public static ObservableCollection<ShopModel> Shops { get; set; } = new ObservableCollection<ShopModel>();
         public static ObservableCollection<ShopGalleryModel> Gallery { get; set; } = new ObservableCollection<ShopGalleryModel>();
         public static ObservableCollection<VacancyModel> Vacancies { get; set; } = new ObservableCollection<VacancyModel>();
+        public static ObservableCollection<PromoModel> Promos { get; set; } = new ObservableCollection<PromoModel>();
+        public static ObservableCollection<string> Banners { get; set; } = new ObservableCollection<string>();
+        public static ObservableCollection<ParkingModel> ParkingFloors { get; set; } = new ObservableCollection<ParkingModel>();
+        public static ObservableCollection<RuleModel> Rules { get; set; } = new ObservableCollection<RuleModel>();
 
         public static ContactsModel Contacts { get; set; } = new ContactsModel();
         public static AboutMallModel AboutMall { get; set; } = new AboutMallModel();
@@ -29,14 +34,31 @@ namespace TCSChelkovskiy.Memory
             await Task.Run(() =>
             {
                 Categories = new ObservableCollection<CategoryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetCategories());
-              //  Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
                 Shops = new ObservableCollection<ShopModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShops());
                 Gallery = new ObservableCollection<ShopGalleryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShopsGallery());
                 Vacancies = new ObservableCollection<VacancyModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetVacancies());
+                Promos = new ObservableCollection<PromoModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetPromos());
+
+
+                Rules = new ObservableCollection<RuleModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetRules());
+                Banners = new ObservableCollection<string>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetBanners());
+
+
+                //MessageBox.Show(Banners.Count.ToString());
+
+                var filterFloors = TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors();
+                filterFloors.Sort();
+                FilterFloors = new ObservableCollection<FloorModel>(filterFloors);
+
+                var parkingFloors = TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetParking();
+                parkingFloors.Sort();
+                ParkingFloors = new ObservableCollection<ParkingModel>(parkingFloors);
+
 
                 Contacts = TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetContacts();
                 AboutMall = TCSchelkovskiyAPI.TCSchelkovskiyAPI.AboutMall();
-          
+
+
                 RestoreSettings();
             });
 
@@ -68,49 +90,6 @@ namespace TCSChelkovskiy.Memory
         }
         public static string FilePath = @"settings.json";
 
-        private static ObservableCollection<Floor> ConvertToFloors(List<FloorModel> floors)
-        {
-            List<Floor> floorList = new List<Floor>();
-            foreach (var fl in floors)
-            {
-                Floor floor = new Floor
-                {
-                    Name = fl.Name,
-                    Id = fl.ID,
-                    Width = 9000,
-                    Height = 9000,
-                };
-                ObservableCollection<Area> areas = new ObservableCollection<Area>();
-                foreach (var shop in fl.Shops)
-                {
-                    Area area = new Area
-                    {
-                        Description = shop.Description,
-                        Id = shop.ID,
-                        FloorId = shop.Floor.ID,
-                        Image = shop.IconURI,
-                        Name = shop.Name,       
-                        
-                    };
-                    area.AreaCategories.Add(new AreaCategory
-                    {
-                        Id = shop.Category.ID,
-                        Name = shop.Category.Name,
-                        Image = shop.IconURI
-                    });
-
-                    foreach (var photo in shop.Photos)
-                    {
-                        area.AreaImages.Add(new AreaImage { Image = photo.ImageURI });
-                    }
-                  
-                }
-                floorList.Add(floor);
-            }
-
-            ObservableCollection<Floor> coll = new ObservableCollection<Floor>(floorList);
-            return coll;
-
-        }
+      
     }
 }

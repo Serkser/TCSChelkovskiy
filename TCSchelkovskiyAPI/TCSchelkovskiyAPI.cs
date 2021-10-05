@@ -17,7 +17,7 @@ namespace TCSchelkovskiyAPI
         public const string HOST = "https://navigator.useful.su";
         public static List<FloorModel> GetFloors()
         {
-            string url = HOST+"/api/v1/floors";
+            string url = HOST + "/api/v1/floors";
             List<FloorModel> floors = new List<FloorModel>();
             try
             {
@@ -33,48 +33,34 @@ namespace TCSchelkovskiyAPI
                 {
                     FloorModel floor = new FloorModel
                     {
+                        ImagesPrefix = user.imagesPrefix.ToString(),
                         ID = Convert.ToInt32(user.id),
                         Floor = Convert.ToInt32(user.floor),
                         Name = user.name.ToString(),
                     };
                     List<ShopModel> shops = new List<ShopModel>();
-                    foreach (var shop in user.shops)
+                    try
                     {
-                        ShopModel shopModel = new ShopModel
+                        foreach (var shop in user.shops)
                         {
-                            IconURI = shop.iconUri.ToString(),
-                            ID = Convert.ToInt32(shop.id),
-                            Name = shop.name.ToString(),
-                            Icon = shop.icon.ToString(),
-                            Description = shop.description.ToString(),
-                            Phone = shop.phone.ToString(),
-                        };
-                        List<PhotoModel> shopPhotos = new List<PhotoModel>();
-                        foreach (var photo in shop.photos)
-                        {
-                            PhotoModel shopPhoto = new PhotoModel
+                            ShopModel shopModel = new ShopModel
                             {
-                                Image = photo.image.ToString(),
-                                ImageURI = photo.imageUri.ToString(),
+                                IconURI = shop.iconUri.ToString(),
+                                ID = Convert.ToInt32(shop.id),
+                                Name = shop.name.ToString(),
+                                Icon = shop.icon.ToString(),
+                                Description = shop.description.ToString(),
+                                Phone = shop.phone.ToString(),
                             };
                         }
-                        shopModel.Photos = shopPhotos;
-
-                        CategoryModel category = new CategoryModel
-                        {
-                            IconURI = shop.category.iconUri.ToString(),
-                            ID = Convert.ToInt32(shop.category.id),
-                            Name = shop.category.name.ToString(),
-                            Icon = shop.category.icon.ToString(),
-                            Shops = null
-                        };
-                        shopModel.Category = category;
                     }
+                    catch { }
+
 
                     floor.Shops = shops;
                     floors.Add(floor);
+
                 }
-                
             }
             catch (Exception ex)
             {
@@ -105,39 +91,53 @@ namespace TCSchelkovskiyAPI
                         Icon = cat.icon.ToString(),
                     };
                     List<ShopModel> shopModels = new List<ShopModel>();
-                    foreach (var shop in cat.shops)
+                    try
                     {
-                        ShopModel shopModel = new ShopModel
+                        foreach (var shop in cat.shops)
                         {
-                            IconURI = shop.imagesPrefix.ToString()+ shop.iconUri.ToString(),
-                            ID = Convert.ToInt32(shop.id),
-                            Name = shop.name.ToString(),
-                            Icon = shop.icon.ToString(),
-                            Description = shop.description.ToString(),
-                            Phone = shop.phone.ToString(),
-                            //Floor = new FloorModel
-                            //{
-                            //    ID = Convert.ToInt32(shop.floor.id),
-                            //    Floor = Convert.ToInt32(shop.floor.floor),
-                            //    Name = shop.floor.name.ToString(),
-                            //    Shops = null
-                            //},
-                        };
-                        List<PhotoModel> shopPhotos = new List<PhotoModel>();
-                        if (shop.images != null)
-                        {
-                            foreach (var photo in shop.images)
+                            try
                             {
-                                PhotoModel shopPhoto = new PhotoModel
+                                ShopModel shopModel = new ShopModel
                                 {
-                                    Image = photo.image.ToString(),
-                                    ImageURI = photo.imageUri.ToString(),
+                                    IconURI = shop.imagesPrefix.ToString() + shop.iconUri.ToString(),
+                                    ID = Convert.ToInt32(shop.id),
+                                    Name = shop.name.ToString(),
+                                    Icon = shop.icon.ToString(),
+                                    Description = shop.description.ToString(),
+                                    Phone = shop.phone.ToString(),
+                                    //Floor = new FloorModel
+                                    //{
+                                    //    ID = Convert.ToInt32(shop.floor.id),
+                                    //    Floor = Convert.ToInt32(shop.floor.floor),
+                                    //    Name = shop.floor.name.ToString(),
+                                    //    Shops = null
+                                    //},
                                 };
+                                List<PhotoModel> shopPhotos = new List<PhotoModel>();
+                                try
+                                {
+                                    if (shop.images != null)
+                                    {
+                                        foreach (var photo in shop.images)
+                                        {
+                                            PhotoModel shopPhoto = new PhotoModel
+                                            {
+                                                Image = photo.image.ToString(),
+                                                ImageURI = photo.imageUri.ToString(),
+                                            };
+                                        }
+                                    }
+                                }
+                                catch { }
+                                shopModel.Photos = shopPhotos;
+                                shopModels.Add(shopModel);
                             }
-                        }                      
-                        shopModel.Photos = shopPhotos;
-                        shopModels.Add(shopModel);
+                            catch { }
+
+                            
+                        }
                     }
+                    catch { }
                     categories.Add(category);
                 }  
                 
@@ -415,11 +415,110 @@ namespace TCSchelkovskiyAPI
             }
             return gallery;
         }
+        public static List<ParkingModel> GetParking()
+        {
+            List<ParkingModel> parkingFloors = new List<ParkingModel>();
+            string url = HOST + "/api/v1/parking";
+            RestClient client = new RestClient(url);
+            request = new RestRequest(Method.GET);
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            response = client.Execute(request);
 
-        public static void GetNews(int? id =null) { }
-        public static void GetStations() { }
-        public static void GetRules() { }
-        public static void GetBanners() { }
+            dynamic data = JsonConvert.DeserializeObject(response.Content);
+            foreach (var floor in data)
+            {
+                try
+                {
+                    ParkingModel model = new ParkingModel
+                    {
+                        ImagesPrefix = floor.imagesPrefix.ToString(),
+                        Image = floor.image.ToString(),
+                        ID = Convert.ToInt32(floor.id),
+                        Floor = Convert.ToInt32(floor.floor),
+                    };
+                    parkingFloors.Add(model);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.StackTrace);
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+
+            return parkingFloors;
+        }
+        public static List<RuleModel> GetRules() 
+        {
+            List<RuleModel> rules = new List<RuleModel>();
+            string url = HOST + "/api/v1/rules";
+            RestClient client = new RestClient(url);
+            request = new RestRequest(Method.GET);
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            response = client.Execute(request);
+
+            dynamic data = JsonConvert.DeserializeObject(response.Content);
+            foreach (var rule in data)
+            {
+                try
+                {
+                    RuleModel model = new RuleModel()
+                    {
+                       ImagesPrefix = rule.imagesPrefix.ToString(),
+                       Title = rule.title.ToString()
+                    };
+                    List<string> imagesUrls = new List<string>();
+                    try
+                    {
+                        foreach (var img in rule.images)
+                        {
+                            imagesUrls.Add(img.ToString());
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                    model.Images = imagesUrls;
+                    rules.Add(model);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.StackTrace);
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+
+            return rules;
+        }
+        public static List<string> GetBanners()
+        {
+            List<string> imgUrls = new List<string>();
+            string url = HOST + "/api/v1/banners";
+            RestClient client = new RestClient(url);
+            request = new RestRequest(Method.GET);
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            response = client.Execute(request);
+
+
+            dynamic data = JsonConvert.DeserializeObject(response.Content);
+            foreach (var img in data)
+            {
+                try
+                {
+                    imgUrls.Add(img.image.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.StackTrace);
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+
+            return imgUrls;
+        }
         public static ContactsModel GetContacts()
         {
             string url = HOST + $"/api/v1/contacts";
@@ -530,6 +629,93 @@ namespace TCSchelkovskiyAPI
                 Debug.WriteLine(ex.Message);
             }
             return vacancies;
+        }
+
+        public static List<PromoModel> GetPromos()
+        {
+            string url = HOST + "/api/v1/promo";
+            List<ShopModel> shops = new List<ShopModel>();
+            RestClient client = new RestClient(url);
+            request = new RestRequest(Method.GET);
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            response = client.Execute(request);
+
+            List<PromoModel> promos = new List<PromoModel>();
+            dynamic data = JsonConvert.DeserializeObject(response.Content);
+            foreach (var pr in data)
+            {
+                try
+                {
+                    PromoModel promoModel = new PromoModel
+                    {
+                        ID = Convert.ToInt32(pr.id),
+                        Title = pr.title.ToString(),
+                        Description = pr.description.ToString(),
+                        Ended = pr.ended.ToString(),
+                        Shop = new ShopModel
+                        {
+                            IconURI = $"{pr.shop.iconUri}",
+                            ID = Convert.ToInt32(pr.shop.id),
+                            Icon = pr.shop.icon.ToString(),
+                            Name = pr.shop.name,
+                            Description = pr.shop.description.ToString(),
+                            Phone = pr.shop.phone.ToString(),
+                        }
+                    };
+                    promos.Add(promoModel);
+
+                }
+                catch
+                {
+
+                }
+            }
+            return promos;
+        }
+        public static List<TerminalModel> GetTerminals()
+        {
+            string url = HOST + "/api/v1/terminals";
+            List<TerminalModel> terminals = new List<TerminalModel>();
+            RestClient client = new RestClient(url);
+            request = new RestRequest(Method.GET);
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            response = client.Execute(request);
+
+            dynamic data = JsonConvert.DeserializeObject(response.Content);
+            foreach (var station in data)
+            {
+               
+                try
+                {
+                    TerminalModel terminal = new TerminalModel()
+                    {
+                        ID = Convert.ToInt32(station.id),
+                        Name = station.name.ToString(),
+                    };
+                    try
+                    {
+                        terminal.Floor = new FloorModel
+                        {
+                            ID = Convert.ToInt32(station.floor.id),
+                            Floor = Convert.ToInt32(station.floor.floor),
+                            Name = station.floor.name.ToString(),
+                        };
+                    }
+                    catch { }
+
+                    terminals.Add(terminal);
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.StackTrace);
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+           
+            return terminals;
         }
     }
 }

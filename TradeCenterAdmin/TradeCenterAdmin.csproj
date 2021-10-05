@@ -88,6 +88,7 @@
     <Compile Include="Services\BitmapToImageSourceConverter.cs" />
     <Compile Include="Services\ImageDownloader.cs" />
     <Compile Include="Storage\KioskObjects.cs" />
+    <Compile Include="Utilities\DisposableImage.cs" />
     <Compile Include="ViewModels\FloorsWindowViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MapEditorViewModel.cs" />

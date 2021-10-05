@@ -494,7 +494,7 @@ namespace NavigationMap.Controls
             ScenarioCommands.CollectionChanged += ScenarioCommandsOnCollectionChanged;
 
             _state.OnAreaSelected += _state_OnAreaSelected;
-            MapImageDisposable = new DisposableImage(SelectedFloor.Image);
+            MapImageDisposable = new DisposableImage(SelectedFloor?.Image);
         }
 
         private void Map_OnUnloaded(object sender, RoutedEventArgs e)

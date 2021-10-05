@@ -30,7 +30,7 @@ namespace TCSChelkovskiy.Controls
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            _disposableImage.Dispose();
+            _disposableImage?.Dispose();
         }
 
         public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(string), typeof(NewsItemTemplate));

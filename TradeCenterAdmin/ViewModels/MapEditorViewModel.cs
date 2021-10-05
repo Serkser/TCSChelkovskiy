@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TCSchelkovskiyAPI.Models;
 using TradeCenterAdmin.Enums;
+using TradeCenterAdmin.Utilities;
 using Image = System.Windows.Controls.Image;
 
 namespace TradeCenterAdmin.ViewModels
@@ -28,16 +29,19 @@ namespace TradeCenterAdmin.ViewModels
             This = _this;
             Floors = Storage.KioskObjects.Floors;
             Shops = Storage.KioskObjects.Shops;
+            Terminals = Storage.KioskObjects.Terminals;
             if (Floors.Count > 0)
             {
-                SelectedFloor = Floors.FirstOrDefault();
-
-               
+                SelectedFloor = Floors.FirstOrDefault();              
+            }
+            if (Terminals.Count > 0)
+            {
+                SelectedTerminal = Terminals.FirstOrDefault();
             }
             MakeStartZoom();
         }
-
-        public void LoadFloorObjects()
+        //Загрузка всего, кроме путей
+        void BaseDrawing()
         {
             //очистка старых элементов
             for (int a = 0; a < 5; a++)
@@ -62,7 +66,7 @@ namespace TradeCenterAdmin.ViewModels
                     }
                 }
             }
-        
+
 
             foreach (var obj in SelectedFloor.Stations)
             {
@@ -87,29 +91,106 @@ namespace TradeCenterAdmin.ViewModels
             foreach (var obj in SelectedFloor.Areas)
             {
                 This.DrawAreaPerimeter(obj);
-             
             }
+        }
+
+        //Загрузка всех объектов, всех путей
+        public void LoadFloorObjects()
+        {
+            BaseDrawing();
             //Рисуем пути магазинов
+
             foreach (var floor in Floors)
             {
                 foreach (var area in floor.Areas)
                 {
-                    //foreach (var currentFloorFrea in SelectedFloor.Areas)
-                    //{
-                        foreach (var way in area.Ways)
+                    foreach (var way in area.Ways)
+                    {
+                        if (way.WayPoints.Where(o => o.FloorId == SelectedFloor.Id).FirstOrDefault() != null)
                         {
-                            if (way.WayPoints.Where(o => o.FloorId == SelectedFloor.Id).FirstOrDefault() != null)
-                            {
-                                This.DrawWays(area.Ways[0], SelectedFloor.Id);
-                            }
+                            This.DrawWays(way, SelectedFloor.Id);
+                        }
                     }
-                       
-                    //}
                 }
             }
         }
+        //Загрузка объектов, отрисовка путей только выбранной станции
+        public void LoadFloorObjects(TerminalModel selectedTerminal)
+        {
+            BaseDrawing();
+            //Рисуем пути магазинов
 
+            foreach (var floor in Floors)
+            {
+                foreach (var area in floor.Areas)
+                {
+                        if (area.Ways.Where(o => o.StationId == selectedTerminal.ID).ToList().Count > 0)
+                        {
+                            foreach (var way in area.Ways.Where(o => o.StationId == SelectedTerminal.ID).ToList())
+                            {
+                                if (way.WayPoints.Where(o => o.FloorId == SelectedFloor.Id).FirstOrDefault() != null)
+                                {
+                                    This.DrawWays(way, SelectedFloor.Id);
+                                }
+                            }
+                        }
+                }
+            }
+        }
+        //Загрузка объектов, отрисовка путей только выбранной области
+        public void LoadFloorObjects(Area selectedArea)
+        {
+            BaseDrawing();
+            //Рисуем пути магазинов
+            if (selectedArea == null)
+            {
+                LoadFloorObjects(); return;
+            }
+            foreach (var floor in Floors)
+            {
+                foreach (var area in floor.Areas)
+                {
+                    if (area.Id == selectedArea.Id)
+                    {
+                        foreach (var way in area.Ways.ToList())
+                        {
+                            if (way.WayPoints.Where(o => o.FloorId == SelectedFloor.Id).FirstOrDefault() != null)
+                            {
+                                This.DrawWays(way, SelectedFloor.Id);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //Загрузка объектов, отрисовка всех путей, подсветка выбранного пути
+        public void LoadFloorObjectsWithWayHighlighting(Way selectedWay)
+        {
+            BaseDrawing();
+            //Рисуем пути магазинов
 
+            foreach (var floor in Floors)
+            {
+                foreach (var area in floor.Areas)
+                {
+                    foreach (var way in area.Ways.ToList())
+                    {
+                        if (way.WayPoints.Where(o => o.FloorId == SelectedFloor.Id).FirstOrDefault() != null)
+                        {
+                            if (way.Id == selectedWay.Id)
+                            {
+                                This.DrawWays(way, SelectedFloor.Id, System.Windows.Media.Brushes.Red);
+                            }
+                            else
+                            {
+                                This.DrawWays(way, SelectedFloor.Id);
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
         #region Свойства редактора карт
         private MapEditorTool mapEditorTool;
         public MapEditorTool MapEditorTool
@@ -119,6 +200,16 @@ namespace TradeCenterAdmin.ViewModels
             {
                 mapEditorTool = value;
                 OnPropertyChanged("MapEditorTool");
+            }
+        }
+        private ObservableCollection<TerminalModel> terminals;
+        public ObservableCollection<TerminalModel> Terminals
+        {
+            get { return terminals; }
+            set
+            {
+                terminals = value;
+                OnPropertyChanged("Terminals");
             }
         }
         private ObservableCollection<Floor> floors;
@@ -161,22 +252,53 @@ namespace TradeCenterAdmin.ViewModels
                 if (value != null)
                 {
                     LoadFloorObjects();
-                    Bitmap img = (Bitmap)System.Drawing.Image.FromFile(selectedFloor.Image);
-                    CurrentFloorImage = Services.BitmapToImageSourceConverter.BitmapToImageSource(img);
-                 
+                    CurrentFloorImage?.Dispose();
+                    CurrentFloorImage = new DisposableImage(selectedFloor.Image);
+
+
                 }
                 OnPropertyChanged("SelectedFloor");
             }
         }
 
-        private BitmapImage currentFloorImage;
-        public BitmapImage CurrentFloorImage
+        private DisposableImage currentFloorImage;
+        public DisposableImage CurrentFloorImage
         {
             get { return currentFloorImage; }
             set
             {
                 currentFloorImage = value;
                 OnPropertyChanged("CurrentFloorImage");
+            }
+        }
+
+        private TerminalModel selectedTerminal;
+        public TerminalModel SelectedTerminal
+        {
+            get { return selectedTerminal; }
+            set
+            {
+                selectedTerminal = value;
+                OnPropertyChanged("SelectedTerminal");
+            }
+        }
+        private bool showOnlySelectedTerminalWays;
+        public bool ShowOnlySelectedTerminalWays
+        {
+            get { return showOnlySelectedTerminalWays; }
+            set
+            {
+                showOnlySelectedTerminalWays = value;
+                if (showOnlySelectedTerminalWays == false)
+                {
+                    LoadFloorObjects();
+                }
+                else
+                {
+                    LoadFloorObjects(SelectedTerminal);
+                }
+                
+                OnPropertyChanged("ShowOnlySelectedTerminalWays");
             }
         }
         #endregion

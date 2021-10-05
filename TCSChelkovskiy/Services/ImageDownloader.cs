@@ -29,8 +29,8 @@ namespace TCSChelkovskiy.Services
                         client.DownloadFile(url, Path.GetFullPath(imageFile));
                     }
                 }
-
                 return new DisposableImage(Path.GetFullPath(imageFile));
+                
             });
 
         }

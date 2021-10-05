@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TCSChelkovskiy.Models;
 
 namespace TCSChelkovskiy.Views
 {
@@ -22,6 +26,7 @@ namespace TCSChelkovskiy.Views
     {
         public Feedback()
         {
+            FeedbackModel = new FeedbackModel();
             InitializeComponent();
         }
 
@@ -45,6 +50,12 @@ namespace TCSChelkovskiy.Views
                     case "Shift":
                      
                         break;
+                    case "123":
+
+                        break;
+                    case "АБВ":
+
+                        break;
                     default:
                         selectedTextBox.Text += args.CurrentKey;
                         break;
@@ -56,5 +67,57 @@ namespace TCSChelkovskiy.Views
         {
             selectedTextBox = sender as TextBox;
         }
+
+        #region Обратная связь
+
+        public static readonly DependencyProperty FeedbackModelProperty = DependencyProperty.Register(
+     "FeedbackModel", typeof(FeedbackModel), typeof(Feedback), new PropertyMetadata(default(FeedbackModel)));
+
+        public FeedbackModel FeedbackModel
+        {
+            get => (FeedbackModel)GetValue(FeedbackModelProperty);
+            set => SetValue(FeedbackModelProperty, value);
+        }
+        private RelayCommand sendFeedback;
+        public RelayCommand SendFeedback
+        {
+            get
+            {
+                return sendFeedback ??
+                    (sendFeedback = new RelayCommand(obj =>
+                    {
+                        FeedbackModel.ValidationErrors = new List<string>();
+                        var results = new List<System.ComponentModel.DataAnnotations.ValidationResult>();
+                        var context = new ValidationContext(FeedbackModel);
+                        if (!Validator.TryValidateObject(FeedbackModel, context, results, true))
+                        {
+                            foreach (var error in results)
+                            {
+                                FeedbackModel.ValidationErrors.Add(error.ErrorMessage);
+                            }
+                            FeedbackModel.FirstValidationError = FeedbackModel.ValidationErrors.FirstOrDefault();
+                        }
+                        else
+                        {
+                            FeedbackModel.FirstValidationError = string.Empty;
+
+                            MailAddress from = new MailAddress("", FeedbackModel.EmailOrPhone);
+                            MailAddress to = new MailAddress("");
+                            MailMessage message = new MailMessage(from, to);
+                            message.Subject = FeedbackModel.Topic;
+                            message.Body = FeedbackModel.Text;
+                            SmtpClient smtp = new SmtpClient("", 587);
+                            // логин и пароль
+                            smtp.Credentials = new NetworkCredential("", "");
+                            smtp.EnableSsl = true;
+                            smtp.Send(message);
+                        }
+
+                    }));
+            }
+        }
+
+        #endregion
+
     }
 }

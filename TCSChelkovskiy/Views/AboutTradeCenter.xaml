@@ -48,7 +48,7 @@
                 </ScrollViewer>
 
                 <Grid>
-                    <Button Command="{Binding GoHome}" Style="{StaticResource ButtonBordered}" Content="ПАРКОВКА" HorizontalAlignment="Left"
+                    <Button Command="{Binding GoParking}" Style="{StaticResource ButtonBordered}" Content="ПАРКОВКА" HorizontalAlignment="Left"
                     FontSize="25"  Margin="963,137,0,0" VerticalAlignment="Top" Width="260" Height="54" RenderTransformOrigin="0.5,0.5" FontWeight="Bold"/>
                     <Button Command="{Binding GoVacancies}" Style="{StaticResource ButtonBordered}" Content="ВАКАНСИИ" HorizontalAlignment="Left"
                     FontSize="25"  Margin="963,196,0,0" VerticalAlignment="Top" Width="260" Height="54" RenderTransformOrigin="0.5,0.5" FontWeight="Bold"/>

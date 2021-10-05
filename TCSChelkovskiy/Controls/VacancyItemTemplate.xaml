@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TCSChelkovskiy.Controls"
              xmlns:controls="clr-namespace:TCSChelkovskiy.Controls"
-             mc:Ignorable="d"  Loaded="loaded" Height="413" Width="681">
-    <Grid>
-        <Expander x:Name="expander" Header="Вакансия" FontSize="20" HorizontalAlignment="Left" Height="359" Margin="36,0,0,0" VerticalAlignment="Center" Width="600">
+             mc:Ignorable="d"  Loaded="loaded" Height="413" Width="1104">
+    <Grid Margin="0,0,0,0">
+        <Expander x:Name="expander" Header="Вакансия" FontSize="20" HorizontalAlignment="Left" Height="359" Margin="36,0,0,0" VerticalAlignment="Center" Width="1037">
             <Grid Background="#FFE5E5E5">
                 <TextBlock HorizontalAlignment="Left" Margin="10,27,0,0" Text="Контакты : " TextWrapping="Wrap" VerticalAlignment="Top" Width="118"/>
-                <TextBlock x:Name="contacts" HorizontalAlignment="Left" Margin="133,27,0,0" Text="Контакты : " TextWrapping="Wrap" VerticalAlignment="Top" Width="440" Height="60"/>
+                <TextBlock x:Name="contacts" HorizontalAlignment="Left" Margin="133,27,0,0" Text="Контакты : " TextWrapping="Wrap" VerticalAlignment="Top" Width="786" Height="60"/>
                 <ListView x:Name="vacancyBlocksList" Margin="10,92,10,10">
                     <ListView.ItemTemplate>
                         <DataTemplate>

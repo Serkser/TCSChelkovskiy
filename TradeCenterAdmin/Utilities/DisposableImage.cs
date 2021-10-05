@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using NavigationMap.Annotations;
 
-namespace TCSChelkovskiy.Utilities
+namespace TradeCenterAdmin.Utilities
 {
     public class DisposableImage : IDisposable, INotifyPropertyChanged
     {

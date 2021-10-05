@@ -10,6 +10,7 @@ namespace NavigationMap.Helpers
 {
     public class DisposableImage : IDisposable, INotifyPropertyChanged
     {
+        public DisposableImage() { }
         /// <summary>
         /// Уничтожаемая картинка
         /// </summary>
@@ -41,24 +42,28 @@ namespace NavigationMap.Helpers
         {
             Dispose();
 
-            var bitmap = new BitmapImage();
-            if (path.Contains("pack://application:,,,"))
+            if (path != null)
             {
-                mediaStream = Application.GetResourceStream(new Uri(path))?.Stream;
+                var bitmap = new BitmapImage();
+                if (path.Contains("pack://application:,,,"))
+                {
+                    mediaStream = Application.GetResourceStream(new Uri(path))?.Stream;
+                }
+                else
+                {
+                    mediaStream = File.OpenRead(path);
+                }
+
+
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.None;
+                bitmap.StreamSource = mediaStream;
+                bitmap.EndInit();
+
+                bitmap.Freeze();
+                Source = bitmap;
             }
-            else
-            {
-                mediaStream = File.OpenRead(path);
-            }
-
-
-            bitmap.BeginInit();
-            bitmap.CacheOption = BitmapCacheOption.None;
-            bitmap.StreamSource = mediaStream;
-            bitmap.EndInit();
-
-            bitmap.Freeze();
-            Source = bitmap;
+           
         }
 
 

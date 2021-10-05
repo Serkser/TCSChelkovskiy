@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TCSChelkovskiy.Views"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
       mc:Ignorable="d" 
       d:DesignHeight="830" d:DesignWidth="1440"
       Title="Vacancies">
@@ -12,26 +13,53 @@
             <Grid Margin="0,0,0,0">
                 <TextBlock HorizontalAlignment="Left" Margin="475,37,0,0" Text="Вакансии" FontFamily="Manrope" TextAlignment="Center" 
                     FontSize="35px" Foreground="Black" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="47"/>
-                <ListView HorizontalAlignment="Center" VerticalAlignment="Top" Height="544" Width="1154" Margin="0,89,0,0"
-                          ItemsSource="{Binding Vacancies,Mode=TwoWay}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <WrapPanel Width="681" Height="413">
-                                <Controls:VacancyItemTemplate Width="681" Height="413"
+                <ScrollViewer VerticalScrollBarVisibility="Disabled"
+                 HorizontalAlignment="Left"
+                 PanningMode="VerticalOnly"
+                 Margin="69,84,0,0" 
+                 Width="1124" 
+                 VerticalAlignment="Top"
+                 Height="549">
+                    <ListBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=AllVacancies}" 
+                 Background="White" 
+                             ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                 ScrollViewer.VerticalScrollBarVisibility="Visible"
+                 BorderThickness="0" >
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate >
+                                            <Controls:VacancyItemTemplate 
                                                            Title="{Binding Name,Mode=TwoWay}" 
                                                            Contacts="{Binding Contact,Mode=TwoWay}"    
                                                            VacancyBlocks="{Binding VacancyBlocks,Mode=TwoWay}"></Controls:VacancyItemTemplate>
-                            </WrapPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Vertical"
+                                 />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <!--<i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=GoNewsPage}"
+                                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=SelectedItem}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>-->
+                    </ListBox>
 
+                </ScrollViewer>
             </Grid>
         </Border>
-        <Button  Command="{Binding GoBack}" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
+        <Button  Command="BrowseBack" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
             HorizontalAlignment="Left" Margin="62,2,0,0" VerticalAlignment="Top" Height="64" Width="345" >
             <StackPanel Orientation="Horizontal">
-                <Image Width="40" Height="40" Source="/Views/ToHomeButton.png"/>
+                <Image Width="40" Height="40" Source="/Images/Navigation/ToHomeButton.png"/>
                 <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="Назад" FontWeight="SemiBold" Height="46"/>
             </StackPanel>
         </Button>

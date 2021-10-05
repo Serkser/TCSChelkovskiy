@@ -10,7 +10,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="700" d:DesignWidth="1059"
       Title="MapEditor" Unloaded="Page_Unloaded">
-
+    
     <Grid>
         <Viewbox>
             <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Width="1059" Height="700">
@@ -21,7 +21,7 @@
                             <i:InvokeCommandAction Command="{Binding LeftMouseButtonClick}"></i:InvokeCommandAction>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Image x:Name="img" MouseDown="click" Stretch="Uniform"  Source="{Binding CurrentFloorImage,Mode=TwoWay}" Width="9000" Height="9000" Canvas.Left="0" Canvas.Top="0">
+                    <Image x:Name="img" MouseDown="click" Stretch="Uniform"  Source="{Binding CurrentFloorImage.Source}" Width="9000" Height="9000" Canvas.Left="0" Canvas.Top="0">
 
                     </Image>
 
@@ -68,6 +68,43 @@
         </Expander>
         <Button Command="{Binding SaveChanges}" Content="Сохранить изменения"  Width="160" Height="46" Margin="778,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBlock x:Name="hints" Text="Подсказки" TextAlignment="Center" TextWrapping="Wrap" Margin="285,511,379.2,106"/>
+        <Expander Header="Киоски" Height="144" Width="160" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid Background="#FFE5E5E5">
+                <ComboBox ItemsSource="{Binding Terminals, Mode=TwoWay}" SelectedItem="{Binding SelectedTerminal, Mode=TwoWay}" 
+                    HorizontalAlignment="Left" Margin="5,28,0,0" VerticalAlignment="Top" Width="148">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding RedrawFloorItems}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <TextBlock Text="Выбранный киоск :" FontSize="10" Margin="5,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox IsChecked="{Binding ShowOnlySelectedTerminalWays,Mode=TwoWay}" HorizontalAlignment="Left" Margin="5,55,0,0" VerticalAlignment="Top" Height="57" Width="143">
+                    <TextBlock TextWrapping="Wrap" Width="123">
+                        Показать маршруты только выбранного киоска
+                    </TextBlock>
+                </CheckBox>
+
+            </Grid>
+        </Expander>
+        <Expander Header="Выбранная область" Height="225" Width="160" Margin="10,154,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid Background="#FFE5E5E5">
+                <TextBlock Text="Название :" FontSize="10" Margin="5,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <TextBlock Text="Этаж :" FontSize="10" Margin="5,41,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Unchecked="areaUncheckedOwnWays" Checked="areaCheckedOwnWays" x:Name="areaShowOwnWays" HorizontalAlignment="Left" Margin="5,60,0,0" VerticalAlignment="Top" Height="57" Width="143">
+                    <TextBlock TextWrapping="Wrap" Width="123"><Run Text="Показать маршруты только выбранной области"/></TextBlock>
+                </CheckBox>
+                <TextBlock Text="Этаж :" x:Name="areaTitle" FontSize="10" Margin="5,22,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="1.924,0.27" Height="14" Width="143" />
+                <TextBlock Text="Этаж :" x:Name="areaFloor" FontSize="10" Margin="38,41,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="1.924,0.27" Height="14" Width="114" />
+                <TextBlock Text="Список маршрутов :" FontSize="10" Margin="5,107,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="1.924,0.27" Height="14" Width="143" />
+                <ComboBox x:Name="areaWays" SelectionChanged="areaWaysSelectionChanged"
+                    HorizontalAlignment="Left" Margin="5,122,0,0" VerticalAlignment="Top" Width="148">
+                </ComboBox>
+                <Button x:Name="areaDeleteWay" Click="areaDeleteWayHandler"  Content="Удалить выбранный" HorizontalAlignment="Left" Margin="5,149,0,0" VerticalAlignment="Top" Width="143"/>
+                <Button x:Name="areaDeleteAllWays" Click="areaDeleteAllWaysHandler" Content="Удалить все" HorizontalAlignment="Left" Margin="5,172,0,0" VerticalAlignment="Top" Width="143"/>
+
+            </Grid>
+        </Expander>
 
 
 
