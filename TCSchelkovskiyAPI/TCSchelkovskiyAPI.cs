@@ -230,50 +230,56 @@ namespace TCSchelkovskiyAPI
                 foreach (var shop in data)
                 {
                     Debug.WriteLine("++");
-                    ShopModel shopModel = new ShopModel
+                    try
                     {
-                        IconURI = shop.iconUri.ToString(),
-                        ID = Convert.ToInt32(shop.id),
-                        Name = shop.name.ToString(),
-                        Icon = shop.icon.ToString(),
-                        Description = shop.description.ToString(),
-                        Phone = shop.phone.ToString(),
-                        Floor = new FloorModel
+                        ShopModel shopModel = new ShopModel
                         {
-                            ID = Convert.ToInt32(shop.floor.id),
-                            Floor = Convert.ToInt32(shop.floor.floor),
-                            Name = shop.floor.name.ToString(),
-                            Shops = null
-                        },
-                        Category = new CategoryModel
-                        {
-                            IconURI = shop.category.ToString(),
-                            ID = Convert.ToInt32(shop.category.id),
-                            Name = shop.category.name.ToString(),
-                            Icon = shop.category.icon.ToString(),
-                            Shops = null
-                        }
-                    };
-                    List<PhotoModel> shopPhotos = new List<PhotoModel>();
-                    if (shop.photos != null)
-                    {
-                        foreach (var photo in shop.photos)
-                        {
-                            PhotoModel shopPhoto = new PhotoModel
+                            IconURI = shop.iconUri.ToString(),
+                            ID = Convert.ToInt32(shop.id),
+                            Name = shop.name.ToString(),
+                            Icon = shop.icon.ToString(),
+                            Description = shop.description.ToString(),
+                            Phone = shop.phone.ToString(),
+                            Floor = new FloorModel
                             {
-                                Image = photo.image.ToString(),
-                                ImageURI = photo.imageUri.ToString(),
-                            };
-                            shopPhotos.Add(shopPhoto);
+                                ID = Convert.ToInt32(shop.floor.id),
+                                Floor = Convert.ToInt32(shop.floor.floor),
+                                Name = shop.floor.name.ToString(),
+                                Shops = new List<ShopModel>()
+                            },
+                            //Category = new CategoryModel
+                            //{
+                            //    IconURI = shop.category.ToString(),
+                            //    ID = Convert.ToInt32(shop.category.id),
+                            //    Name = shop.category.name.ToString(),
+                            //    Icon = shop.category.icon.ToString(),
+                            //    Shops = new List<ShopModel>()
+                            //}
+                        };
+                        List<PhotoModel> shopPhotos = new List<PhotoModel>();
+                        try
+                        {
+                            if (shop.images != null)
+                            {
+                                foreach (var photo in shop.images)
+                                {
+                                    PhotoModel shopPhoto = new PhotoModel
+                                    {
+                                        Image = photo.ToString(),
+                                    };
+                                    shopPhotos.Add(shopPhoto);
+                                }
+                                shopModel.Photos = shopPhotos;
+
+                            }
+                            shops.Add(shopModel);
                         }
-                        shopModel.Photos = shopPhotos;
-                        
+                        catch (NotFiniteNumberException ex) { }
                     }
-                    shops.Add(shopModel);
-                    
+                    catch (NotFiniteNumberException ex) { }
                 }
             }
-            catch (Exception ex)
+            catch (NotFiniteNumberException ex)
             {
                 Debug.WriteLine(ex.StackTrace);
                 Debug.WriteLine(ex.Message);

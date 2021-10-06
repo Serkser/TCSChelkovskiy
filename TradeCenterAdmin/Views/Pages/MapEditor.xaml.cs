@@ -775,6 +775,7 @@ namespace TradeCenterAdmin.Views.Pages
                 TextBlock shopName = new TextBlock();
                 shopName.Uid = area.Id.ToString() + "name";
                 shopName.Text = area.Name;
+                shopName.FontSize = 55;
                 shopName.Margin = new Thickness(minX + xDiff / 2, minY + yDiff / 2, 0, 0);
                 canvasMap.Children.Add(shopName);
             }

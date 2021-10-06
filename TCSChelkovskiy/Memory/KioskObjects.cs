@@ -72,6 +72,7 @@ namespace TCSChelkovskiy.Memory
                 using (StreamReader file = File.OpenText(FilePath))
                 {
                     Floors = (ObservableCollection<Floor>)serializer.Deserialize(file, typeof(ObservableCollection<Floor>));
+                    //MessageBox.Show(Floors.Count.ToString());
                 }
             }
 

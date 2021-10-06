@@ -36,14 +36,9 @@ namespace TCSChelkovskiy.Views
             DataContext = new ViewModels.MapViewModel(this, main,shop);
         }
 
-        public void ss(Area obj)
-        {
-            ((ViewModels.MapViewModel)this.DataContext).CurrentFloorShop = obj;
-        }
-
         private void Map_OnOnAreaSelected(Area obj)
         {
-            
+            ((ViewModels.MapViewModel)this.DataContext).CurrentFloorShop = obj;
         }
     }
 }
