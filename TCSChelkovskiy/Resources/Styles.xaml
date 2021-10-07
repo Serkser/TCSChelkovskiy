@@ -313,7 +313,7 @@
                           Command="ScrollBar.LineUpCommand" >
             </RepeatButton>
             <Track Name="PART_Track" Grid.Row="1" 
-                   IsDirectionReversed="True">
+                  >
                 <Track.DecreaseRepeatButton>
                     <RepeatButton Command="ScrollBar.PageUpCommand" Style="{StaticResource ScrollBarPageButtonStyleLeft}">
                     </RepeatButton>

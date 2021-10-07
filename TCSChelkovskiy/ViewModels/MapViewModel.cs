@@ -62,7 +62,7 @@ namespace TCSChelkovskiy.ViewModels
                         CurrentFloorShop = area;
                         CurrentFloor = floor;
                         isShopFound = true;
-                        This.Map.Navigate(CurrentFloorShop.Id);
+                        This.Map.NavigateToArea(CurrentFloorShop.Id);
                         break;
                     }
                 }
@@ -246,10 +246,10 @@ namespace TCSChelkovskiy.ViewModels
                     {
                         var station = floors.First().Stations.First().Id;
                         var test = floors.First().Areas.First().Id;
-                        This.Map.Navigate(test);
+                        This.Map.NavigateToArea(test);
                         if (CurrentFloorShop != null)
                         {
-                            This.Map.Navigate(CurrentFloorShop.Id);
+                            This.Map.NavigateToArea(CurrentFloorShop.Id);
                         }
                     }));
             }
