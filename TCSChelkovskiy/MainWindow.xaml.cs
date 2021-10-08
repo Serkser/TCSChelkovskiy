@@ -25,7 +25,6 @@ namespace TCEvropeyskiy
         {
             InitializeComponent();
             this.DataContext = new ViewModels.MainWindowViewModel(this);
-            frame.Navigate(new MapPage(this));
         }
     }
 }

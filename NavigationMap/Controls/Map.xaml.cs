@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -48,7 +49,50 @@ namespace NavigationMap.Controls
 
         #region Interface
 
-        public void Navigate(int areaId)
+        private void Navigate(Point position, Floor floor)
+        {
+            ScenarioCommands.Add(new ScenarioCommand()
+            {
+                ScenarioBeforeAction = () =>
+                {
+                    SelectedFloor = floor;
+                }
+            });
+
+            Matrix toMatrix = MapMatrix;
+
+            double scale = 3;
+
+            (double width1, double height1) = (floor.Width * MapMatrix.M11,
+                floor.Height * MapMatrix.M22);
+
+            if (double.IsNaN(position.X) || double.IsNaN(position.Y))
+            {
+                return;
+            }
+
+            double offsetX = position.X;
+            double offsetY = position.Y;
+
+            toMatrix.OffsetX = width1 / 2 - offsetX;
+            toMatrix.OffsetY = height1 / 2 - offsetY;
+
+            toMatrix.ScaleAt(scale, scale, width1 / 2, height1 / 2);
+
+            MatrixAnimationBase animation = new MatrixAnimation(toMatrix, TimeSpan.FromMilliseconds(500));
+
+            ScenarioCommands.Add(new ScenarioCommand()
+            {
+                Animation = animation,
+                ScenarioAfterAction = () =>
+                {
+                    MapMatrix = toMatrix;
+                }
+            });
+        }
+
+
+        public void NavigateToArea(int areaId)
         {
             Area area = Floors.SelectMany(f => f.Areas).FirstOrDefault(a => a.Id == areaId);
 
@@ -75,46 +119,17 @@ namespace NavigationMap.Controls
                     continue;
                 }
 
-                ScenarioCommands.Add(new ScenarioCommand()
-                {
-                    ScenarioBeforeAction = () =>
-                    {
-                        SelectedFloor = floor;
-                    }
-                });
+                var wayPointToNavigate = way.WayPoints.FirstOrDefault();
 
-                Matrix toMatrix = MapMatrix;
-
-                double scale = 3;
-
-                (double width1, double height1) = (floor.Width * MapMatrix.M11,
-                    floor.Height * MapMatrix.M22);
-
-                WayPoint firstWayPoint = way.WayPoints.FirstOrDefault();
-
-                if (firstWayPoint is null)
+                if (wayPointToNavigate is null)
                 {
                     continue;
                 }
 
-                double offsetX = firstWayPoint.X;
-                double offsetY = firstWayPoint.Y;
+                Navigate(wayPointToNavigate.Position, floor);
 
-                toMatrix.OffsetX = width1 / 2 - offsetX;
-                toMatrix.OffsetY = height1 / 2 - offsetY;
-
-                toMatrix.ScaleAt(scale, scale, width1 / 2, height1 / 2);
-
-                MatrixAnimationBase animation = new MatrixAnimation(toMatrix, TimeSpan.FromMilliseconds(500));
-
-                ScenarioCommands.Add(new ScenarioCommand()
-                {
-                    Animation = animation,
-                    ScenarioAfterAction = () =>
-                    {
-                        MapMatrix = toMatrix;
-                    }
-                });
+                double offsetX = wayPointToNavigate.Position.X;
+                double offsetY = wayPointToNavigate.Position.Y;
 
                 Point NormalizePoint(Point p)
                 {
@@ -125,7 +140,7 @@ namespace NavigationMap.Controls
 
                 PathFigure pFigure = new()
                 {
-                    StartPoint = NormalizePoint(firstWayPoint.Position)
+                    StartPoint = NormalizePoint(wayPointToNavigate.Position)
                 };
 
                 PolyLineSegment line = new();
@@ -315,7 +330,8 @@ namespace NavigationMap.Controls
             Map map = d as Map;
 
             map?.SelectedAreaToStationWays?.Clear();
-            map.MapImageDisposable = new DisposableImage((e.NewValue as Floor).Image);
+            var floor = e.NewValue as Floor;
+            map.MapImageDisposable = new DisposableImage(Path.GetFullPath((e.NewValue as Floor).Image));
         }
 
         public Floor SelectedFloor
@@ -419,6 +435,23 @@ namespace NavigationMap.Controls
             }
         }
 
+        public void ZoomTo(IMapElement mapElement)
+        {
+            if (mapElement is null)
+            {
+                return;
+            }
+
+            Floor floor = Floors.FirstOrDefault(f => f.Id == mapElement.FloorId);
+
+            if (floor is null)
+            {
+                return;
+            }
+
+            Navigate(mapElement.Position, floor);
+        }
+
         private void Zoom(bool zoomIn, double zoomStep = ZOOM_STEP)
         {
             Matrix toMatrix = MapMatrix;
@@ -494,7 +527,7 @@ namespace NavigationMap.Controls
             ScenarioCommands.CollectionChanged += ScenarioCommandsOnCollectionChanged;
 
             _state.OnAreaSelected += _state_OnAreaSelected;
-            MapImageDisposable = new DisposableImage(SelectedFloor?.Image);
+            //MapImageDisposable = new DisposableImage(Path.GetFullPath(SelectedFloor?.Image));
         }
 
         private void Map_OnUnloaded(object sender, RoutedEventArgs e)
