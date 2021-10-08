@@ -67,31 +67,36 @@ namespace TradeCenterAdmin.ViewModels
                 }
             }
 
-
-            foreach (var obj in SelectedFloor.Stations)
+            if(SelectedFloor != null)
             {
-                switch (obj.AreaPoint.PointType)
+                foreach (var obj in SelectedFloor?.Stations)
                 {
-                    case NavigationMap.Enums.PointTypeEnum.Entry:
-                        if (obj.Name.Contains("Вход"))
-                        {
-                            This.DrawEntry(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
-                        }
-                        else if (obj.Name.Contains("Лестница"))
-                        {
-                            This.DrawStairs(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
-                        }
-                        break;
-                    case NavigationMap.Enums.PointTypeEnum.Station:
-                        This.DrawKiosk(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
-                        break;
+                    switch (obj.AreaPoint.PointType)
+                    {
+                        case NavigationMap.Enums.PointTypeEnum.Entry:
+                            if (obj.Name.Contains("Вход"))
+                            {
+                                This.DrawEntry(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
+                            }
+                            else if (obj.Name.Contains("Лестница"))
+                            {
+                                This.DrawStairs(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
+                            }
+                            break;
+                        case NavigationMap.Enums.PointTypeEnum.Station:
+                            This.DrawKiosk(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
+                            break;
+                    }
+                }
+                //Рисуем области магазинов
+                foreach (var obj in SelectedFloor.Areas)
+                {
+                    This.DrawAreaPerimeter(obj);
                 }
             }
-            //Рисуем области магазинов
-            foreach (var obj in SelectedFloor.Areas)
-            {
-                This.DrawAreaPerimeter(obj);
-            }
+
+           
+           
         }
 
         //Загрузка всех объектов, всех путей

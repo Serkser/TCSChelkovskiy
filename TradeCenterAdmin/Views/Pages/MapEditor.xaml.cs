@@ -473,20 +473,29 @@ namespace TradeCenterAdmin.Views.Pages
                 };
                 deleteButton.Click += (sender1, e1) =>
                 {
-
+                    for (int ii = 0; ii < 5; ii++)
+                    {
+                        try
+                        {
+                            canvasMap.Children.Remove(entry);
+                        }
+                        catch { }
+                    }
+                    
                     for (int i = 0; i < way.WayPoints.Count; i++) 
                     {
                         var wayPoint = way.WayPoints[i];
                         if (wayPoint.X == entry.Margin.Left && wayPoint.Y == entry.Margin.Top)
                         {
                             way.WayPoints.Remove(wayPoint);
-                            DrawWays(way,floorID);
+                            for (int ii = 0; ii < 5; ii++)
+                            {
+                                DrawWays(way, floorID);
+                            }
                         }
                     }
 
-
-                    canvasMap.Children.Remove(entry);
-
+                   
                 };
                 entry.ContextMenu.Items.Add(deleteButton);
                 #endregion
@@ -584,7 +593,11 @@ namespace TradeCenterAdmin.Views.Pages
                     canvasMap.Children.Remove(perimeter);
                     ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Areas.Remove(area);
                     area = null;
-                    ((ViewModels.MapEditorViewModel)this.DataContext).LoadFloorObjects();
+                    for (int i = 0; i < 5; i++)
+                    {
+                        ((ViewModels.MapEditorViewModel)this.DataContext).LoadFloorObjects();
+                    }
+                 
                 };
                 perimeter.ContextMenu.Items.Add(delButton);
                 #endregion

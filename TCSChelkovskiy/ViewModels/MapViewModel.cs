@@ -26,6 +26,7 @@ namespace TCSChelkovskiy.ViewModels
         {
           
             Floors = KioskObjects.Floors;
+
             Categories = KioskObjects.Categories;
             Stations = KioskObjects.Stations;
             Shops = KioskObjects.Shops;
@@ -34,9 +35,8 @@ namespace TCSChelkovskiy.ViewModels
             {
                 CurrentFloor = Floors.FirstOrDefault();
                 This.Map.SelectedStation = CurrentFloor.Stations.FirstOrDefault();
-
             }
-         
+            
         }
         public MapViewModel(Views.MapPage _this, MainWindow main)
         {
@@ -77,6 +77,7 @@ namespace TCSChelkovskiy.ViewModels
         {
             get
             {
+               
                 return currentFloor;
             }
             set

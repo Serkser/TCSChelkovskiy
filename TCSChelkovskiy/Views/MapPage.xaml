@@ -12,8 +12,10 @@
 
     <Grid>
         <Controls:Map   x:Name="Map" Margin="0,0,-0,-0" 
-                        Floors="{Binding Floors,Mode=TwoWay}" OnAreaSelected="Map_OnOnAreaSelected" SelectedFloor="{Binding CurrentFloor,Mode=TwoWay}"
-                          WayStrokeColor="#EC84D3">
+                        OnAreaSelected="Map_OnOnAreaSelected"
+                        Floors="{Binding Floors,Mode=TwoWay}" 
+                        SelectedFloor="{Binding CurrentFloor,Mode=TwoWay}"
+                        WayStrokeColor="#EC84D3">
         </Controls:Map>
 
         <Button Command="{Binding NavigateTo}"   Style="{StaticResource FooterButton}" Content=""
@@ -38,13 +40,22 @@
         </Button>
         <Button  Command="{Binding GoParking}" IsEnabled="True" Style="{StaticResource FloorButtonLeft}" Content="P"
             FontSize="20"  Margin="102,80,1262,0" VerticalAlignment="Top" Height="80"/>
-        <ListView Margin="180,78,0,0" BorderThickness="0" ItemsSource="{Binding Floors, Mode=TwoWay}"  Style="{DynamicResource listView}" ItemContainerStyle="{StaticResource listViewItems}"
-                  SelectedItem="{Binding CurrentFloor, Mode=TwoWay}" 
-            HorizontalAlignment="Left" VerticalAlignment="Top" Width="556" Height="86">
+        <ListView Margin="180,78,0,0" BorderThickness="0" 
+               
+                  Style="{DynamicResource listView}"
+                  ItemContainerStyle="{StaticResource listViewItems}"
+           
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Width="556"
+            SelectedItem="{Binding CurrentFloor, Mode=TwoWay}"
+            ItemsSource="{Binding Floors, Mode=TwoWay}"
+            Height="86">
+        
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel Orientation="Horizontal"  Height="80" Width="80" >
-                        <RadioButton IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}, Mode=FindAncestor}}"
+                        <RadioButton IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}, Mode=FindAncestor}}"
                                     Content="{Binding FloorNumber, Mode=TwoWay}"  Style="{StaticResource CircleCheckbox}"
                       FontSize="20" Background="AntiqueWhite" HorizontalAlignment="Left" VerticalAlignment="Top" Height="80" Width="80" Cursor="Hand" Margin="0,0,0,0"/>
                     </WrapPanel>
