@@ -30,7 +30,15 @@ namespace TradeCenterAdmin.Storage
         static JsonSerializer serializer = new JsonSerializer();
         public static async Task LoadAllObjects()
         {
-            Shops = new ObservableCollection<ShopModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShops());
+            var pagesCount = TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShopPagesCount();
+            List<ShopModel> shops = new List<ShopModel>();
+            for (int i = 0; i < pagesCount + 1; i++)
+            {
+                shops.AddRange(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShops(i));
+            }
+            Shops = new ObservableCollection<ShopModel>(shops);
+
+
             Terminals = new ObservableCollection<TerminalModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetTerminals());
             //await Task.Run(() =>
             //{

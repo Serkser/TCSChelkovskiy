@@ -34,7 +34,17 @@ namespace TCSChelkovskiy.Memory
             await Task.Run(() =>
             {
                 Categories = new ObservableCollection<CategoryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetCategories());
-                Shops = new ObservableCollection<ShopModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShops());
+
+
+                var pagesCount = TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShopPagesCount();
+                List<ShopModel> shops = new List<ShopModel>();
+                for (int i = 0; i < pagesCount + 1; i++)
+                {
+                    shops.AddRange(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShops(i));
+                }
+                Shops = new ObservableCollection<ShopModel>(shops);
+
+
                 Gallery = new ObservableCollection<ShopGalleryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShopsGallery());
                 Vacancies = new ObservableCollection<VacancyModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetVacancies());
                 Promos = new ObservableCollection<PromoModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetPromos());

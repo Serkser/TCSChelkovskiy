@@ -213,9 +213,32 @@ namespace TCSchelkovskiyAPI
             }
             return new CategoryModel { };
         }
-        public static List<ShopModel> GetShops()
+        public static int GetShopPagesCount()
         {
-            string url = HOST + "/api/v1/shop";
+            string url = HOST + "/api/v1/shops/page";
+            RestClient client = new RestClient(url);
+            request = new RestRequest(Method.GET);
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            response = client.Execute(request);
+
+            int pages = 0;
+
+            dynamic data = JsonConvert.DeserializeObject(response.Content);
+            try
+            {
+                pages = Convert.ToInt32(data.countPage);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Debug.WriteLine(ex.StackTrace);
+                Debug.WriteLine(ex.Message);
+            }
+            return pages;
+        }
+        public static List<ShopModel> GetShops(int page)
+        {
+            string url = HOST + $"/api/v1/shops/page/{page}";
             List<ShopModel> shops = new List<ShopModel>();
             try
             {
@@ -227,14 +250,15 @@ namespace TCSchelkovskiyAPI
 
                
                 dynamic data = JsonConvert.DeserializeObject(response.Content);
-                foreach (var shop in data)
+                foreach (var shop in data.shops)
                 {
+                    ShopModel shopModel = new ShopModel();
                     Debug.WriteLine("++");
                     try
                     {
-                        ShopModel shopModel = new ShopModel
+                        shopModel = new ShopModel
                         {
-                            IconURI = shop.iconUri.ToString(),
+                            IconURI = shop.iconUri,
                             ID = Convert.ToInt32(shop.id),
                             Name = shop.name.ToString(),
                             Icon = shop.icon.ToString(),
@@ -272,14 +296,17 @@ namespace TCSchelkovskiyAPI
                                 shopModel.Photos = shopPhotos;
 
                             }
-                            shops.Add(shopModel);
+                            
                         }
-                        catch (NotFiniteNumberException ex) { }
+                        catch (Exception ex) { }
                     }
-                    catch (NotFiniteNumberException ex) { }
+
+                    catch (Exception ex) { }
+                    shops.Add(shopModel);
                 }
+
             }
-            catch (NotFiniteNumberException ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.StackTrace);
                 Debug.WriteLine(ex.Message);

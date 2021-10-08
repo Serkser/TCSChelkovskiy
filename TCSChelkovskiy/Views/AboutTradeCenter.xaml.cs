@@ -42,7 +42,7 @@ namespace TCSChelkovskiy.Views
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            Image1.Dispose();
+            Image1?.Dispose();
             Image2?.Dispose();
         }
 
