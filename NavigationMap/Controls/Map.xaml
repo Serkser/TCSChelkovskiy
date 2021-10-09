@@ -32,8 +32,7 @@
             Height="{Binding ElementName=MainGrid, Path=ActualHeight}">
             <Grid
                 x:Name="MainContainer"
-                Width="{Binding ElementName=Self,Path=SelectedFloor.Width}"
-                Height="{Binding ElementName=Self,Path=SelectedFloor.Height}"
+
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 IsManipulationEnabled="True"
@@ -148,6 +147,8 @@
                                         <Border Background="Aqua">
                                             <Image
                                                 Focusable="True"
+                                                Width="9000"
+                                                Height="9000"
                                                 SnapsToDevicePixels="True"
                                                 Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=MapImageDisposable.Source}"
                                                 Stretch="Uniform">

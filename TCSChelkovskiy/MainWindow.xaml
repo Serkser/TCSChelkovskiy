@@ -10,12 +10,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920" WindowStyle="None" Background="#E5E5E5" WindowState="Maximized">
     <Grid >
-        <Viewbox Margin="10,36,352,136">
-            <Grid>
-                <Rectangle HorizontalAlignment="Left" Height="140" Margin="480,940,0,0" Stroke="#D8D5CC" Fill="#D8D5CC" VerticalAlignment="Top" Width="1463"/>
-                <Rectangle HorizontalAlignment="Left" Height="164" Margin="480,0,0,0" Fill="#D3C59F" Stroke="#D3C59F" VerticalAlignment="Top" Width="1463"/>
-                <Image HorizontalAlignment="Left" Height="124" Margin="516,20,0,0" VerticalAlignment="Top" Width="504" Source="/Images/MainWindow/Logo.png"/>
-                <Button Command="{Binding GoShops}" Style="{StaticResource FooterButton}" Content="МАГАЗИНЫ" 
+        <!--<Viewbox Margin="10,36,352,136">-->
+        <Grid>
+            <Rectangle HorizontalAlignment="Left" Height="140" Margin="480,940,0,0" Stroke="#D8D5CC" Fill="#D8D5CC" VerticalAlignment="Top" Width="1463"/>
+            <Image HorizontalAlignment="Left" Height="360" VerticalAlignment="Top" Width="480" Source="{Binding BannerImage1.Source}" Stretch="Fill"/>
+                <Image HorizontalAlignment="Left" Height="360" VerticalAlignment="Top" Width="480" Margin="0,360,0,0" Source="{Binding BannerImage2.Source}" Stretch="Fill" />
+                <Image HorizontalAlignment="Left" Height="360" VerticalAlignment="Top" Width="480" Margin="0,720,0,0" Source="{Binding BannerImage3.Source}" Stretch="Fill"/>
+            <Rectangle HorizontalAlignment="Left" Height="164" Margin="480,0,0,0" Fill="#D3C59F" Stroke="#D3C59F" VerticalAlignment="Top" Width="1463"/>
+            <Image HorizontalAlignment="Left" Height="124" Margin="516,20,0,0" VerticalAlignment="Top" Width="504" Source="/Images/MainWindow/Logo.png"/>
+            <Button Command="{Binding GoShops}" Style="{StaticResource FooterButton}" Content="МАГАЗИНЫ" 
             FontSize="20"  Margin="534,960,1074,0" VerticalAlignment="Top" Width="335" Height="100">
                     <Button.Background>
                         <ImageBrush ImageSource="/Images/ForViewImages/shops.png"/>
@@ -79,8 +82,8 @@
                     </i:Interaction.Triggers>
                 </ListBox>
 
-            </Grid>
-        </Viewbox>
+        </Grid>
+        <!--</Viewbox>-->
 
       
     </Grid>

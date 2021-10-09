@@ -83,23 +83,14 @@ namespace NavigationMap.Models
                 OnPropertyChanged();
             }
         }
+        
+        public Point MiddlePoint => GeometryHelper.GetMiddlePoint(PointCollection);
 
-        private int _innerId;
-
-        public int InnerId
-        {
-            get => _innerId;
-            set
-            {
-                _innerId = value;
-                OnPropertyChanged();
-            }
-        }
         private Point _position;
 
         public Point Position
         {
-            get => GeometryHelper.GetMiddlePoint(PointCollection);
+            get => default;
             set
             {
                 _position = value;

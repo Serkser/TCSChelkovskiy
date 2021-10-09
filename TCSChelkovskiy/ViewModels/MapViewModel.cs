@@ -245,9 +245,7 @@ namespace TCSChelkovskiy.ViewModels
                 return navigateTo ??
                     (navigateTo = new RelayCommand(obj =>
                     {
-                        var station = floors.First().Stations.First().Id;
-                        var test = floors.First().Areas.First().Id;
-                        This.Map.NavigateToArea(test);
+                    
                         if (CurrentFloorShop != null)
                         {
                             This.Map.NavigateToArea(CurrentFloorShop.Id);
