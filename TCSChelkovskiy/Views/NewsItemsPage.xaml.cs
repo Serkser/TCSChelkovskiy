@@ -37,7 +37,7 @@ namespace TCSChelkovskiy.Views
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            Logo = await ImageDownloader.DownloadImage(Model.Shop.IconURI, System.IO.Path.GetFileName(Model.Shop.IconURI));
+            Logo = await ImageDownloader.DownloadImage(Model.Shop.IconURI, Model.Shop.Icon);
         }
 
         public static readonly DependencyProperty LogoProperty = DependencyProperty.Register(

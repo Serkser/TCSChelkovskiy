@@ -44,13 +44,11 @@ namespace TCEvropeyskiy.ViewModels
 
             
             SearchText = "Поиск";
-            BannersUrls = KioskObjects.Banners;
+            BannersUrls = new ObservableCollection<BannerContainer>(
+                 KioskObjects.Banners.Where(o => o.BannerModel.IsVisible && o.BannerModel.Ended > DateTime.Now).ToList());
             FilterFloors = KioskObjects.FilterFloors;
             Promos = KioskObjects.Promos;
 
-            SearchText = "Поиск";
-
-           
 
             ParkingUrls = new ObservableCollection<ParkingModel>
             {
@@ -61,60 +59,28 @@ namespace TCEvropeyskiy.ViewModels
                 CurrentParkingFloor = ParkingUrls.FirstOrDefault();
             }
 
-           // LoadBanners();   /// ПРОВЕРИТЬ !!!
+            MessageBox.Show(BannersUrls.Count.ToString());
+            LoadBanners();  /// ПРОВЕРИТЬ !!!
+
+
         }
 
         async Task LoadBanners()
         {
             try
             {
-                BannerImage1 = ImageDownloader.DownloadImage(Path.Combine("uploads/banners/" + BannersUrls[0]), Path.GetFileName(BannersUrls[0])).Result;
-                BannerImage2 = ImageDownloader.DownloadImage(Path.Combine("uploads/banners/" + BannersUrls[1]), Path.GetFileName(BannersUrls[1])).Result;
-                BannerImage3 = ImageDownloader.DownloadImage(Path.Combine("uploads/banners/" + BannersUrls[2]), Path.GetFileName(BannersUrls[2])).Result;
+                foreach (var img in BannersUrls)
+                {
+                    img.Image = await ImageDownloader.DownloadImage(Path.Combine("uploads/banners/" + img.BannerModel.Image), Path.GetFileName(img.BannerModel.Image));
+                }
             }
             catch { }
         }
-        #region картинка баннера
-        private DisposableImage bannerImage1;
-        public DisposableImage BannerImage1
+        int currentSlideIndex = 0;
+        async Task SlideBanners()
         {
-            get
-            {
-                return bannerImage1;
-            }
-            set
-            {
-                bannerImage1 = value;
-                OnPropertyChanged("BannerImage1");
-            }
+         //  This.bannersListBox.ScrollIntoView //
         }
-        private DisposableImage bannerImage2;
-        public DisposableImage BannerImage2
-        {
-            get
-            {
-                return bannerImage2;
-            }
-            set
-            {
-                bannerImage2 = value;
-                OnPropertyChanged("BannerImage2");
-            }
-        }
-        private DisposableImage bannerImage3;
-        public DisposableImage BannerImage3
-        {
-            get
-            {
-                return bannerImage3;
-            }
-            set
-            {
-                bannerImage3 = value;
-                OnPropertyChanged("BannerImage3");
-            }
-        }
-        #endregion
 
 
         #region Методы и команды для хедера
@@ -195,8 +161,8 @@ namespace TCEvropeyskiy.ViewModels
             }
         }
         //Баннеры в левой стороне главного окна
-        private ObservableCollection<string> bannersUrls;
-        public ObservableCollection<string> BannersUrls
+        private ObservableCollection<BannerContainer> bannersUrls;
+        public ObservableCollection<BannerContainer> BannersUrls
         {
             get
             {
@@ -462,8 +428,14 @@ namespace TCEvropeyskiy.ViewModels
         public RelayCommand GoParking => goParking ??= new RelayCommand(obj =>
         {
             This.frame.Navigate(new Parking() { DataContext = this});
-        });         
-       
+        });
+        private RelayCommand goBannersShop;
+        public RelayCommand GoBannersShop => goBannersShop ??= new RelayCommand(obj =>
+        {
+            BannerContainer banner = obj as BannerContainer;
+            var shop = KioskObjects.Shops.Where(o => o.ID == banner.BannerModel.ShopID).FirstOrDefault();
+            This.frame.Navigate(new ShopPage(shop));
+        });
         #endregion
         #region Навигация к объектам из ListView
         //private RelayCommand goShopPage;
@@ -474,15 +446,15 @@ namespace TCEvropeyskiy.ViewModels
         //                This.frame.Navigate(new ShopPage() );
         //            }                    
         //        });
-        private RelayCommand goShopsByCategory;
-        public RelayCommand GoShopsByCategory => goShopsByCategory ??= new RelayCommand(obj =>
-                {
-                    if (CurrentCategory != null)
-                    {
-                        ShopsByCategory = new ObservableCollection<ShopModel>(Shops.Where(o => o.Category.ID == CurrentCategory.ID).ToList());
-                        This.frame.Navigate(new ShopsView() { DataContext = this });
-                    }
-                });
+        //private RelayCommand goShopsByCategory;
+        //public RelayCommand GoShopsByCategory => goShopsByCategory ??= new RelayCommand(obj =>
+        //        {
+        //            if (CurrentCategory != null)
+        //            {
+        //                ShopsByCategory = new ObservableCollection<ShopModel>(Shops.Where(o => o.Category.ID == CurrentCategory.ID).ToList());
+        //                This.frame.Navigate(new ShopsView() { DataContext = this });
+        //            }
+        //        });
 
 
         private RelayCommand goMapShopRoute;

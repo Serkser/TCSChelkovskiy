@@ -36,5 +36,12 @@ namespace TCSChelkovskiy.Views
             get => (ObservableCollection<VacancyModel>)GetValue(AllVacanciesProperty);
             set => SetValue(AllVacanciesProperty, value);
         }
+
+        //Не рефакторить, из-за browseBack не подгружаются картинки
+        private ICommand goBack;
+        public ICommand GoBack => goBack ??= new RelayCommand(f =>
+        {
+            NavigationService?.Navigate(new AboutTradeCenter(Memory.KioskObjects.AboutMall));
+        });
     }
 }

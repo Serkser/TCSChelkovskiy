@@ -68,7 +68,8 @@ namespace TCSChelkovskiy.Views
         {
             var floor = f as ParkingModel;
             CurrentImage?.Dispose();
-            CurrentImage = await ImageDownloader.DownloadImage(floor.ImagesPrefix+floor.Image, System.IO.Path.GetFileName(floor.Image));
+            CurrentImage 
+            = await ImageDownloader.DownloadImage(floor.ImagesPrefix+floor.Image, System.IO.Path.GetFileName(floor.Image));
         });
 
     }

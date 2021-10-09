@@ -14,7 +14,7 @@ namespace TCSchelkovskiyAPI
         static RestRequest request;
         static IRestResponse response;
 
-        public const string HOST = "https://navigator.useful.su";
+        public static string HOST = "https://navigator.useful.su";
         public static List<FloorModel> GetFloors()
         {
             string url = HOST + "/api/v1/floors";
@@ -34,6 +34,7 @@ namespace TCSchelkovskiyAPI
                     FloorModel floor = new FloorModel
                     {
                         ImagesPrefix = user.imagesPrefix.ToString(),
+                        Image = user.image.ToString(),
                         ID = Convert.ToInt32(user.id),
                         Floor = Convert.ToInt32(user.floor),
                         Name = user.name.ToString(),
@@ -129,7 +130,7 @@ namespace TCSchelkovskiyAPI
                                     }
                                 }
                                 catch { }
-                                shopModel.Photos = shopPhotos;
+                              //  shopModel.Photos = shopPhotos;
                                 shopModels.Add(shopModel);
                             }
                             catch { }
@@ -201,7 +202,7 @@ namespace TCSchelkovskiyAPI
                                 ImageURI = photo.imageUri.ToString(),
                             };
                         }
-                        shopModel.Photos = shopPhotos;
+                      //  shopModel.Photos = shopPhotos;
                         shopModels.Add(shopModel);
                     }
                     return category;
@@ -258,6 +259,7 @@ namespace TCSchelkovskiyAPI
                     {
                         shopModel = new ShopModel
                         {
+                            ImagesPrefix = shop.imagesPrefix,
                             IconURI = shop.iconUri,
                             ID = Convert.ToInt32(shop.id),
                             Name = shop.name.ToString(),
@@ -270,33 +272,39 @@ namespace TCSchelkovskiyAPI
                                 Floor = Convert.ToInt32(shop.floor.floor),
                                 Name = shop.floor.name.ToString(),
                                 Shops = new List<ShopModel>()
-                            },
-                            //Category = new CategoryModel
-                            //{
-                            //    IconURI = shop.category.ToString(),
-                            //    ID = Convert.ToInt32(shop.category.id),
-                            //    Name = shop.category.name.ToString(),
-                            //    Icon = shop.category.icon.ToString(),
-                            //    Shops = new List<ShopModel>()
-                            //}
-                        };
-                        List<PhotoModel> shopPhotos = new List<PhotoModel>();
+                            },                      
+                        };                    
+                            List<CategoryModel> categories = new List<CategoryModel>();
+                            foreach (var cat in shop.category)
+                            {
+                                try
+                                {
+                                    CategoryModel Category = new CategoryModel
+                                    {
+                                        ID = Convert.ToInt32(shop.category[0].id),
+                                        Name = shop.category[0].name?.ToString(),
+                                        Icon = shop.category[0].icon?.ToString(),
+                                        Shops = new List<ShopModel>()
+                                    };
+                                    Category.IconURI = shop.category?[0].iconUri;
+                                    categories.Add(Category);
+                                }
+                                catch { }                                
+                            }
+                            shopModel.Categories = categories;
+                      
+                        List<string> shopPhotos = new List<string>();
                         try
                         {
+                            shopModel.Images = shopPhotos;
                             if (shop.images != null)
                             {
                                 foreach (var photo in shop.images)
                                 {
-                                    PhotoModel shopPhoto = new PhotoModel
-                                    {
-                                        Image = photo.ToString(),
-                                    };
-                                    shopPhotos.Add(shopPhoto);
+                                    shopPhotos.Add(photo.ToString());
                                 }
-                                shopModel.Photos = shopPhotos;
-
-                            }
-                            
+                                shopModel.Images = shopPhotos;
+                            }                           
                         }
                         catch (Exception ex) { }
                     }
@@ -314,6 +322,8 @@ namespace TCSchelkovskiyAPI
             Debug.WriteLine("метод выполнен");
             return shops;
         }
+
+        [Obsolete("Не работает")]
         public static ShopModel GetShop(int id)
         {
             string url = HOST + $"/api/v1/shop/{id}";
@@ -343,14 +353,14 @@ namespace TCSchelkovskiyAPI
                             Name = shop.floor.name.ToString(),
                             Shops = null
                         },
-                        Category = new CategoryModel
-                        {
-                            IconURI = shop.category.ToString(),
-                            ID = Convert.ToInt32(shop.category.id),
-                            Name = shop.name.ToString(),
-                            Icon = shop.icon.ToString(),
-                            Shops = null
-                        }
+                        //Category = new CategoryModel
+                        //{
+                        //    IconURI = shop.category.ToString(),
+                        //    ID = Convert.ToInt32(shop.category.id),
+                        //    Name = shop.name.ToString(),
+                        //    Icon = shop.icon.ToString(),
+                        //    Shops = null
+                        //}
                     };
                     List<PhotoModel> shopPhotos = new List<PhotoModel>();
                     foreach (var photo in shop.photos)
@@ -361,7 +371,7 @@ namespace TCSchelkovskiyAPI
                             ImageURI = photo.imageUri.ToString(),
                         };
                     }
-                    shopModel.Photos = shopPhotos;
+                    //shopModel.Photos = shopPhotos;
                     return shop;
                 }
             }
@@ -418,14 +428,14 @@ namespace TCSchelkovskiyAPI
                             Name = item.shop.floor.name.ToString(),
                             Shops = null
                         },
-                        Category = new CategoryModel
-                        {
-                            IconURI = item.shop.category.ToString(),
-                            ID = Convert.ToInt32(item.shop.category.id),
-                            Name = item.shop.name.ToString(),
-                            Icon = item.shop.icon.ToString(),
-                            Shops = null
-                        }
+                        //Category = new CategoryModel
+                        //{
+                        //    IconURI = item.shop.category.ToString(),
+                        //    ID = Convert.ToInt32(item.shop.category.id),
+                        //    Name = item.shop.name.ToString(),
+                        //    Icon = item.shop.icon.ToString(),
+                        //    Shops = null
+                        //}
                     };
                     List<PhotoModel> shopPhotos = new List<PhotoModel>();
                     foreach (var photo in item.shop.photos)
@@ -436,7 +446,7 @@ namespace TCSchelkovskiyAPI
                             ImageURI = photo.imageUri.ToString(),
                         };
                     }
-                    shopModel.Photos = shopPhotos;
+                   // shopModel.Photos = shopPhotos;
 
                     galleryModel.Shop = shopModel;
                     gallery.Add(galleryModel);
@@ -525,9 +535,9 @@ namespace TCSchelkovskiyAPI
 
             return rules;
         }
-        public static List<string> GetBanners()
+        public static List<BannerModel> GetBanners()
         {
-            List<string> imgUrls = new List<string>();
+            List<BannerModel> banners = new List<BannerModel>();
             string url = HOST + "/api/v1/banners";
             RestClient client = new RestClient(url);
             request = new RestRequest(Method.GET);
@@ -537,20 +547,22 @@ namespace TCSchelkovskiyAPI
 
 
             dynamic data = JsonConvert.DeserializeObject(response.Content);
-            foreach (var img in data)
+            foreach (var banner in data)
             {
+                BannerModel bannerModel = new BannerModel();
                 try
                 {
-                    imgUrls.Add(img.image.ToString());
+                    bannerModel.ID = Convert.ToInt32(banner.id);
+                    bannerModel.Image = banner.image.ToString();
+                    bannerModel.ShopID = Convert.ToInt32(banner.shop.id);
+                    bannerModel.IsVisible = Convert.ToBoolean(banner.visable);
+                    bannerModel.Ended = Convert.ToDateTime(banner.ended);
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.StackTrace);
-                    Debug.WriteLine(ex.Message);
-                }
+                catch { }
+                banners.Add(bannerModel);
             }
 
-            return imgUrls;
+            return banners;
         }
         public static ContactsModel GetContacts()
         {
@@ -750,5 +762,7 @@ namespace TCSchelkovskiyAPI
            
             return terminals;
         }
+
+        
     }
 }

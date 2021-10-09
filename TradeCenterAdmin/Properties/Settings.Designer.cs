@@ -22,5 +22,14 @@ namespace TradeCenterAdmin.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://navigator.useful.su")]
+        public string host {
+            get {
+                return ((string)(this["host"]));
+            }
+        }
     }
 }

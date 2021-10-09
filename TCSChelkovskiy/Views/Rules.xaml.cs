@@ -45,9 +45,16 @@ namespace TCSChelkovskiy.Views
             NavigationService?.Navigate(new RulePage(rule));
         });
 
+        //Не рефакторить, из-за browseBack не подгружаются картинки
+        private ICommand goBack;
+        public ICommand GoBack => goBack ??= new RelayCommand(f =>
+        {
+            NavigationService?.Navigate(new AboutTradeCenter(Memory.KioskObjects.AboutMall));
+        });
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
         }
+
     }
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using TCSChelkovskiy.Models;
 using TCSchelkovskiyAPI.Models;
 
 namespace TCSChelkovskiy.Memory
@@ -22,7 +23,7 @@ namespace TCSChelkovskiy.Memory
         public static ObservableCollection<ShopGalleryModel> Gallery { get; set; } = new ObservableCollection<ShopGalleryModel>();
         public static ObservableCollection<VacancyModel> Vacancies { get; set; } = new ObservableCollection<VacancyModel>();
         public static ObservableCollection<PromoModel> Promos { get; set; } = new ObservableCollection<PromoModel>();
-        public static ObservableCollection<string> Banners { get; set; } = new ObservableCollection<string>();
+        public static ObservableCollection<BannerContainer> Banners { get; set; } = new ObservableCollection<BannerContainer>();
         public static ObservableCollection<ParkingModel> ParkingFloors { get; set; } = new ObservableCollection<ParkingModel>();
         public static ObservableCollection<RuleModel> Rules { get; set; } = new ObservableCollection<RuleModel>();
 
@@ -51,8 +52,12 @@ namespace TCSChelkovskiy.Memory
 
 
                 Rules = new ObservableCollection<RuleModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetRules());
-                Banners = new ObservableCollection<string>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetBanners());
 
+                foreach (var model in TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetBanners())
+                {
+                    Banners.Add(new BannerContainer { BannerModel = model });
+                }
+                
 
                 //MessageBox.Show(Banners.Count.ToString());
 

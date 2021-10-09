@@ -4,9 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TCSChelkovskiy.Views"
-      mc:Ignorable="d" 
-      d:DesignHeight="830" d:DesignWidth="1440"
-      Title="Contacts">
+      mc:Ignorable="d" d:DesignWidth="1440"
+      Title="Contacts" Height="771">
 
     <Grid Background="White">
         <Border Background="White" CornerRadius="20" Margin="122,74,71,59">
@@ -15,7 +14,7 @@
 
             </Grid>
         </Border>
-        <Button  Command="BrowseBack" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
+        <Button  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=GoBack}" Style="{StaticResource HeaderSearchButton}" Foreground="Black" Background="Transparent" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
             HorizontalAlignment="Left" Margin="110,10,0,0" VerticalAlignment="Top" Height="64" Width="345" >
             <StackPanel Orientation="Horizontal">
                 <Image Width="40" Height="40" Source="/Images/Navigation/ToHomeButton.png"/>

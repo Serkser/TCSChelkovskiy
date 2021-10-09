@@ -15,7 +15,7 @@ namespace TradeCenterAdmin.Storage
     public static class KioskObjects
     {
         public static ObservableCollection<Floor> Floors { get; set; } = new ObservableCollection<Floor>();
-
+        public static ObservableCollection<FloorModel> FloorModels { get; set; } = new ObservableCollection<FloorModel>();
         //public static ObservableCollection<CategoryModel> Categories { get; set; } = new ObservableCollection<CategoryModel>();
         //public static ObservableCollection<Station> Stations { get; set; } = new ObservableCollection<Station>();
         public static ObservableCollection<ShopModel> Shops { get; set; } = new ObservableCollection<ShopModel>();
@@ -88,47 +88,22 @@ namespace TradeCenterAdmin.Storage
         }
         private static ObservableCollection<Floor> ConvertToFloors(List<FloorModel> floors)
         {
+
             List<Floor> floorList = new List<Floor>();
             foreach (var fl in floors)
             {
+                Services.ImageDownloader.DownloadImage(fl.ImagesPrefix + fl.Image, fl.Image);
                 Floor floor = new Floor
                 {
                     Name = fl.Name,
                     Id = fl.ID,
+                    Image = Path.Combine(Environment.CurrentDirectory, "AllImages",)
                     Width = 9000,
                     Height = 9000,
                 };
-                ObservableCollection<Area> areas = new ObservableCollection<Area>();
-                foreach (var shop in fl.Shops)
-                {
-                    Area area = new Area
-                    {
-                        Description = shop.Description,
-                        Id = shop.ID,
-                        FloorId = shop.Floor.ID,
-                        Image = shop.IconURI,
-                        Name = shop.Name,
-
-                    };
-                    area.AreaCategories.Add(new AreaCategory
-                    {
-                        Id = shop.Category.ID,
-                        Name = shop.Category.Name,
-                        Image = shop.IconURI
-                    });
-
-                    foreach (var photo in shop.Photos)
-                    {
-                        area.AreaImages.Add(new AreaImage { Image = photo.ImageURI });
-                    }
-
-                }
                 floorList.Add(floor);
             }
-
-            ObservableCollection<Floor> coll = new ObservableCollection<Floor>(floorList);
-            return coll;
-
+            return new ObservableCollection<Floor>(floorList);
         }
     }
 }

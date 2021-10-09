@@ -37,17 +37,17 @@ namespace TCSChelkovskiy.Views
         {
             foreach (var disposableImage in ImagesShop)
             {
-                disposableImage.Dispose();
+                disposableImage?.Dispose();
             }
-            Logo.Dispose();
+            Logo?.Dispose();
         }
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            if(Model.Photos!=null)
-            foreach (PhotoModel modelPhoto in Model.Photos)
+            if(Model.Images!=null)
+            foreach (string modelPhoto in Model.Images)
             {
-                var disposableImage = await ImageDownloader.DownloadImage(modelPhoto.ImageURI, modelPhoto.Image);
+                var disposableImage = await ImageDownloader.DownloadImage(Model.ImagesPrefix+modelPhoto, modelPhoto);
                 ImagesShop.Add(disposableImage);
             }
 

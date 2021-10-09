@@ -10,13 +10,14 @@ namespace TCSchelkovskiyAPI.Models
     {
         public string IconURI { get; set; }
         public string Icon { get; set; }
+        public string ImagesPrefix { get; set; }
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Phone { get; set; }
         public FloorModel Floor { get; set; }
-        public List<PhotoModel> Photos { get; set; }
-        public CategoryModel Category { get; set; }
+        public List<string> Images { get; set; }
+        public List<CategoryModel> Categories { get; set; }
 
         public override string ToString()
         {

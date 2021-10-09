@@ -10,7 +10,8 @@
       d:DesignHeight="830" d:DesignWidth="1440"
       Title="Search">
     <Grid Background="#E5E5e5">
-        <ListView Margin="38,49,0,0" Style="{DynamicResource listView}" BorderThickness="0"  ItemsSource="{Binding ShopsByCategory,Mode=TwoWay}" SelectedItem="{Binding CurrentShop,Mode=TwoWay}" 
+        <ListView Margin="38,49,0,0" Style="{DynamicResource listView}" BorderThickness="0" ItemContainerStyle="{StaticResource listViewItems}"
+                  ItemsSource="{Binding ShopsByCategory,Mode=TwoWay}" SelectedItem="{Binding CurrentShop,Mode=TwoWay}" 
                   HorizontalAlignment="Left" Height="366" Width="1326" VerticalAlignment="Top">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
