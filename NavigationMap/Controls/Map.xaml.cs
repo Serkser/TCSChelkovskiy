@@ -59,12 +59,14 @@ namespace NavigationMap.Controls
                 }
             });
 
-            Matrix toMatrix = MapMatrix;
+            ResetZoom();
+
+            Matrix toMatrix = default;
 
             double scale = 3;
 
-            (double width1, double height1) = (floor.Width * MapMatrix.M11,
-                floor.Height * MapMatrix.M22);
+            (double width1, double height1) = (MapContainer.ActualWidth,
+                MapContainer.ActualHeight);
 
             if (double.IsNaN(position.X) || double.IsNaN(position.Y))
             {
@@ -90,7 +92,6 @@ namespace NavigationMap.Controls
                 }
             });
         }
-
 
         public void NavigateToArea(int areaId)
         {
@@ -177,10 +178,10 @@ namespace NavigationMap.Controls
                     }
                 });
 
-                ResetZoom();
+               // ResetZoom();
             }
 
-            ResetZoom();
+           // ResetZoom();
         }
 
         public void ZoomIn(double zoomStep = ZOOM_STEP)
@@ -193,63 +194,61 @@ namespace NavigationMap.Controls
             Zoom(false, zoomStep);
         }
 
+
         public void ResetZoom()
         {
-            Matrix toMatrix = MapMatrix;
+            var width = MapContainer.ActualWidth; //MapContainer.ActualWidth
+            var height = MapContainer.ActualHeight;
 
-            Size mapSize = new Size(MapContainer.ActualWidth * MapMatrix.M11, MapContainer.ActualHeight * MapMatrix.M22);
+            //Matrix toMatrixScale = MapMatrix;
+            Matrix toMatrixTranslate = default;
 
-            double halfHeight = mapSize.Height / 2;
-            double halfWidth = mapSize.Width / 2;
+            double halfHeight = height / 2;
+            double halfWidth = width / 2;
 
-            toMatrix.Scale(
-                1,
-                1);
+            toMatrixTranslate.OffsetX = halfWidth;
+            toMatrixTranslate.OffsetY = halfHeight;
 
-            toMatrix.Translate(halfWidth, halfHeight);
 
-            toMatrix.M11 = 1;
+            double rightSide = toMatrixTranslate.OffsetX + width;
+            double leftSide = toMatrixTranslate.OffsetX;
 
-            toMatrix.M22 = 1;
+            double bottomSide = toMatrixTranslate.OffsetY + height;
+            double topSide = toMatrixTranslate.OffsetY;
 
-            double rightSide = toMatrix.OffsetX + mapSize.Width;
-            double leftSide = toMatrix.OffsetX;
-
-            double bottomSide = toMatrix.OffsetY + mapSize.Height;
-            double topSide = toMatrix.OffsetY;
 
             if (leftSide > 0)
             {
-                toMatrix.Translate(-leftSide, 0);
+                toMatrixTranslate.Translate(-leftSide, 0);
             }
 
-            if (rightSide < MainContainer.ActualWidth)
+            if (rightSide < width)
             {
-                toMatrix.Translate(MainContainer.ActualWidth - rightSide, 0);
+                toMatrixTranslate.Translate(width - rightSide, 0);
             }
 
             if (topSide > 0)
             {
-                toMatrix.Translate(0, -topSide);
+                toMatrixTranslate.Translate(0, -topSide);
             }
 
-            if (bottomSide < MainContainer.ActualHeight)
+            if (bottomSide < height)
             {
-                toMatrix.Translate(0, MainContainer.ActualHeight - bottomSide);
+                toMatrixTranslate.Translate(0, height - bottomSide);
             }
 
-            MatrixAnimationBase animation = new MatrixAnimation(toMatrix, TimeSpan.FromMilliseconds(600));
+            MatrixAnimationBase translateAnimation = new MatrixAnimation(default, TimeSpan.FromMilliseconds(600));
 
-            ScenarioCommand scenarioCommand = new ScenarioCommand()
+            ScenarioCommand translateScenarioCommand = new ScenarioCommand()
             {
-                Animation = animation,
+                Animation = translateAnimation,
                 ScenarioAfterAction = () =>
                 {
-                    MapMatrix = toMatrix;
+                    MapMatrix = toMatrixTranslate;
                 }
             };
 
-            ScenarioCommands.Add(scenarioCommand);
+            ScenarioCommands.Add(translateScenarioCommand);
         }
         #endregion
 
