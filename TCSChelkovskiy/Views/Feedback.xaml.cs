@@ -72,7 +72,12 @@ namespace TCSChelkovskiy.Views
 
         public static readonly DependencyProperty FeedbackModelProperty = DependencyProperty.Register(
      "FeedbackModel", typeof(FeedbackModel), typeof(Feedback), new PropertyMetadata(default(FeedbackModel)));
-
+        //Не рефакторить, из-за browseBack не подгружаются картинки
+        private ICommand goBack;
+        public ICommand GoBack => goBack ??= new RelayCommand(f =>
+        {
+            NavigationService?.Navigate(new AboutTradeCenter(Memory.KioskObjects.AboutMall));
+        });
         public FeedbackModel FeedbackModel
         {
             get => (FeedbackModel)GetValue(FeedbackModelProperty);

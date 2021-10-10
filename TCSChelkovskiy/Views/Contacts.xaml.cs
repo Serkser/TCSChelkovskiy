@@ -34,5 +34,12 @@ namespace TCSChelkovskiy.Views
             get => (ContactsModel)GetValue(ContactsModelProperty);
             set => SetValue(ContactsModelProperty, value);
         }
+
+        //Не рефакторить, из-за browseBack не подгружаются картинки
+        private ICommand goBack;
+        public ICommand GoBack => goBack ??= new RelayCommand(f =>
+        {
+            NavigationService?.Navigate(new AboutTradeCenter(Memory.KioskObjects.AboutMall));
+        });
     }
 }

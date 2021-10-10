@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\AboutMallModel.cs" />
+    <Compile Include="Models\BannerModel.cs" />
     <Compile Include="Models\ContactsModel.cs" />
     <Compile Include="Models\ParkingModel.cs" />
     <Compile Include="Models\PromoModel.cs" />

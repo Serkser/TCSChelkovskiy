@@ -32,7 +32,18 @@ namespace TCSChelkovskiy.Views
         public ICommand GoToShopsCommand => _goToShopsCommand ??= new RelayCommand(f =>
         {
             var category = f as CategoryModel;
-           var ShopsByCategory = new ObservableCollection<ShopModel>(KioskObjects.Shops.Where(o => o.Category.ID == category?.ID).ToList());
+            List<ShopModel> shops = new List<ShopModel>();
+            foreach (var shop in KioskObjects.Shops)
+            {
+                foreach(var cat in shop.Categories)
+                {
+                    if (cat.ID == category.ID)
+                    {
+                        shops.Add(shop);
+                    }
+                }
+            }
+            var ShopsByCategory = new ObservableCollection<ShopModel>(shops);
            NavigationService?.Navigate(new ShopsView(){AllShops = ShopsByCategory});
         });
     }
