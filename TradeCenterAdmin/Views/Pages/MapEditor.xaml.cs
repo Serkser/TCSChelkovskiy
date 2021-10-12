@@ -1093,7 +1093,7 @@ namespace TradeCenterAdmin.Views.Pages
                         var uielement = canvasMap.Children[i];
                         if (uielement is Button)
                         {
-                            if (((Button)(uielement)).Uid.Contains($"{area.InnerId}button"))
+                            if (((Button)(uielement)).Uid.Contains($"{area.Id}button"))
                             {
                                 canvasMap.Children.Remove(uielement);
                             }
@@ -1182,7 +1182,7 @@ namespace TradeCenterAdmin.Views.Pages
                 var uielement = canvasMap.Children[i];
                 if (uielement is Button)
                 {
-                    if (((Button)(uielement)).Uid.Contains($"{area.InnerId}button"))
+                    if (((Button)(uielement)).Uid.Contains($"{area.Id}button"))
                     {
                         canvasMap.Children.Remove(uielement);
                     }
@@ -1194,7 +1194,7 @@ namespace TradeCenterAdmin.Views.Pages
             int counter = 1;
             foreach (var point in area.Points)
             {
-                string uid = $"{area.InnerId}button{counter}";
+                string uid = $"{area.Id}button{counter}";
                 Button entry = new Button();
                 entry.Background = Brushes.Red;
                 entry.Width = 20;
@@ -1223,7 +1223,7 @@ namespace TradeCenterAdmin.Views.Pages
                     {
                         Mouse.Capture(null);
                         canmove = false;
-                        int number = Convert.ToInt32(entry.Uid.Replace($"{area.InnerId}button", "").Trim());
+                        int number = Convert.ToInt32(entry.Uid.Replace($"{area.Id}button", "").Trim());
                         area.Points[number - 1] = new AreaPoint
                         {
                             X = e1.GetPosition(canvasMap).X - p.X,
@@ -1567,7 +1567,7 @@ namespace TradeCenterAdmin.Views.Pages
                     int areaId = rnd.Next(Int32.MinValue, Int32.MaxValue);
                     if (currentArea == null)
                     {
-                        currentArea = new Area(); currentArea.InnerId = areaId; currentArea.Id = areaId;
+                        currentArea = new Area(); currentArea.Id = areaId; currentArea.Id = areaId;
                         ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Areas.Add(currentArea);
 
                         var fl = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor;
