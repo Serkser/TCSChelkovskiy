@@ -11,7 +11,7 @@ using System.Windows.Media;
 
 namespace NavigationMap.Models
 {
-    public class Area : ObservableObject, IMapElement, IDisposable
+    public class Area : ObservableObject, IMapElement, IDisposable,ICloneable
     {
         private State _state;
 
@@ -83,7 +83,17 @@ namespace NavigationMap.Models
                 OnPropertyChanged();
             }
         }
-        
+        private int _innerId;
+
+        public int InnerId
+        {
+            get => _innerId;
+            set
+            {
+                _innerId = value;
+                OnPropertyChanged();
+            }
+        }
         public Point MiddlePoint => GeometryHelper.GetMiddlePoint(PointCollection);
 
         private Point _position;
@@ -190,6 +200,12 @@ namespace NavigationMap.Models
             }
 
             _disposed = true;
+        }
+
+        public object Clone()
+        {
+            Area clone = (Area)this.MemberwiseClone();
+            return clone;
         }
     }
 }

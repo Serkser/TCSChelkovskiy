@@ -6,12 +6,11 @@
         xmlns:local="clr-namespace:TradeCenterAdmin"
         mc:Ignorable="d"
         WindowState="Maximized"
-        Title="MainWindow" Height="700" Width="1100">
+        Title="ТРЦ Щелковский - редактор карт" Height="700" Width="1100">
     <Viewbox>
         <Grid>
-                <Frame x:Name="frame" Content="Frame" HorizontalAlignment="Left" Height="600" Margin="25,60,0,0" VerticalAlignment="Top" Width="1059"/>
-                <TextBlock FontWeight="DemiBold" FontSize="25" HorizontalAlignment="Left" Margin="19,17,0,0" TextWrapping="Wrap" Text="ТЦ Щелковский - карта ТЦ" VerticalAlignment="Top"/>
+            <Frame x:Name="frame" Content="Frame" HorizontalAlignment="Left" Height="650" Margin="10,10,0,-0.8" VerticalAlignment="Top" Width="1074"/>
         </Grid>
     </Viewbox>
-    
+
 </Window>

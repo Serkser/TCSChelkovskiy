@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace NavigationMap.Models
 {
-    public class AreaPoint : ObservableObject, IMapElement
+    public class AreaPoint : ObservableObject, IMapElement,ICloneable
     {
         private double _x;
 
@@ -102,6 +102,12 @@ namespace NavigationMap.Models
                 _pointType = value;
                 OnPropertyChanged();
             }
+        }
+
+        public object Clone()
+        {
+            AreaPoint clone = (AreaPoint)this.MemberwiseClone();
+            return clone;
         }
     }
 }

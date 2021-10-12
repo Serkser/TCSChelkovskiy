@@ -11,10 +11,13 @@ namespace TCSchelkovskiyAPI.Models
         public int ID { get; set; }
         public string Name { get; set; }
         public FloorModel Floor { get; set; }
+        public Enums.MapTerminalPointType Type { get; set; }
+
+        public string StatusOnMap { get; set; }
 
         public override string ToString()
         {
-            return Name;
+            return $"{Name}";
         }
     }
 }

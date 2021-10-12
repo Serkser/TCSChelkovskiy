@@ -1,10 +1,10 @@
 ﻿using NavigationMap.Core;
-
+using System;
 using System.Windows;
 
 namespace NavigationMap.Models
 {
-    public class Station : ObservableObject
+    public class Station : ObservableObject,ICloneable
     {
         private AreaPoint _areaPoint;
 
@@ -80,6 +80,23 @@ namespace NavigationMap.Models
         public Station()
         {
             AreaPoint = new AreaPoint();
+        }
+
+        public object Clone()
+        {
+            Station station = (Station)this.MemberwiseClone();
+            station.AreaPoint = new AreaPoint
+            {
+                FloorId = this.AreaPoint.FloorId,
+                AreaId = this.AreaPoint.AreaId,
+                StationId = this.AreaPoint.StationId,
+                Id = this.AreaPoint.Id,
+                PointType = this.AreaPoint.PointType,
+                Position = this.AreaPoint.Position,
+                X = this.AreaPoint.X,
+                Y = this.AreaPoint.Y
+            };
+            return station;
         }
     }
 }

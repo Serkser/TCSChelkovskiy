@@ -13,8 +13,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using TCSchelkovskiyAPI.Enums;
 using TCSchelkovskiyAPI.Models;
+using TradeCenterAdmin.ChangesPool.Abstractions;
 using TradeCenterAdmin.Enums;
+using TradeCenterAdmin.Storage;
 using TradeCenterAdmin.Utilities;
 using Image = System.Windows.Controls.Image;
 
@@ -25,11 +28,19 @@ namespace TradeCenterAdmin.ViewModels
         Views.Pages.MapEditor This;
         public MapEditorViewModel(Views.Pages.MapEditor _this)
         {
-         
+            MapEditorTool = MapEditorTool.Cursor;
+
             This = _this;
             Floors = Storage.KioskObjects.Floors;
             Shops = Storage.KioskObjects.Shops;
+
             Terminals = Storage.KioskObjects.Terminals;
+            WCs = Storage.KioskObjects.WCs;
+            ATMs = Storage.KioskObjects.ATMs;
+            Stairs = Storage.KioskObjects.Stairs;
+            Lifts = Storage.KioskObjects.Lifts;
+            Escolators = Storage.KioskObjects.Escolators;
+
             if (Floors.Count > 0)
             {
                 SelectedFloor = Floors.FirstOrDefault();              
@@ -39,7 +50,16 @@ namespace TradeCenterAdmin.ViewModels
                 SelectedTerminal = Terminals.FirstOrDefault();
             }
             MakeStartZoom();
+            SortAllPointObjects();
+
+            Storage.KioskObjects.ChangesPool.OnRedoing += ChangesPool_OnRedoing;
+            Storage.KioskObjects.ChangesPool.OnUndoing += ChangesPool_OnUndoing;
+            Storage.KioskObjects.ChangesPool.OnEntryAdded += ChangesPool_OnEntryAdded;
         }
+
+     
+
+
         //Загрузка всего, кроме путей
         void BaseDrawing()
         {
@@ -82,9 +102,28 @@ namespace TradeCenterAdmin.ViewModels
                             {
                                 This.DrawStairs(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
                             }
+                            else if (obj.Name.Contains("Эскалатор"))
+                            {
+                                This.DrawEscalator(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
+                            }
+                            else if (obj.Name.Contains("Лифт"))
+                            {
+                                This.DrawLift(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
+                            }
                             break;
                         case NavigationMap.Enums.PointTypeEnum.Station:
-                            This.DrawKiosk(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
+                            if (obj.Name.Contains("Киоск"))
+                            {
+                                This.DrawKiosk(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
+                            }
+                            else if (obj.Name.Contains("Туалет"))
+                            {
+                                This.DrawWC(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
+                            }
+                            else if (obj.Name.Contains("Банкомат"))
+                            {
+                                This.DrawATM(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
+                            }
                             break;
                     }
                 }
@@ -109,13 +148,16 @@ namespace TradeCenterAdmin.ViewModels
             {
                 foreach (var area in floor.Areas)
                 {
-                    foreach (var way in area.Ways)
+                    if (area != null)
                     {
-                        if (way.WayPoints.Where(o => o.FloorId == SelectedFloor.Id).FirstOrDefault() != null)
+                        foreach (var way in area.Ways)
                         {
-                            This.DrawWays(way, SelectedFloor.Id);
+                            if (way.WayPoints.Where(o => o.FloorId == SelectedFloor.Id).FirstOrDefault() != null)
+                            {
+                                This.DrawWays(way, SelectedFloor.Id);
+                            }
                         }
-                    }
+                    }                 
                 }
             }
         }
@@ -217,6 +259,317 @@ namespace TradeCenterAdmin.ViewModels
                 OnPropertyChanged("Terminals");
             }
         }
+        private ObservableCollection<TerminalModel> usedterminals;
+        public ObservableCollection<TerminalModel> UsedTerminals
+        {
+            get { return usedterminals; }
+            set
+            {
+                usedterminals = value;
+                OnPropertyChanged("UsedTerminals");
+            }
+        }
+        private ObservableCollection<TerminalModel> freeterminals;
+        public ObservableCollection<TerminalModel> FreeTerminals
+        {
+            get { return freeterminals; }
+            set
+            {
+                freeterminals = value;
+                OnPropertyChanged("FreeTerminals");
+            }
+        }
+        private TerminalModel selectedTerminal;
+        public TerminalModel SelectedTerminal
+        {
+            get { return selectedTerminal; }
+            set
+            {
+                selectedTerminal = value;
+                OnPropertyChanged("SelectedTerminal");
+            }
+        }
+        private TerminalModel currentExistingTerminal;
+        public TerminalModel CurrentExistingTerminal
+        {
+            get { return currentExistingTerminal; }
+            set
+            {
+                currentExistingTerminal = value;
+                OnPropertyChanged("CurrentExistingTerminal");
+            }
+        }
+
+
+
+        private ObservableCollection<TerminalModel> wcs;
+        public ObservableCollection<TerminalModel> WCs
+        {
+            get { return wcs; }
+            set
+            {
+                wcs = value;
+                OnPropertyChanged("WCs");
+            }
+        }
+        private ObservableCollection<TerminalModel> usedwcs;
+        public ObservableCollection<TerminalModel> UsedWCs
+        {
+            get { return usedwcs; }
+            set
+            {
+                usedwcs = value;
+                OnPropertyChanged("UsedWCs");
+            }
+        }
+        private ObservableCollection<TerminalModel> freewcs;
+        public ObservableCollection<TerminalModel> FreeWCs
+        {
+            get { return freewcs; }
+            set
+            {
+                freewcs = value;
+                OnPropertyChanged("FreeWCs");
+            }
+        }
+        private TerminalModel selectedWC;
+        public TerminalModel SelectedWC
+        {
+            get { return selectedWC; }
+            set
+            {
+                selectedWC = value;
+                OnPropertyChanged("SelectedWC");
+            }
+        }
+        private TerminalModel currentExistingWC;
+        public TerminalModel CurrentExistingWC
+        {
+            get { return currentExistingWC; }
+            set
+            {
+                currentExistingWC = value;
+                OnPropertyChanged("CurrentExistingWC");
+            }
+        }
+
+
+
+
+        private ObservableCollection<TerminalModel> atms;
+        public ObservableCollection<TerminalModel> ATMs
+        {
+            get { return atms; }
+            set
+            {
+                atms = value;
+                OnPropertyChanged("ATMs");
+            }
+        }
+        private ObservableCollection<TerminalModel> usedatms;
+        public ObservableCollection<TerminalModel> UsedATMs
+        {
+            get { return usedatms; }
+            set
+            {
+                usedatms = value;
+                OnPropertyChanged("UsedATMs");
+            }
+        }
+        private ObservableCollection<TerminalModel> freeatms;
+        public ObservableCollection<TerminalModel> FreeATMs
+        {
+            get { return freeatms; }
+            set
+            {
+                freeatms = value;
+                OnPropertyChanged("FreeATMs");
+            }
+        }
+
+        private TerminalModel selectedATM;
+        public TerminalModel SelectedATM
+        {
+            get { return selectedATM; }
+            set
+            {
+                selectedATM = value;
+                OnPropertyChanged("SelectedATM");
+            }
+        }
+        private TerminalModel currentExistingATM;
+        public TerminalModel CurrentExistingATM
+        {
+            get { return currentExistingATM; }
+            set
+            {
+                currentExistingATM = value;
+                OnPropertyChanged("CurrentExistingATM");
+            }
+        }
+
+
+
+
+        private ObservableCollection<TerminalModel> stairs;
+        public ObservableCollection<TerminalModel> Stairs
+        {
+            get { return stairs; }
+            set
+            {
+                stairs = value;
+                OnPropertyChanged("Stairs");
+            }
+        }
+        private ObservableCollection<TerminalModel> usedstairs;
+        public ObservableCollection<TerminalModel> UsedStairs
+        {
+            get { return usedstairs; }
+            set
+            {
+                usedstairs = value;
+                OnPropertyChanged("UsedStairs");
+            }
+        }
+        private ObservableCollection<TerminalModel> freestairs;
+        public ObservableCollection<TerminalModel> FreeStairs
+        {
+            get { return freestairs; }
+            set
+            {
+                freestairs = value;
+                OnPropertyChanged("FreeStairs");
+            }
+        }
+
+        private TerminalModel selectedStairs;
+        public TerminalModel SelectedStairs
+        {
+            get { return selectedStairs; }
+            set
+            {
+                selectedStairs = value;
+                OnPropertyChanged("SelectedStairs");
+            }
+        }
+        private TerminalModel currentExistingStairs;
+        public TerminalModel CurrentExistingStairs
+        {
+            get { return currentExistingStairs; }
+            set
+            {
+                currentExistingStairs = value;
+                OnPropertyChanged("CurrentExistingStairs");
+            }
+        }
+
+
+
+        private ObservableCollection<TerminalModel> lifts;
+        public ObservableCollection<TerminalModel> Lifts
+        {
+            get { return lifts; }
+            set
+            {
+                lifts = value;
+                OnPropertyChanged("Lifts");
+            }
+        }
+        private ObservableCollection<TerminalModel> usedlifts;
+        public ObservableCollection<TerminalModel> UsedLifts
+        {
+            get { return usedlifts; }
+            set
+            {
+                usedlifts = value;
+                OnPropertyChanged("UsedLifts");
+            }
+        }
+        private ObservableCollection<TerminalModel> freelifts;
+        public ObservableCollection<TerminalModel> FreeLifts
+        {
+            get { return freelifts; }
+            set
+            {
+                freelifts = value;
+                OnPropertyChanged("FreeLifts");
+            }
+        }
+        private TerminalModel selectedLift;
+        public TerminalModel SelectedLift
+        {
+            get { return selectedLift; }
+            set
+            {
+                selectedLift = value;
+                OnPropertyChanged("SelectedLift");
+            }
+        }
+        private TerminalModel currentExistingLift;
+        public TerminalModel CurrentExistingLift
+        {
+            get { return currentExistingLift; }
+            set
+            {
+                currentExistingLift = value;
+                OnPropertyChanged("CurrentExistingLift");
+            }
+        }
+
+
+
+        private ObservableCollection<TerminalModel> escolators;
+        public ObservableCollection<TerminalModel> Escolators
+        {
+            get { return escolators; }
+            set
+            {
+                escolators = value;
+                OnPropertyChanged("Escolators");
+            }
+        }
+        private ObservableCollection<TerminalModel> usedescolators;
+        public ObservableCollection<TerminalModel> UsedEscolators
+        {
+            get { return usedescolators; }
+            set
+            {
+                usedescolators = value;
+                OnPropertyChanged("UsedEscolators");
+            }
+        }
+        private ObservableCollection<TerminalModel> freescolators;
+        public ObservableCollection<TerminalModel> FreeEscolators
+        {
+            get { return freescolators; }
+            set
+            {
+                freescolators = value;
+                OnPropertyChanged("FreeEscolators");
+            }
+        }
+        private TerminalModel selectedEscolator;
+        public TerminalModel SelectedEscolator
+        {
+            get { return selectedEscolator; }
+            set
+            {
+                selectedEscolator = value;
+                OnPropertyChanged("SelectedEscolator");
+            }
+        }
+        private TerminalModel currentExistingEscolator;
+        public TerminalModel CurrentExistingEscolator
+        {
+            get { return currentExistingEscolator; }
+            set
+            {
+                currentExistingEscolator = value;
+                OnPropertyChanged("CurrentExistingEscolator");
+            }
+        }
+
+
         private ObservableCollection<Floor> floors;
         public ObservableCollection<Floor> Floors
         {
@@ -277,16 +630,7 @@ namespace TradeCenterAdmin.ViewModels
             }
         }
 
-        private TerminalModel selectedTerminal;
-        public TerminalModel SelectedTerminal
-        {
-            get { return selectedTerminal; }
-            set
-            {
-                selectedTerminal = value;
-                OnPropertyChanged("SelectedTerminal");
-            }
-        }
+     
         private bool showOnlySelectedTerminalWays;
         public bool ShowOnlySelectedTerminalWays
         {
@@ -419,12 +763,295 @@ namespace TradeCenterAdmin.ViewModels
                     }));
             }
         }
+        private RelayCommand useWC;
+        public RelayCommand UseWC
+        {
+            get
+            {
+                return useWC ??
+                    (useWC = new RelayCommand(obj =>
+                    {
+                        This.Cursor = Cursors.Cross;
+                        MapEditorTool = MapEditorTool.WC;
+                    }));
+            }
+        }
+        private RelayCommand useATM;
+        public RelayCommand UseATM
+        {
+            get
+            {
+                return useATM ??
+                    (useATM = new RelayCommand(obj =>
+                    {
+                        This.Cursor = Cursors.Cross;
+                        MapEditorTool = MapEditorTool.ATM;
+                    }));
+            }
+        }
+        private RelayCommand useEscalator;
+        public RelayCommand UseEscalator
+        {
+            get
+            {
+                return useEscalator ??
+                    (useEscalator = new RelayCommand(obj =>
+                    {
+                        This.Cursor = Cursors.Cross;
+                        MapEditorTool = MapEditorTool.Escalator;
+                    }));
+            }
+        }
         #endregion
 
+        #region Сортировка списков объектов по типу доступен/установлен
+        public void SortAllPointObjects()
+        {
+            SortWCs();
+            SortATMs();
+            SortStairs();
+            SortLifts();
+            SortKiosks();
+            SortEscalators();
+        }
+        public void SortWCs(Floor floor = null)
+        {
+            FreeWCs = new ObservableCollection<TerminalModel>();
+            UsedWCs = new ObservableCollection<TerminalModel>();
+            WCs = new ObservableCollection<TerminalModel>(Storage.KioskObjects.WCs.ToList());
+            ObservableCollection<TerminalModel> sort = null;
+            if(floor == null) { sort = Storage.KioskObjects.WCs; }
+            else 
+            { 
+                sort = new ObservableCollection<TerminalModel>
+               (Storage.KioskObjects.WCs.Where(o => o.Floor.Name == floor.Name).ToList()); 
+            }
+
+
+            if (Floors != null)
+            {
+                foreach (var fl in Floors)
+                {
+                    foreach (var wc in sort)
+                    {
+                        bool isUsed = false;
+                        foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Туалет")).ToList())
+                        {
+                            wc.StatusOnMap = "";
+                            if (obj.Id == wc.ID)
+                            {
+                                wc.StatusOnMap = "Установлен";
+                                isUsed = true; break;
+                            }
+                        }
+                        if (isUsed) { UsedWCs.Add(wc); }
+                        else { FreeWCs.Add(wc);  }
+                    }
+                }
+            }
+        }
+        public void SortATMs(Floor floor = null)
+        {
+            FreeATMs = new ObservableCollection<TerminalModel>();
+            UsedATMs = new ObservableCollection<TerminalModel>();
+            ATMs = new ObservableCollection<TerminalModel>(Storage.KioskObjects.ATMs.ToList());
+            ObservableCollection<TerminalModel> sort = null;
+            if (floor == null) { sort = Storage.KioskObjects.ATMs; }
+            else
+            {
+                sort = new ObservableCollection<TerminalModel>
+               (Storage.KioskObjects.ATMs.Where(o => o.Floor.Name == floor.Name).ToList());
+            }
+
+            if (Floors != null)
+            {
+                foreach (var fl in Floors)
+                {
+                    foreach (var atm in sort)
+                    {
+                        bool isUsed = false;
+                        foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Банкомат")).ToList())
+                        {
+                            atm.StatusOnMap = "";
+                            if (obj.Id == atm.ID)
+                            {
+                                atm.StatusOnMap = "Установлен";
+                                isUsed = true; break;
+                            }
+                        }
+                        if (isUsed) { UsedATMs.Add(atm); }
+                        else { FreeATMs.Add(atm); }
+                    }
+                }
+            }
+        }
+        public void SortStairs(Floor floor = null)
+        {
+            FreeStairs = new ObservableCollection<TerminalModel>();
+            UsedStairs = new ObservableCollection<TerminalModel>();
+            Stairs = new ObservableCollection<TerminalModel>(Storage.KioskObjects.Stairs.ToList());
+            ObservableCollection<TerminalModel> sort = null;
+            if (floor == null) { sort = Storage.KioskObjects.Stairs; }
+            else
+            {
+                sort = new ObservableCollection<TerminalModel>
+               (Storage.KioskObjects.Stairs.Where(o => o.Floor.Name == floor.Name).ToList());
+            }
+
+            if (Floors != null)
+            {
+                foreach (var fl in Floors)
+                {
+                    foreach (var stair in sort)
+                    {
+                        bool isUsed = false;
+                        foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Лестница")).ToList())
+                        {
+                            stair.StatusOnMap = "";
+                            if (obj.Id == stair.ID)
+                            {
+                                stair.StatusOnMap = "Установлен";
+                                isUsed = true; break;
+                            }
+                        }
+                        if (isUsed) { UsedStairs.Add(stair); }
+                        else { FreeStairs.Add(stair); }
+                    }
+                }
+            }
+        }
+        public void SortLifts(Floor floor = null)
+        {
+            FreeLifts = new ObservableCollection<TerminalModel>();
+            UsedLifts = new ObservableCollection<TerminalModel>();
+            Lifts = new ObservableCollection<TerminalModel>(Storage.KioskObjects.Lifts.ToList());
+
+            ObservableCollection<TerminalModel> sort = null;
+            if (floor == null) { sort = Storage.KioskObjects.Lifts; }
+            else
+            {
+                sort = new ObservableCollection<TerminalModel>
+               (Storage.KioskObjects.Lifts.Where(o => o.Floor.Name == floor.Name).ToList());
+            }
+
+
+            if (Floors != null)
+            {
+                foreach (var fl in Floors)
+                {
+                    foreach (var lift in sort)
+                    {
+                        bool isUsed = false;
+                        foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Лифт")).ToList())
+                        {
+                            lift.StatusOnMap = "";
+                            if (obj.Id == lift.ID)
+                            {
+                                lift.StatusOnMap = "Установлен";
+                                isUsed = true; break;
+                            }
+                        }
+                        if (isUsed) { UsedLifts.Add(lift); }
+                        else { FreeLifts.Add(lift); }
+                    }
+                }
+            }
+        }
+        public void SortKiosks(Floor floor = null)
+        {
+            FreeTerminals = new ObservableCollection<TerminalModel>();
+            UsedTerminals = new ObservableCollection<TerminalModel>();
+            Terminals = new ObservableCollection<TerminalModel>(Storage.KioskObjects.Terminals.ToList());
+            ObservableCollection<TerminalModel> sort = null;
+            if (floor == null) { sort = Storage.KioskObjects.Terminals; }
+            else
+            {
+                sort = new ObservableCollection<TerminalModel>
+               (Storage.KioskObjects.Terminals.Where(o => o.Floor.Name == floor.Name).ToList());
+            }
+
+            if (Floors != null)
+            {
+                foreach (var fl in Floors)
+                {
+                    foreach (var kiosk in sort)
+                    {
+                        bool isUsed = false;
+                        foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Киоск")).ToList())
+                        {
+                            kiosk.StatusOnMap = "";
+                            if (obj.Id == kiosk.ID)
+                            {
+                                kiosk.StatusOnMap = "Установлен";
+                                isUsed = true; break;
+                            }
+                        }
+                        if (isUsed) { UsedTerminals.Add(kiosk); }
+                        else { FreeTerminals.Add(kiosk); }
+                    }
+                }
+              
+            }
+        }
+        public void SortEscalators(Floor floor = null)
+        {
+            FreeEscolators = new ObservableCollection<TerminalModel>();
+            UsedEscolators = new ObservableCollection<TerminalModel>();
+            Escolators = new ObservableCollection<TerminalModel>(Storage.KioskObjects.Escolators.ToList());
+            ObservableCollection<TerminalModel> sort = null;
+            if (floor == null) { sort = Storage.KioskObjects.Escolators; }
+            else
+            {
+                sort = new ObservableCollection<TerminalModel>
+               (Storage.KioskObjects.Escolators.Where(o => o.Floor.Name == floor.Name).ToList());
+            }
+
+            if (Floors != null)
+            {
+                foreach (var fl in Floors)
+                {
+                    foreach (var escolator in sort)
+                    {
+                        bool isUsed = false;
+                        foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Эскалатор")).ToList())
+                        {
+                            escolator.StatusOnMap = "";
+                            if (obj.Id == escolator.ID)
+                            {
+                                escolator.StatusOnMap = "Установлен";
+                                isUsed = true; break;
+                            }
+                        }
+                        if (isUsed) { UsedEscolators.Add(escolator); }
+                        else { FreeEscolators.Add(escolator); }
+                    }
+                }
+            }
+        }
+        #endregion
 
         #region Работа с картой
         double scaleX = 1.0;
         double scaleY = 1.0;
+
+        public void ZoomIN(double coeff = 1.4)
+        {
+            var st = new ScaleTransform();
+            This.canvasMap.RenderTransform = st;
+            st.ScaleX = scaleX * coeff;
+            st.ScaleY = scaleY * coeff;
+            scaleX = st.ScaleX;
+            scaleY = st.ScaleY;
+        }
+        public void ZoomOUT(double coeff = 1.4)
+        {
+            var st = new ScaleTransform();
+            This.canvasMap.RenderTransform = st;
+            st.ScaleX = scaleX / coeff;
+            st.ScaleY = scaleY / coeff;
+            scaleX = st.ScaleX;
+            scaleY = st.ScaleY;
+        }
         private RelayCommand zoomIn;
         public RelayCommand ZoomIn
         {
@@ -433,16 +1060,7 @@ namespace TradeCenterAdmin.ViewModels
                 return zoomIn ??
                     (zoomIn = new RelayCommand(obj =>
                     {
-                        //This.ZoomIn();
-                        var st = new ScaleTransform();
-                        //var textBox = new TextBox { Text = "Test" };
-                        This.canvasMap.RenderTransform = st;
-                        //This.canvasMap.Children.Add(textBox);
-                        st.ScaleX = scaleX * 1.4;
-                        st.ScaleY = scaleY * 1.4;
-                        scaleX = st.ScaleX;
-                        scaleY = st.ScaleY;
-
+                        ZoomIN();
                     }));
             }
         }
@@ -454,15 +1072,7 @@ namespace TradeCenterAdmin.ViewModels
                 return zoomOut ??
                     (zoomOut = new RelayCommand(obj =>
                     {
-                        //This.ZoomOut();
-                        var st = new ScaleTransform();
-                        //var textBox = new TextBox { Text = "Test" };
-                        This.canvasMap.RenderTransform = st;
-                        //This.canvasMap.Children.Add(textBox);
-                        st.ScaleX = scaleX / 1.4;
-                        st.ScaleY = scaleY / 1.4;
-                        scaleX = st.ScaleX;
-                        scaleY = st.ScaleY;
+                        ZoomOUT();
                     }));
             }
         }
@@ -475,6 +1085,178 @@ namespace TradeCenterAdmin.ViewModels
             }
         }
 
+        #endregion
+
+        #region Открытие списка объектов в окне
+
+        public MapTerminalPointType MapTerminalPointType = MapTerminalPointType.WC;
+
+        private RelayCommand showFullFreeObjectsList;
+        public RelayCommand ShowFullFreeObjectsList
+        {
+            get
+            {
+                return showFullFreeObjectsList ??
+                    (showFullFreeObjectsList = new RelayCommand(obj =>
+                    {
+                        Views.Windows.ShowFullList f = new Views.Windows.ShowFullList(MapTerminalPointType,PointState.Free);
+                        f.DataContext = this; f.Show();
+                    }));
+            }
+        }
+        private RelayCommand showFullUsedObjectsList;
+        public RelayCommand ShowFullUsedObjectsList
+        {
+            get
+            {
+                return showFullUsedObjectsList ??
+                    (showFullUsedObjectsList = new RelayCommand(obj =>
+                    {
+                        Views.Windows.ShowFullList f = new Views.Windows.ShowFullList(MapTerminalPointType, PointState.Used);
+                        f.DataContext = this; f.Show();
+                    }));
+            }
+        }
+        #endregion
+        #region Отмена и возврат, кнопки и попапы
+        /// <summary>
+        /// Команда отмены изменения (ctrl+z)
+        /// </summary>
+        private RelayCommand goBackInChangesPool;
+        public RelayCommand GoBackInChangesPool
+        {
+            get
+            {
+                return goBackInChangesPool ??
+                    (goBackInChangesPool = new RelayCommand(obj =>
+                    {
+                        KioskObjects.ChangesPool.Undo();
+                    }));
+            }
+        }
+        /// <summary>
+        /// Команда возврата изменения (ctrl+u)
+        /// </summary>
+        private RelayCommand goForwardInChangesPool;
+        public RelayCommand GoForwardInChangesPool
+        {
+            get
+            {
+                return goForwardInChangesPool ??
+                    (goForwardInChangesPool = new RelayCommand(obj =>
+                    {
+                        KioskObjects.ChangesPool.Redo();
+                    }));
+            }
+        }
+        /// <summary>
+        /// Отмена действий
+        /// </summary>
+        private RelayCommand undoChangesStepActions;
+        public RelayCommand UndoChangesStepActions
+        {
+            get
+            {
+                return undoChangesStepActions ??
+                    (undoChangesStepActions = new RelayCommand(obj =>
+                    {
+                        if(ChangesStep > 0)
+                        {
+                            KioskObjects.ChangesPool.UndoMany(ChangesStep);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Введите число которое больше нуля");
+                        }                       
+                    }));
+            }
+        }
+        private RelayCommand redoChangesStepActions;
+        public RelayCommand RedoChangesStepActions
+        {
+            get
+            {
+                return redoChangesStepActions ??
+                    (redoChangesStepActions = new RelayCommand(obj =>
+                    {
+                        if (ChangesStep > 0)
+                        {
+                            KioskObjects.ChangesPool.RedoMany(ChangesStep);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Введите число которое больше нуля");
+                        }
+                    }));
+            }
+        }
+        private ObservableCollection<ChangeEntry> undoActions;
+        public ObservableCollection<ChangeEntry> UndoActions
+        {
+            get { return undoActions; }
+            set
+            {
+                undoActions = value;
+                OnPropertyChanged("UndoActions");
+            }
+        }
+        private ObservableCollection<ChangeEntry> redoActions;
+        public ObservableCollection<ChangeEntry> RedoActions
+        {
+            get { return redoActions; }
+            set
+            {
+                redoActions = value;
+                OnPropertyChanged("RedoActions");
+                
+            }          
+        }
+
+        private int changesStep;
+        public int ChangesStep
+        {
+            get { return changesStep; }
+            set
+            {
+                changesStep = value;
+                OnPropertyChanged("ChangesStep");
+
+            }
+        }
+        private void ChangesPool_OnUndoing(ChangesPool.Events.EventArgs.UndoEventArgs args)
+        {
+            GetChangesLists();
+        }
+
+        private void ChangesPool_OnRedoing(ChangesPool.Events.EventArgs.RedoEventArgs args)
+        {
+            GetChangesLists();
+        }
+        private void ChangesPool_OnEntryAdded(ChangesPool.Events.EventArgs.EntryAddedEventArgs args)
+        {
+            GetChangesLists();
+        }
+
+        void GetChangesLists()
+        {
+            List<ChangeEntry> reverseRedo = new List<ChangeEntry>();
+            for (int i = Storage.KioskObjects.ChangesPool.GetPossibleRedoActions().Count - 1; i > -1; i--)
+            {
+                reverseRedo.Add(Storage.KioskObjects.ChangesPool.GetPossibleRedoActions()[i]);
+            }
+
+            RedoActions = new ObservableCollection<ChangeEntry>(reverseRedo);
+
+
+
+            List<ChangeEntry> reverseUndo = new List<ChangeEntry>();
+            for (int i = Storage.KioskObjects.ChangesPool.GetPossibleUndoActions().Count - 1; i > -1; i--)
+            {
+                reverseUndo.Add(Storage.KioskObjects.ChangesPool.GetPossibleUndoActions()[i]);
+            }
+
+            UndoActions = new ObservableCollection<ChangeEntry>(reverseUndo);
+        }
         #endregion
 
 
@@ -522,7 +1304,9 @@ namespace TradeCenterAdmin.ViewModels
                 return saveChanges ??
                     (saveChanges = new RelayCommand(obj =>
                     {
-                        Storage.KioskObjects.SaveSettings();
+                        Services.JsonToServerUploader<Floor> uploader = new Services.JsonToServerUploader<Floor>();
+                        uploader.UploadListToServer(Floors, "floor");
+
                         MessageBox.Show("Изменения успешно сохранены");
                     }));
             }
@@ -541,8 +1325,97 @@ namespace TradeCenterAdmin.ViewModels
                         LoadFloorObjects(); 
                     }));
             }
-        }
+        }    
         #endregion
+
+        public bool RemoveTerminalModelPoint(TerminalModel model)
+        {
+            if (model != null)
+            {
+                for (int i = 0; i < Floors.Count; i++)
+                {
+                    var floor = floors[i];
+                    for (int j = 0; j < floor.Stations.Count; j++)
+                    {
+                        if (model.ID == floor.Stations[j].Id)
+                        {
+                            This.RemovingStationPointToChangesPool(floor.Stations[j],
+                                 $"Отменить удаление точки на {SelectedFloor.Name}е",
+                                $"Удалить точку на {SelectedFloor.Name}е");
+                            floor.Stations.RemoveAt(j);                           
+                        }
+                    }
+                }
+                SortAllPointObjects();
+                LoadFloorObjects();
+                return true;
+            }
+            return false;
+        }
+        public bool ShowAndHighligthTerminalModelPoint(TerminalModel model)
+        {
+            if (model != null)
+            {
+                for (int i = 0; i < Floors.Count; i++)
+                {
+                    var floor = floors[i];
+                    for (int j = 0; j < floor.Stations.Count; j++)
+                    {
+                        if (model.ID == floor.Stations[j].Id)
+                        {
+                            SelectedFloor = floor;
+                        }
+                    }
+                }
+
+
+
+                for (int i=0; i<This.canvasMap.Children.Count;i++)
+                {
+                    var uielement = This.canvasMap.Children[i];
+                    if (uielement is Button)
+                    {
+                        if (uielement.Uid == model.ID.ToString())
+                        {
+                            BitmapImage icon = null;
+                           
+                          //  LoadFloorObjects();
+                      
+                            switch (model.Type)
+                            {
+                                case MapTerminalPointType.Termanals:                                 
+                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/Highligthted/StationIcon.png"));
+                                    ((Button)uielement).Background = new ImageBrush(icon);
+                                    break;
+                                case MapTerminalPointType.WC:                     
+                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/Highligthted/WCIcon.png"));
+                                    ((Button)uielement).Background = new ImageBrush(icon);
+                                    break;
+                                case MapTerminalPointType.ATMCash:
+                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/Highligthted/ATMIcon.png"));
+                                    ((Button)uielement).Background = new ImageBrush(icon);
+                                    break;
+                                case MapTerminalPointType.Stairs:
+                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/Highligthted/StairsIcon.png"));
+                                    ((Button)uielement).Background = new ImageBrush(icon);
+                                    break;
+                                case MapTerminalPointType.Lift:
+                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/Highligthted/ElevatorIcon.png"));
+                                    ((Button)uielement).Background = new ImageBrush(icon);
+                                    break;
+                                case MapTerminalPointType.Escolator:
+                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/Highligthted/EscalatorIcon.png"));
+                                    ((Button)uielement).Background = new ImageBrush(icon);
+                                    break;
+                            }
+                            return true;
+                        }                   
+                    }
+                }
+                return false;
+            }
+            return false;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

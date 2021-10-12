@@ -15,6 +15,9 @@ namespace TCSchelkovskiyAPI.Models
         public string Image { get; set; }
         public List<ShopModel> Shops { get; set; }
 
+        public string FilePrefix { get; set; }
+        public string File { get; set; }
+
         public int CompareTo(object obj)
         {
             FloorModel p = obj as FloorModel;

@@ -5,109 +5,516 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TradeCenterAdmin.Views.Pages"
       xmlns:b="http://schemas.microsoft.com/xaml/behaviors" 
-      xmlns:Controls="clr-namespace:NavigationMap.Controls;assembly=NavigationMap" x:Class="TradeCenterAdmin.Views.Pages.MapEditor"
-      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+      xmlns:Controls="clr-namespace:NavigationMap.Controls;assembly=NavigationMap"
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+      xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="TradeCenterAdmin.Views.Pages.MapEditor"
       mc:Ignorable="d" 
-      d:DesignHeight="700" d:DesignWidth="1059"
+      d:DesignHeight="700" d:DesignWidth="1059" 
+     PreviewKeyDown="keydown"
+     PreviewMouseWheel="scrolling"
       Title="MapEditor" Unloaded="Page_Unloaded">
-    
-    <Grid>
-        <Viewbox>
-            <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Width="1059" Height="700">
-                <Canvas ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible"
+    <Viewbox>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="34*"/>
+                <ColumnDefinition Width="231*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="43*"/>
+                <RowDefinition Height="132*"/>
+            </Grid.RowDefinitions>
+            <Viewbox Margin="0,0,0.2,-0.2" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Width="1059" Height="700">
+                    <Canvas ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible"
                     x:Name="canvasMap" VerticalAlignment="Top" Width="9000" Height="9000" Margin="0,0,-0.4,0">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseDown">
-                            <i:InvokeCommandAction Command="{Binding LeftMouseButtonClick}"></i:InvokeCommandAction>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <Image x:Name="img" MouseDown="click" Stretch="Uniform"  Source="{Binding CurrentFloorImage.Source}" Width="9000" Height="9000" Canvas.Left="0" Canvas.Top="0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDown">
+                                <i:InvokeCommandAction Command="{Binding LeftMouseButtonClick}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <Image x:Name="img" MouseDown="click" Stretch="Uniform"  Source="{Binding CurrentFloorImage.Source}" Width="9000" Height="9000" Canvas.Left="0" Canvas.Top="0"/>
 
-                    </Image>
+                        <Expander Header="Expander" Height="100" Canvas.Left="1133" Canvas.Top="229" Width="100">
+                            <Grid Background="#FFE5E5E5"/>
+                        </Expander>
 
 
-                </Canvas>
-            </ScrollViewer>
 
-        </Viewbox>
-        <Expander Header="Этажи" Height="100" Width="160" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="778,90,0,0" >
-            <Grid Background="#FFE5E5E5">
-                <ComboBox ItemsSource="{Binding Floors, Mode=TwoWay}" SelectedItem="{Binding SelectedFloor, Mode=TwoWay}" 
+
+
+                    </Canvas>
+
+                </ScrollViewer>
+
+            </Viewbox>
+
+            <Menu Height="27"  Width="1059" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2">
+
+                <MenuItem  Width="20" BorderThickness="0" Margin="25,0,0,0" Command="{Binding GoBackInChangesPool}">
+                    <MenuItem.Header>
+                        <Image Margin="-6,0,0,0"   Width="20" Height="20" Source="/TradeCenterAdmin;component/Images/Interface/UndoIcon.png"></Image>
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem BorderThickness="0" Margin="0,0,0,0" Width="12">
+                    <MenuItem.Header>
+                        <Image Margin="-6,0,0,0"  Width="11" Height="20" Source="/TradeCenterAdmin;component/Images/Interface/DetailsArrow.png"></Image>
+                    </MenuItem.Header>
+                    <MenuItem Margin="0,0,-143.6,0" Height="183">
+                        <MenuItem.Header>
+                            <Grid>
+                                <ListBox ItemsSource="{Binding UndoActions,Mode=TwoWay}" 
+                                         Margin="-32,11,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="139" Width="257">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding UndoText}"></TextBlock>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <TextBlock Text="Кол-во действий для отмены" Margin="-31,155,191.8,-5.8"></TextBlock>
+                                <TextBox Text="{Binding ChangesStep,Mode=TwoWay}" Margin="134,155,162.8,-5.8"></TextBox>
+                                <Button Command="{Binding UndoChangesStepActions}"
+                                        Content="Отменить" HorizontalAlignment="Left" Margin="163,155,0,-6.8" VerticalAlignment="Top" Width="62"/>
+                                <TextBlock HorizontalAlignment="Left" Margin="-31,-5,0,0" TextWrapping="Wrap" Text="Доступных действий : " VerticalAlignment="Top"/>
+                                <TextBlock HorizontalAlignment="Left" 
+                                            Text="{Binding UndoActions.Count}" 
+                                           Margin="91,-5,0,0" 
+                                           TextWrapping="NoWrap"                                          
+                                           VerticalAlignment="Top" Width="38"/>
+                            </Grid>
+                        </MenuItem.Header>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Width="20"  BorderThickness="0" Command="{Binding GoForwardInChangesPool}" >
+                    <MenuItem.Header>
+                        <Image Margin="-6,0,0,0"  Width="20" Height="20" Source="/TradeCenterAdmin;component/Images/Interface/RedoIcon.png"></Image>
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem BorderThickness="0" Margin="0,0,0,0" Width="12">
+                    <MenuItem.Header>
+                        <Image Margin="-6,0,0,0"  Width="11" Height="20" Source="/TradeCenterAdmin;component/Images/Interface/DetailsArrow.png"></Image>
+                    </MenuItem.Header>
+                    <MenuItem Margin="0,0,-143.4,0" Height="184">
+                        <MenuItem.Header>
+                            <Grid>
+                                <ListBox  ItemsSource="{Binding RedoActions,Mode=TwoWay}" 
+                                    Margin="-32,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="139" Width="264">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding RedoText}"></TextBlock>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <TextBlock Text="Кол-во действий для возврата" Margin="-31,154,192,-4.8"></TextBlock>
+                                <TextBox Text="{Binding ChangesStep,Mode=TwoWay}"
+                                    Margin="137,154,160,-4.8"></TextBox>
+                                <Button Command="{Binding RedoChangesStepActions}"
+                                    Content="Вернуть" HorizontalAlignment="Left"
+                                    Margin="170,154,0,-5.8" VerticalAlignment="Top" Width="62"/>
+                                <TextBlock HorizontalAlignment="Left" Margin="-31,-6,0,0" TextWrapping="Wrap" Text="Доступных действий : " VerticalAlignment="Top"/>
+                                <TextBlock  Text="{Binding RedoActions.Count}" 
+                                            HorizontalAlignment="Left" 
+                                           Margin="91,-6,0,0"
+                                           TextWrapping="NoWrap" 
+                                           VerticalAlignment="Top" Width="38"/>
+                            </Grid>
+                        </MenuItem.Header>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Margin="775,0,20,0" Command="{Binding SaveChanges}"  Header="Сохранить изменения" HorizontalAlignment="Right"/>
+            </Menu>
+            <Button Command="{Binding ZoomOut}" Content="" BorderThickness="0" Width="46" Height="45" Margin="915.2,573.6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1">
+                <Button.Background>
+                    <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Zoom/ZoomOut.png"/>
+                </Button.Background>
+            </Button>
+            <Button Command="{Binding ZoomIn}" Content="" BorderThickness="0" Width="46" Height="43" Margin="965.2,573.6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1">
+                <Button.Background>
+                    <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Zoom/ZoomIn.png"/>
+                </Button.Background>
+            </Button>
+            <StackPanel Height="670" Width="160" Margin="848.4,54,17.2,-23.2" Grid.RowSpan="2" Grid.Column="1">
+                <Expander x:Name="floorsExpander" IsExpanded="True" Collapsed="floorExpanderCollapsed" Expanded="floorExpanderExpanded" 
+                  Header="Этажи" Height="100" Width="160" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,-96,0"  >
+                    <Grid Background="#FFE5E5E5">
+                        <ComboBox ItemsSource="{Binding Floors, Mode=TwoWay}" SelectedItem="{Binding SelectedFloor, Mode=TwoWay}" 
                                 HorizontalAlignment="Left" Margin="5,20,0,0" VerticalAlignment="Top" Width="148">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding RedrawFloorItems}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ComboBox>
-                <Button Command="{Binding OpenFloors}" Content="Изменить этажи" HorizontalAlignment="Left" Margin="5,47,0,0" VerticalAlignment="Top" Width="148" Height="21"/>
-                <TextBlock Text="Выбранный этаж :" FontSize="10" Margin="5,2,66.4,57.6" />
-            </Grid>
-        </Expander>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding RedrawFloorItems}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
+                        <Button Command="{Binding OpenFloors}" IsEnabled="False" Content="Изменить этажи" HorizontalAlignment="Left" Margin="5,47,0,0" VerticalAlignment="Top" Width="148" Height="21"/>
+                        <TextBlock Text="Выбранный этаж :" FontSize="10" Margin="5,2,66.4,57.6" />
+                    </Grid>
+                </Expander>
+                <Expander x:Name="toolsExpander" IsExpanded="True" Collapsed="toolsExpanderCollapsed" Expanded="toolsExpanderExpanded"
+            Header="Инструменты" Height="471" Width="160" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,-96,0">
+                    <Grid Background="#FFE5E5E5">
+                        <Button Command="{Binding UseCursor}"  Content="" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/CursorIcon.png"/>
+                            </Button.Background>
+                        </Button>
+                        <TextBlock HorizontalAlignment="Left" Margin="10,61,0,0" TextWrapping="Wrap" Text="Курсор" VerticalAlignment="Top"/>
+                        <Button Command="{Binding UseKiosk}" Content="" HorizontalAlignment="Left" Margin="10,216,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/StationIcon.png"/>
+                            </Button.Background>
+                        </Button>
+                        <TextBlock HorizontalAlignment="Left" Margin="10,267,0,0" TextWrapping="Wrap" Text="Киоск" VerticalAlignment="Top"/>
+                        <Button Command="{Binding UseArea}" Content="" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/AreaIcon.png"/>
+                            </Button.Background>
+                        </Button>
+                        <TextBlock HorizontalAlignment="Left" Margin="10,130,0,0" TextWrapping="Wrap" Text="Область" VerticalAlignment="Top"/>
+                        <Button Command="{Binding UseEntry}" Content="" HorizontalAlignment="Left" Margin="83,79,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/EntranceIcon.png"/>
+                            </Button.Background>
+                        </Button>
+                        <TextBlock HorizontalAlignment="Left" Margin="83,130,0,0" TextWrapping="Wrap" Text="Вход" VerticalAlignment="Top"/>
+                        <Button Command="{Binding UseHand}" Content="" HorizontalAlignment="Left" Margin="83,10,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/HandIcon.png"/>
+                            </Button.Background>
+                        </Button>
+                        <TextBlock HorizontalAlignment="Left" Margin="83,60,0,0" TextWrapping="Wrap" Text="Рука" VerticalAlignment="Top"/>
+                        <Button Command="{Binding UseStairs}" Content="" HorizontalAlignment="Left" Margin="83,149,0,0" VerticalAlignment="Top" Width="59" Height="51" Click="Button_Click">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/StairsIcon.png"/>
+                            </Button.Background>
+                        </Button>
+                        <TextBlock HorizontalAlignment="Left" Margin="83,199,0,0" TextWrapping="Wrap" Text="Лестница" VerticalAlignment="Top"/>
+                        <Button Command="{Binding UseWay}" Content="" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/WayIcon.png"/>
+                            </Button.Background>
+                        </Button>
+                        <TextBlock HorizontalAlignment="Left" Margin="10,199,0,0" TextWrapping="Wrap" Text="Путь" VerticalAlignment="Top"/>
+                        <Button Command="{Binding UseLift}" Content="" HorizontalAlignment="Left" Margin="83,216,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/ElevatorIcon.png"/>
+                            </Button.Background>
+                        </Button>
+                        <TextBlock HorizontalAlignment="Left" Margin="83,267,0,0" TextWrapping="Wrap" Text="Лифт" VerticalAlignment="Top"/>
+                        <Button Command="{Binding UseWC}" Content="" HorizontalAlignment="Left" Margin="10,290,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/WCIcon.png"/>
+                            </Button.Background>
+                        </Button>
+                        <TextBlock HorizontalAlignment="Left" Margin="10,342,0,0" TextWrapping="Wrap" Text="Туалет" VerticalAlignment="Top"/>
+                        <Button Command="{Binding UseATM}" Content="" HorizontalAlignment="Left" Margin="83,290,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/ATMIcon.png"/>
+                            </Button.Background>
+                        </Button>
+                        <TextBlock HorizontalAlignment="Left" Margin="83,342,0,0" TextWrapping="Wrap" Text="Банкомат" VerticalAlignment="Top"/>
+                        <Button Command="{Binding UseEscalator}" Content="" HorizontalAlignment="Left" Margin="10,362,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                            <Button.Background>
+                                <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/EscalatorIcon.png"/>
+                            </Button.Background>
+                        </Button>
+                        <TextBlock HorizontalAlignment="Left" Margin="10,414,0,-11.6" TextWrapping="Wrap" Text="Эскалатор" VerticalAlignment="Top"/>
 
-        <Button Command="{Binding ZoomOut}" Content="-"  Width="70" Height="46" Margin="685,424,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Button Command="{Binding ZoomIn}" Content="+" Width="70" Height="46" Margin="685,475,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Expander Header="Инструменты" Height="329" Width="160" Margin="778,195,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Grid Background="#FFE5E5E5">
-                <Button Command="{Binding UseCursor}"  Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
-                <TextBlock HorizontalAlignment="Left" Margin="10,61,0,0" TextWrapping="Wrap" Text="Курсор" VerticalAlignment="Top"/>
-                <Button Command="{Binding UseKiosk}" Content="Button" HorizontalAlignment="Left" Margin="10,216,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
-                <TextBlock HorizontalAlignment="Left" Margin="10,267,0,0" TextWrapping="Wrap" Text="Киоск" VerticalAlignment="Top"/>
-                <Button Command="{Binding UseArea}" Content="Button" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
-                <TextBlock HorizontalAlignment="Left" Margin="10,130,0,0" TextWrapping="Wrap" Text="Область" VerticalAlignment="Top"/>
-                <Button Command="{Binding UseEntry}" Content="Button" HorizontalAlignment="Left" Margin="83,79,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
-                <TextBlock HorizontalAlignment="Left" Margin="83,130,0,0" TextWrapping="Wrap" Text="Вход" VerticalAlignment="Top"/>
-                <Button Command="{Binding UseHand}" Content="Button" HorizontalAlignment="Left" Margin="83,10,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
-                <TextBlock HorizontalAlignment="Left" Margin="83,60,0,0" TextWrapping="Wrap" Text="Рука" VerticalAlignment="Top"/>
-                <Button Command="{Binding UseStairs}" Content="Button" HorizontalAlignment="Left" Margin="83,149,0,0" VerticalAlignment="Top" Width="59" Height="51" Click="Button_Click"/>
-                <TextBlock HorizontalAlignment="Left" Margin="83,199,0,0" TextWrapping="Wrap" Text="Лестница" VerticalAlignment="Top"/>
-                <Button Command="{Binding UseWay}" Content="Button" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" Width="59" Height="51"/>
-                <TextBlock HorizontalAlignment="Left" Margin="10,199,0,0" TextWrapping="Wrap" Text="Путь" VerticalAlignment="Top"/>
-
-            </Grid>
-        </Expander>
-        <Button Command="{Binding SaveChanges}" Content="Сохранить изменения"  Width="160" Height="46" Margin="778,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBlock x:Name="hints" Text="Подсказки" TextAlignment="Center" TextWrapping="Wrap" Margin="285,511,379.2,106"/>
-        <Expander Header="Киоски" Height="144" Width="160" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Grid Background="#FFE5E5E5">
-                <ComboBox ItemsSource="{Binding Terminals, Mode=TwoWay}" SelectedItem="{Binding SelectedTerminal, Mode=TwoWay}" 
+                    </Grid>
+                </Expander>
+            </StackPanel>
+            <TextBlock x:Name="hints" Text="Подсказки" TextAlignment="Center" TextWrapping="Wrap" Margin="264.2,560.6,264.2,42.8" Grid.Row="1" Grid.Column="1"/>
+            <StackPanel Width="330" Height="640" Margin="10,45,719.2,15.8" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                <Expander x:Name="objectsExpander" IsExpanded="True" Collapsed="objectsExpanderCollapsed" Expanded="objectsExpanderExpanded"
+                  Header="Списки доступных объектов"  Height="409" Width="328"  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                    <Grid Background="#FFE5E5E5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,-11.6,0" Width="328" Height="389">
+                        <TabControl x:Name="objectsTabControl" SelectionChanged="objectsTabControlSwitched" 
+                                Height="409" Width="295" Margin="10,10,0,-13" Background="{x:Null}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <TabItem Uid="tab_kiosk" Header="Киоски">
+                                <Grid Background="#FFE5E5E5">
+                                    <ComboBox ItemsSource="{Binding Terminals, Mode=TwoWay}" SelectedItem="{Binding SelectedTerminal, Mode=TwoWay}" 
                     HorizontalAlignment="Left" Margin="5,28,0,0" VerticalAlignment="Top" Width="148">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding RedrawFloorItems}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ComboBox>
-                <TextBlock Text="Выбранный киоск :" FontSize="10" Margin="5,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                <CheckBox IsChecked="{Binding ShowOnlySelectedTerminalWays,Mode=TwoWay}" HorizontalAlignment="Left" Margin="5,55,0,0" VerticalAlignment="Top" Height="57" Width="143">
-                    <TextBlock TextWrapping="Wrap" Width="123">
-                        Показать маршруты только выбранного киоска
-                    </TextBlock>
-                </CheckBox>
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <Run Text="{Binding Name}"></Run>
+                                                    <Run Text="  "></Run>
+                                                    <Run Text="{Binding StatusOnMap}"></Run>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <TextBlock Text="Выбранный киоск :" FontSize="10" Margin="5,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <CheckBox IsChecked="{Binding ShowOnlySelectedTerminalWays, Mode=TwoWay}" HorizontalAlignment="Left" Margin="156,6,-9.4,0" VerticalAlignment="Top" Height="57" Width="143">
+                                        <TextBlock TextWrapping="Wrap" Width="123"><Run Text="Показать маршруты только выбранного киоска"/></TextBlock>
+                                    </CheckBox>
+                                    <TextBlock VerticalAlignment="Top" Text="Киоски в резерве :" Margin="7,62,0,0" HorizontalAlignment="Left" FontSize="10"/>
+                                    <ListBox ItemsSource="{Binding FreeTerminals, Mode=TwoWay}" Width="275" VerticalAlignment="Top" Margin="7,82,0,0" Height="95" HorizontalAlignment="Left"/>
+                                    <TextBlock VerticalAlignment="Top" Text="Расставленные киоски :" Margin="7,183,0,0" HorizontalAlignment="Left" FontSize="10"/>
+                                    <ListBox ItemsSource="{Binding UsedTerminals, Mode=TwoWay}" 
+                                         SelectedItem="{Binding CurrentExistingTerminal, Mode=TwoWay}"
+                                         HorizontalAlignment="Left" Height="111" Margin="7,203,0,0" VerticalAlignment="Top" Width="275">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Width="275">
+                                                    <TextBlock Text="{Binding}"
+                                                           ToolTip="Вы можете нажать правую кнопку мыши,                                                             чтобы найти объект на карте или удалить его">
+                                                        <TextBlock.ContextMenu>
+                                                            <ContextMenu>
+                                                                <MenuItem Click="kioskTabShow"  Header="Показать на карте"/>
+                                                                <MenuItem Click="kioskTabDelete" Header="Удалить с карты"/>
+                                                            </ContextMenu>
+                                                        </TextBlock.ContextMenu>
+                                                    </TextBlock>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <Button Command="{Binding ShowFullFreeObjectsList}" Content="Подробнее" HorizontalAlignment="Left" Margin="210,59,0,0" VerticalAlignment="Top" Width="72" Height="23"/>
+                                    <TextBlock Text="Этаж :" FontSize="10" Margin="147,62,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <TextBox TextChanged="kioskListTextChanged" HorizontalAlignment="Left" Height="23" FontSize="10" Margin="180,59,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="18"/>
+                                    <Button Command="{Binding ShowFullUsedObjectsList}" Content="Подробнее" HorizontalAlignment="Left" Margin="210,180,0,0" VerticalAlignment="Top" Width="72" Height="23"/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Uid="tab_wc" Header="Туалеты" Margin="-2.2,-1.8,-24.8,-0.4">
+                                <Grid Background="#FFE5E5E5">
+                                    <TextBlock Text="Туалеты в резерве :" FontSize="10" Margin="5,48,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <ListBox ItemsSource="{Binding FreeWCs, Mode=TwoWay}" HorizontalAlignment="Left" Height="106" Margin="5,68,0,0" VerticalAlignment="Top" Width="275"/>
+                                    <TextBlock Text="Расставленные туалеты :" FontSize="10" Margin="5,183,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <ListBox ItemsSource="{Binding UsedWCs, Mode=TwoWay}" 
+                                          SelectedItem="{Binding CurrentExistingWC, Mode=TwoWay}"
+                                         HorizontalAlignment="Left" Height="106"
+                                         Margin="5,203,0,0" VerticalAlignment="Top" Width="275">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}" Width="270"
+                                                          ToolTip="Вы можете нажать правую кнопку мыши,                                                             чтобы найти объект на карте или удалить его">
+                                                    <TextBlock.ContextMenu>
+                                                        <ContextMenu>
+                                                            <MenuItem Click="wcTabShow"  Header="Показать на карте"/>
+                                                            <MenuItem Click="wcTabDelete" Header="Удалить с карты"/>
+                                                        </ContextMenu>
+                                                    </TextBlock.ContextMenu>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <Button Command="{Binding ShowFullFreeObjectsList}"  Content="Подробнее" HorizontalAlignment="Left" Margin="208,44,0,0" VerticalAlignment="Top" Width="72" Height="23"/>
+                                    <TextBlock Text="Этаж :" FontSize="10" Margin="229,2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <TextBox TextChanged="wcFreeListTextChanded" HorizontalAlignment="Left" Height="23" FontSize="10" Margin="262,-2,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="18"/>
+                                    <Button Command="{Binding ShowFullUsedObjectsList}" Content="Подробнее" HorizontalAlignment="Left" Margin="208,179,0,0" VerticalAlignment="Top" Width="72" Height="23"/>
+                                    <ComboBox ItemsSource="{Binding WCs, Mode=TwoWay}" SelectedItem="{Binding SelectedWC, Mode=TwoWay}" 
+                                HorizontalAlignment="Left" Margin="7,21,0,0" VerticalAlignment="Top" Width="273">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <Run Text="{Binding Name}"></Run>
+                                                    <Run Text="  "></Run>
+                                                    <Run Text="{Binding StatusOnMap}"></Run>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <TextBlock Text="Выбранный туалет" FontSize="10" Margin="7,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                </Grid>
+                            </TabItem>
+                            <TabItem Uid="tab_atm" Header="Банкоматы" HorizontalAlignment="Right" Margin="-1.6,-1.8,-1.8,-0.4" Width="113">
+                                <Grid Background="#FFE5E5E5">
+                                    <TextBlock Text="Банкоматы в резерве :" FontSize="10" Margin="5,48,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <ListBox ItemsSource="{Binding FreeATMs, Mode=TwoWay}" HorizontalAlignment="Left" Height="110" Margin="5,67,0,0" VerticalAlignment="Top" Width="275"/>
+                                    <TextBlock Text="Расставленные банкоматы :" FontSize="10" Margin="5,186,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <ListBox ItemsSource="{Binding UsedATMs, Mode=TwoWay}" 
+                                         SelectedItem="{Binding CurrentExistingATM, Mode=TwoWay}"
+                                         HorizontalAlignment="Left" Height="102" Margin="5,207,0,0" VerticalAlignment="Top" Width="275">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Width="270" Text="{Binding}" 
+                                                          ToolTip="Вы можете нажать правую кнопку мыши,                                                             чтобы найти объект на карте или удалить его">
+                                                    <TextBlock.ContextMenu>
+                                                        <ContextMenu>
+                                                            <MenuItem Click="atmTabShow"  Header="Показать на карте"/>
+                                                            <MenuItem Click="atmTabDelete" Header="Удалить с карты"/>
+                                                        </ContextMenu>
+                                                    </TextBlock.ContextMenu>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <Button Command="{Binding ShowFullFreeObjectsList}" Content="Подробнее" HorizontalAlignment="Left" Margin="208,44,0,0" VerticalAlignment="Top" Width="72" Height="23"/>
+                                    <TextBlock Text="Этаж :" FontSize="10" Margin="229,2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <TextBox TextChanged="atmListTextChanged" HorizontalAlignment="Left" Height="23" FontSize="10" Margin="262,-2,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="18"/>
+                                    <Button Command="{Binding ShowFullUsedObjectsList}" Content="Подробнее" HorizontalAlignment="Left" Margin="208,182,0,0" VerticalAlignment="Top" Width="72" Height="23"/>
+                                    <ComboBox ItemsSource="{Binding ATMs, Mode=TwoWay}" SelectedItem="{Binding SelectedATM, Mode=TwoWay}" 
+                                HorizontalAlignment="Left" Margin="8,21,0,0" VerticalAlignment="Top" Width="273">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <Run Text="{Binding Name}"></Run>
+                                                    <Run Text="  "></Run>
+                                                    <Run Text="{Binding StatusOnMap}"></Run>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <TextBlock Text="Выбранный банкомат" FontSize="10" Margin="7,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                </Grid>
+                            </TabItem>
+                            <TabItem Uid="tab_stairs" Header="Лестницы">
+                                <Grid Background="#FFE5E5E5">
+                                    <TextBlock Text="Лестницы в резерве :" FontSize="10" Margin="5,53,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <ListBox ItemsSource="{Binding FreeStairs, Mode=TwoWay}" HorizontalAlignment="Left" Height="110" Margin="5,73,0,0" VerticalAlignment="Top" Width="275"/>
+                                    <TextBlock Text="Расставленные лестницы :" FontSize="10" Margin="5,192,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <ListBox ItemsSource="{Binding UsedStairs, Mode=TwoWay}"
+                                           SelectedItem="{Binding CurrentExistingStairs, Mode=TwoWay}"
+                                         HorizontalAlignment="Left" Height="98" Margin="5,211,0,0" VerticalAlignment="Top" Width="275">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Width="270" Text="{Binding}" 
+                                                          ToolTip="Вы можете нажать правую кнопку мыши,                                                             чтобы найти объект на карте или удалить его">
+                                                    <TextBlock.ContextMenu>
+                                                        <ContextMenu>
+                                                            <MenuItem Click="stairsTabShow"  Header="Показать на карте"/>
+                                                            <MenuItem Click="stairsTabDelete" Header="Удалить с карты"/>
+                                                        </ContextMenu>
+                                                    </TextBlock.ContextMenu>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <Button Command="{Binding ShowFullFreeObjectsList}" Content="Подробнее" HorizontalAlignment="Left" Margin="208,49,0,0" VerticalAlignment="Top" Width="72" Height="23"/>
+                                    <TextBlock Text="Этаж :" FontSize="10" Margin="229,2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <TextBox TextChanged="stairsListTextChanged" HorizontalAlignment="Left" Height="23" FontSize="10" Margin="262,-2,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="18"/>
+                                    <Button Command="{Binding ShowFullUsedObjectsList}" Content="Подробнее" HorizontalAlignment="Left" Margin="208,188,0,0" VerticalAlignment="Top" Width="72" Height="23"/>
+                                    <ComboBox ItemsSource="{Binding Stairs, Mode=TwoWay}" SelectedItem="{Binding SelectedStairs, Mode=TwoWay}" 
+                                HorizontalAlignment="Left" Margin="7,21,0,0" VerticalAlignment="Top" Width="273">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <Run Text="{Binding Name}"></Run>
+                                                    <Run Text="  "></Run>
+                                                    <Run Text="{Binding StatusOnMap}"></Run>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <TextBlock Text="Выбранная лестница" FontSize="10" Margin="7,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                </Grid>
+                            </TabItem>
+                            <TabItem Uid="tab_lifts" Header="Лифты">
+                                <Grid Background="#FFE5E5E5">
+                                    <TextBlock Text="Лифты в резерве :" FontSize="10" Margin="5,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <ListBox ItemsSource="{Binding FreeLifts, Mode=TwoWay}" HorizontalAlignment="Left" Height="105" Margin="5,80,0,0" VerticalAlignment="Top" Width="275"/>
+                                    <TextBlock Text="Расставленные лифты :" FontSize="10" Margin="5,191,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <ListBox ItemsSource="{Binding UsedLifts, Mode=TwoWay}" 
+                                         SelectedItem="{Binding CurrentExistingLift, Mode=TwoWay}"
+                                         HorizontalAlignment="Left" Height="98" Margin="5,211,0,0" VerticalAlignment="Top" Width="275">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Width="270" Text="{Binding}"
+                                                          ToolTip="Вы можете нажать правую кнопку мыши,                                                             чтобы найти объект на карте или удалить его">
+                                                    <TextBlock.ContextMenu>
+                                                        <ContextMenu>
+                                                            <MenuItem Click="liftTabShow"  Header="Показать на карте"/>
+                                                            <MenuItem Click="liftTabDelete" Header="Удалить с карты"/>
+                                                        </ContextMenu>
+                                                    </TextBlock.ContextMenu>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <Button Command="{Binding ShowFullFreeObjectsList}" Content="Подробнее" HorizontalAlignment="Left" Margin="208,56,0,0" VerticalAlignment="Top" Width="72" Height="23"/>
+                                    <TextBlock Text="Этаж :" FontSize="10" Margin="229,2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <TextBox TextChanged="liftListTextChanged" HorizontalAlignment="Left" Height="23" FontSize="10" Margin="262,-2,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="18"/>
+                                    <Button Command="{Binding ShowFullUsedObjectsList}" Content="Подробнее" HorizontalAlignment="Left" Margin="208,187,0,0" VerticalAlignment="Top" Width="72" Height="23"/>
+                                    <ComboBox ItemsSource="{Binding Lifts, Mode=TwoWay}" SelectedItem="{Binding SelectedLift, Mode=TwoWay}" 
+                                HorizontalAlignment="Left" Margin="7,21,0,0" VerticalAlignment="Top" Width="273">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <Run Text="{Binding Name}"></Run>
+                                                    <Run Text="  "></Run>
+                                                    <Run Text="{Binding StatusOnMap}"></Run>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <TextBlock Text="Выбранный лифт" FontSize="10" Margin="7,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                </Grid>
+                            </TabItem>
+                            <TabItem Uid="tab_escalator" Header="Эскалаторы">
+                                <Grid Background="#FFE5E5E5">
+                                    <TextBlock Text="Эскалаторы в резерве :" FontSize="10" Margin="5,44,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <ListBox  ItemsSource="{Binding FreeEscolators, Mode=TwoWay}"                                           
+                                          HorizontalAlignment="Left" Height="111" Margin="5,65,0,0" VerticalAlignment="Top" Width="275"/>
+                                    <TextBlock Text="Расставленные эскалаторы :" FontSize="10" Margin="5,185,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <ListBox ItemsSource="{Binding UsedEscolators, Mode=TwoWay}"
+                                         SelectedItem="{Binding CurrentExistingEscolator, Mode=TwoWay}"
+                                         HorizontalAlignment="Left" Height="104" Margin="5,205,0,0" VerticalAlignment="Top" Width="275">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Width="270" Text="{Binding}"
+                                                          ToolTip="Вы можете нажать правую кнопку мыши,                                                             чтобы найти объект на карте или удалить его">
+                                                    <TextBlock.ContextMenu>
+                                                        <ContextMenu>
+                                                            <MenuItem Click="escalatorTabShow"  Header="Показать на карте"/>
+                                                            <MenuItem Click="escalatorTabDelete" Header="Удалить с карты"/>
+                                                        </ContextMenu>
+                                                    </TextBlock.ContextMenu>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <Button Command="{Binding ShowFullFreeObjectsList}" Content="Подробнее" HorizontalAlignment="Left" Margin="208,40,0,0" VerticalAlignment="Top" Width="72" Height="23"/>
+                                    <TextBlock Text="Этаж :" FontSize="10" Margin="229,2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                    <TextBox TextChanged="escalatorListTextChanged" HorizontalAlignment="Left" Height="23" FontSize="10" Margin="262,-2,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="18"/>
+                                    <Button Command="{Binding ShowFullUsedObjectsList}" Content="Подробнее" HorizontalAlignment="Left" Margin="208,181,0,0" VerticalAlignment="Top" Width="72" Height="23"/>
+                                    <ComboBox ItemsSource="{Binding Escolators, Mode=TwoWay}" SelectedItem="{Binding SelectedEscolator, Mode=TwoWay}" 
+                                HorizontalAlignment="Left" Margin="7,21,0,0" VerticalAlignment="Top" Width="273">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <Run Text="{Binding Name}"></Run>
+                                                    <Run Text="  "></Run>
+                                                    <Run Text="{Binding StatusOnMap}"></Run>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <TextBlock Text="Выбранный эскалатор" FontSize="10" Margin="7,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                </Expander>
+                <Expander  x:Name="areaExpander" IsExpanded="True" Collapsed="areaExpanderCollapsed" Expanded="areaExpanderExpanded"
+                  Header="Выбранная область" Height="137" Width="328"  HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Grid Background="#FFE5E5E5" Margin="0,0,-1.6,0">
+                        <TextBlock Text="Название :" FontSize="10" Margin="5,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        <TextBlock Text="Этаж :" FontSize="10" Margin="5,41,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        <CheckBox Unchecked="areaUncheckedOwnWays" Checked="areaCheckedOwnWays" x:Name="areaShowOwnWays" HorizontalAlignment="Left" Margin="5,60,0,0" VerticalAlignment="Top" Height="39" Width="143">
+                            <TextBlock TextWrapping="Wrap" Width="123" FontSize="10" 
+                                   ><Run Text="Показать маршруты только выбранной области"/></TextBlock>
+                        </CheckBox>
+                        <TextBlock Text="Этаж :" x:Name="areaTitle" FontSize="10" Margin="5,22,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="1.924,0.27" Height="14" Width="143" />
+                        <TextBlock Text="Этаж :" x:Name="areaFloor" FontSize="10" Margin="38,41,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="1.924,0.27" Height="14" Width="114" />
+                        <TextBlock Text="Список маршрутов :" FontSize="10" Margin="153,15,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="1.924,0.27" Height="14" Width="143" />
+                        <ComboBox x:Name="areaWays" SelectionChanged="areaWaysSelectionChanged"
+                    HorizontalAlignment="Left" Margin="153,30,0,0" VerticalAlignment="Top" Width="165"/>
+                        <Button x:Name="areaDeleteWay" Click="areaDeleteWayHandler"  Content="Удалить выбранный" HorizontalAlignment="Left" Margin="153,57,0,0" VerticalAlignment="Top" Width="165"/>
+                        <Button x:Name="areaDeleteAllWays" Click="areaDeleteAllWaysHandler" Content="Удалить все" HorizontalAlignment="Left" Margin="153,80,0,0" VerticalAlignment="Top" Width="165"/>
 
-            </Grid>
-        </Expander>
-        <Expander Header="Выбранная область" Height="225" Width="160" Margin="10,154,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Grid Background="#FFE5E5E5">
-                <TextBlock Text="Название :" FontSize="10" Margin="5,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                <TextBlock Text="Этаж :" FontSize="10" Margin="5,41,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                <CheckBox Unchecked="areaUncheckedOwnWays" Checked="areaCheckedOwnWays" x:Name="areaShowOwnWays" HorizontalAlignment="Left" Margin="5,60,0,0" VerticalAlignment="Top" Height="57" Width="143">
-                    <TextBlock TextWrapping="Wrap" Width="123"><Run Text="Показать маршруты только выбранной области"/></TextBlock>
-                </CheckBox>
-                <TextBlock Text="Этаж :" x:Name="areaTitle" FontSize="10" Margin="5,22,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="1.924,0.27" Height="14" Width="143" />
-                <TextBlock Text="Этаж :" x:Name="areaFloor" FontSize="10" Margin="38,41,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="1.924,0.27" Height="14" Width="114" />
-                <TextBlock Text="Список маршрутов :" FontSize="10" Margin="5,107,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="1.924,0.27" Height="14" Width="143" />
-                <ComboBox x:Name="areaWays" SelectionChanged="areaWaysSelectionChanged"
-                    HorizontalAlignment="Left" Margin="5,122,0,0" VerticalAlignment="Top" Width="148">
-                </ComboBox>
-                <Button x:Name="areaDeleteWay" Click="areaDeleteWayHandler"  Content="Удалить выбранный" HorizontalAlignment="Left" Margin="5,149,0,0" VerticalAlignment="Top" Width="143"/>
-                <Button x:Name="areaDeleteAllWays" Click="areaDeleteAllWaysHandler" Content="Удалить все" HorizontalAlignment="Left" Margin="5,172,0,0" VerticalAlignment="Top" Width="143"/>
+                    </Grid>
+                </Expander>
+            </StackPanel>
 
-            </Grid>
-        </Expander>
+            <TextBlock Height="23" 
+                       TextAlignment="Left"
+                       TextWrapping="Wrap" 
+                       Margin="419.345,3,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="269" Grid.Column="1">
+                <Run Text="Выбранный инструмент :"/><Run Text="{Binding MapEditorTool}"/></TextBlock>
 
 
 
 
-    </Grid>
+        </Grid>
+    </Viewbox>
+
 </Page>

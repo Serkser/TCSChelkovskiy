@@ -15,6 +15,9 @@ namespace TradeCenterAdmin.Enums
         Lift =5,
         Stairs =6,
         Way =7,
-        Hand = 8
+        Hand = 8,
+        WC = 9,
+        ATM = 10,
+        Escalator = 11,
     }
 }
