@@ -1985,7 +1985,6 @@ namespace TradeCenterAdmin.Views.Pages
         {
             var selected = ((MapEditorViewModel)this.DataContext).CurrentExistingTerminal;
             ((MapEditorViewModel)this.DataContext).RemoveTerminalModelPoint(selected);
-         
         }
 
         private void wcTabDelete(object sender, RoutedEventArgs e)
@@ -2063,6 +2062,7 @@ namespace TradeCenterAdmin.Views.Pages
         {
             var callbacks = new List<Action>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
             ObjectChangeEntry changes = new ObjectChangeEntry
             {
                 RedoText = redoText,
@@ -2086,6 +2086,7 @@ namespace TradeCenterAdmin.Views.Pages
         {
             var callbacks = new List<Action>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
             var floors = ((MapEditorViewModel)this.DataContext).Floors;
 
             ObservableCollection<Station> actionPlace = null;
@@ -2117,6 +2118,7 @@ namespace TradeCenterAdmin.Views.Pages
         {
             var callbacks = new List<Action>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
             ObjectChangeEntry changes = new ObjectChangeEntry
             {
                 RedoText = redoText,
@@ -2141,6 +2143,7 @@ namespace TradeCenterAdmin.Views.Pages
         {
             var callbacks = new List<Action>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
             ListItemChangeEntry<AreaPoint> changes = new ListItemChangeEntry<AreaPoint>
             {
                 RedoText = redoText,
@@ -2166,6 +2169,7 @@ namespace TradeCenterAdmin.Views.Pages
         {
             var callbacks = new List<Action>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
             ListItemChangeEntry<WayPoint> changes = new ListItemChangeEntry<WayPoint>
             {
                 RedoText = redoText,
@@ -2191,6 +2195,7 @@ namespace TradeCenterAdmin.Views.Pages
         {
             var callbacks = new List<Action>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
             var actionPlace = ((MapEditorViewModel)this.DataContext).Floors.Where(o => o.Id ==
           ((MapEditorViewModel)this.DataContext).SelectedFloor.Id).FirstOrDefault();
             ListChangeEntry changes = new ListChangeEntry
@@ -2215,6 +2220,7 @@ namespace TradeCenterAdmin.Views.Pages
         {
             var callbacks = new List<Action>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
 
             ComplexChangeEntry complexChange = new ComplexChangeEntry();
             complexChange.Conditions = waysConditions;
@@ -2226,6 +2232,7 @@ namespace TradeCenterAdmin.Views.Pages
         {
             var callbacks = new List<Action>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
             var actionPlace = ((MapEditorViewModel)this.DataContext).Floors.Where(o => o.Id ==
       ((MapEditorViewModel)this.DataContext).SelectedFloor.Id).FirstOrDefault();
             ListChangeEntry changes = new ListChangeEntry
@@ -2246,6 +2253,7 @@ namespace TradeCenterAdmin.Views.Pages
         {
             var callbacks = new List<Action>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
             var actionPlace = ((MapEditorViewModel)this.DataContext).Floors.Where(o => o.Id ==
       ((MapEditorViewModel)this.DataContext).SelectedFloor.Id).FirstOrDefault();
             ListChangeEntry changes = new ListChangeEntry
@@ -2266,6 +2274,7 @@ namespace TradeCenterAdmin.Views.Pages
             var callbacks = new List<Action>();
             TrulyObservableCollection<AreaPoint> actionPlace = new TrulyObservableCollection<AreaPoint>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
             var floors = ((MapEditorViewModel)this.DataContext).Floors;
             foreach (var floor in floors)
             {
@@ -2297,6 +2306,7 @@ namespace TradeCenterAdmin.Views.Pages
             var callbacks = new List<Action>();
             TrulyObservableCollection<AreaPoint> actionPlace = new TrulyObservableCollection<AreaPoint>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
             var floors = ((MapEditorViewModel)this.DataContext).Floors;
             foreach (var floor in floors)
             {
@@ -2327,6 +2337,7 @@ namespace TradeCenterAdmin.Views.Pages
             var callbacks = new List<Action>();
             TrulyObservableCollection<Way> actionPlace = new TrulyObservableCollection<Way>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
             var floors = ((MapEditorViewModel)this.DataContext).Floors;
             foreach (var floor in floors)
             {
@@ -2356,6 +2367,7 @@ namespace TradeCenterAdmin.Views.Pages
         {
             var callbacks = new List<Action>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
 
             TrulyObservableCollection<Way> actionPlace = new TrulyObservableCollection<Way>();
 
@@ -2411,6 +2423,7 @@ namespace TradeCenterAdmin.Views.Pages
             var callbacks = new List<Action>();
             TrulyObservableCollection<WayPoint> actionPlace = new TrulyObservableCollection<WayPoint>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
             var floors = ((MapEditorViewModel)this.DataContext).Floors;
             foreach (var floor in floors)
             {
@@ -2445,6 +2458,7 @@ namespace TradeCenterAdmin.Views.Pages
             var callbacks = new List<Action>();
             TrulyObservableCollection<WayPoint> actionPlace = new TrulyObservableCollection<WayPoint>();
             callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).LoadFloorObjects));
+            callbacks.Add(new Action(((MapEditorViewModel)this.DataContext).SortAllPointObjects));
             var floors = ((MapEditorViewModel)this.DataContext).Floors;
             foreach (var floor in floors)
             {

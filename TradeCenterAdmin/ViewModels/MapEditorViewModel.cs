@@ -830,11 +830,11 @@ namespace TradeCenterAdmin.ViewModels
 
             if (Floors != null)
             {
-                foreach (var fl in Floors)
+                foreach (var wc in sort)
                 {
-                    foreach (var wc in sort)
-                    {
-                        bool isUsed = false;
+                    bool isUsed = false;
+                    foreach (var fl in Floors)
+                    {                   
                         foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Туалет")).ToList())
                         {
                             wc.StatusOnMap = "";
@@ -844,9 +844,10 @@ namespace TradeCenterAdmin.ViewModels
                                 isUsed = true; break;
                             }
                         }
-                        if (isUsed) { UsedWCs.Add(wc); }
-                        else { FreeWCs.Add(wc);  }
+                      
                     }
+                    if (isUsed) { UsedWCs.Add(wc); }
+                    else { FreeWCs.Add(wc); }
                 }
             }
         }
@@ -865,11 +866,11 @@ namespace TradeCenterAdmin.ViewModels
 
             if (Floors != null)
             {
-                foreach (var fl in Floors)
+                foreach (var atm in sort)
                 {
-                    foreach (var atm in sort)
+                    bool isUsed = false;
+                    foreach (var fl in Floors)
                     {
-                        bool isUsed = false;
                         foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Банкомат")).ToList())
                         {
                             atm.StatusOnMap = "";
@@ -879,9 +880,10 @@ namespace TradeCenterAdmin.ViewModels
                                 isUsed = true; break;
                             }
                         }
-                        if (isUsed) { UsedATMs.Add(atm); }
-                        else { FreeATMs.Add(atm); }
+
                     }
+                    if (isUsed) { UsedATMs.Add(atm); }
+                    else { FreeATMs.Add(atm); }
                 }
             }
         }
@@ -900,23 +902,24 @@ namespace TradeCenterAdmin.ViewModels
 
             if (Floors != null)
             {
-                foreach (var fl in Floors)
+                foreach (var stairs in sort)
                 {
-                    foreach (var stair in sort)
+                    bool isUsed = false;
+                    foreach (var fl in Floors)
                     {
-                        bool isUsed = false;
                         foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Лестница")).ToList())
                         {
-                            stair.StatusOnMap = "";
-                            if (obj.Id == stair.ID)
+                            stairs.StatusOnMap = "";
+                            if (obj.Id == stairs.ID)
                             {
-                                stair.StatusOnMap = "Установлен";
+                                stairs.StatusOnMap = "Установлена";
                                 isUsed = true; break;
                             }
                         }
-                        if (isUsed) { UsedStairs.Add(stair); }
-                        else { FreeStairs.Add(stair); }
+
                     }
+                    if (isUsed) { UsedStairs.Add(stairs); }
+                    else { FreeStairs.Add(stairs); }
                 }
             }
         }
@@ -937,11 +940,11 @@ namespace TradeCenterAdmin.ViewModels
 
             if (Floors != null)
             {
-                foreach (var fl in Floors)
+                foreach (var lift in sort)
                 {
-                    foreach (var lift in sort)
+                    bool isUsed = false;
+                    foreach (var fl in Floors)
                     {
-                        bool isUsed = false;
                         foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Лифт")).ToList())
                         {
                             lift.StatusOnMap = "";
@@ -951,9 +954,10 @@ namespace TradeCenterAdmin.ViewModels
                                 isUsed = true; break;
                             }
                         }
-                        if (isUsed) { UsedLifts.Add(lift); }
-                        else { FreeLifts.Add(lift); }
+
                     }
+                    if (isUsed) { UsedLifts.Add(lift); }
+                    else { FreeLifts.Add(lift); }
                 }
             }
         }
@@ -972,11 +976,11 @@ namespace TradeCenterAdmin.ViewModels
 
             if (Floors != null)
             {
-                foreach (var fl in Floors)
+                foreach (var kiosk in sort)
                 {
-                    foreach (var kiosk in sort)
+                    bool isUsed = false;
+                    foreach (var fl in Floors)
                     {
-                        bool isUsed = false;
                         foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Киоск")).ToList())
                         {
                             kiosk.StatusOnMap = "";
@@ -986,11 +990,11 @@ namespace TradeCenterAdmin.ViewModels
                                 isUsed = true; break;
                             }
                         }
-                        if (isUsed) { UsedTerminals.Add(kiosk); }
-                        else { FreeTerminals.Add(kiosk); }
+
                     }
+                    if (isUsed) { UsedTerminals.Add(kiosk); }
+                    else { FreeTerminals.Add(kiosk); }
                 }
-              
             }
         }
         public void SortEscalators(Floor floor = null)
@@ -1008,23 +1012,24 @@ namespace TradeCenterAdmin.ViewModels
 
             if (Floors != null)
             {
-                foreach (var fl in Floors)
+                foreach (var escalator in sort)
                 {
-                    foreach (var escolator in sort)
+                    bool isUsed = false;
+                    foreach (var fl in Floors)
                     {
-                        bool isUsed = false;
                         foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Эскалатор")).ToList())
                         {
-                            escolator.StatusOnMap = "";
-                            if (obj.Id == escolator.ID)
+                            escalator.StatusOnMap = "";
+                            if (obj.Id == escalator.ID)
                             {
-                                escolator.StatusOnMap = "Установлен";
+                                escalator.StatusOnMap = "Установлен";
                                 isUsed = true; break;
                             }
                         }
-                        if (isUsed) { UsedEscolators.Add(escolator); }
-                        else { FreeEscolators.Add(escolator); }
+
                     }
+                    if (isUsed) { UsedEscolators.Add(escalator); }
+                    else { FreeEscolators.Add(escalator); }
                 }
             }
         }
