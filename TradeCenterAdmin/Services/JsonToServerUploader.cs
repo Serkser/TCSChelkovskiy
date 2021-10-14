@@ -36,10 +36,13 @@ namespace TradeCenterAdmin.Services
                 string filepath = Path.Combine(Environment.CurrentDirectory, filename+obj.Id + ".json");
                 using (StreamWriter sw = new StreamWriter(filepath))
                 {
+                    string imgpath = obj.Image;
+                    obj.Image = string.Empty;
                     using (JsonWriter writer = new JsonTextWriter(sw))
                     {
                         serializer.Serialize(writer, obj);
                     }
+                    obj.Image = imgpath;
                 }
                 string response = TCSchelkovskiyAPI.TCSchelkovskiyAPI.UploadFloorJsonToServer(filepath,obj.Id);
                 if (File.Exists(filepath)) { File.Delete(filepath); }

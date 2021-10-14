@@ -32,7 +32,7 @@
                                 <i:InvokeCommandAction Command="{Binding LeftMouseButtonClick}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <Image x:Name="img" MouseDown="click" Stretch="Uniform"  Source="{Binding CurrentFloorImage.Source}" Width="9000" Height="9000" Canvas.Left="0" Canvas.Top="0"/>
+                        <Image x:Name="img" MouseDown="click" Stretch="Fill"  Source="{Binding CurrentFloorImage.Source}" Width="9000" Height="9000" Canvas.Left="0" Canvas.Top="0"/>
 
                         <Expander Header="Expander" Height="100" Canvas.Left="1133" Canvas.Top="229" Width="100">
                             <Grid Background="#FFE5E5E5"/>

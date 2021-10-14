@@ -18,7 +18,7 @@ namespace TradeCenterAdmin.Storage
 {
     public static class KioskObjects
     {
-
+        
         public static ChangesPool.ChangesPool ChangesPool = new ChangesPool.ChangesPool();
         public static ObservableCollection<Floor> Floors { get; set; } = new ObservableCollection<Floor>();
         public static ObservableCollection<FloorModel> FloorModels { get; set; } = new ObservableCollection<FloorModel>();
@@ -35,12 +35,14 @@ namespace TradeCenterAdmin.Storage
 
         static KioskObjects()
         {
+
             RestoreSettings();
         }
 
         static JsonSerializer serializer = new JsonSerializer();
         public static async Task LoadAllObjects()
         {
+            TCSchelkovskiyAPI.TCSchelkovskiyAPI.HOST = Properties.Settings.Default.host;
             var pagesCount = TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetShopPagesCount();
             List<ShopModel> shops = new List<ShopModel>();
             for (int i = 0; i < pagesCount + 1; i++)
@@ -74,6 +76,8 @@ namespace TradeCenterAdmin.Storage
         {
             Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
             ConvertToFloorsFromJson(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
+           // Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
+         
         }
         public static string FilePath = Path.Combine(Environment.CurrentDirectory, "settings.json");
 
@@ -120,13 +124,11 @@ namespace TradeCenterAdmin.Storage
                     Directory.CreateDirectory("JSON");
 
                     WebClient client = new WebClient();
-                    client.DownloadProgressChanged += Client_DownloadProgressChanged; 
-                     
-                        client.DownloadFile(url, Path.GetFullPath(jsonFile));  
-                    
+                    client.DownloadFile(url,jsonFile);
 
                     if (File.Exists(jsonFile))
                     {
+                       
                         using (StreamReader file = File.OpenText(jsonFile))
                         {
                             floorFromJson = (Floor)serializer.Deserialize(file, typeof(Floor));
@@ -135,13 +137,16 @@ namespace TradeCenterAdmin.Storage
                     var selected = Floors.Where(o => o.Id == floorFromJson.Id).FirstOrDefault();          
                     if (selected != null)
                     {
+                        
                         int itemIndex =  Floors.IndexOf(selected);
+                        string img = Floors[itemIndex].Image;
                         Floors[itemIndex] = floorFromJson;
+                        Floors[itemIndex].Image = img;
                     }
                 }
                 catch (Exception ex)
                 {
-                   // MessageBox.Show(ex.Message); MessageBox.Show(ex.StackTrace);
+                    MessageBox.Show(ex.Message); MessageBox.Show(ex.StackTrace);
                     Debug.WriteLine("Не удалось загрузить файл");
                 }
             }

@@ -40,28 +40,36 @@
         </Button>
         <Button  Command="{Binding GoParking}" IsEnabled="True" Style="{StaticResource FloorButtonLeft}" Content="P"
             FontSize="20"  Margin="102,80,1262,0" VerticalAlignment="Top" Height="80"/>
-        <ListView Margin="180,78,0,0" BorderThickness="0" 
-               
-                  Style="{DynamicResource listView}"
-                  ItemContainerStyle="{StaticResource listViewItems}"
-           
+        <ListBox Margin="180,78,0,0" BorderThickness="0" 
+                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                  Background="Transparent"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Width="556"
+            Width="596"
             SelectedItem="{Binding CurrentFloor, Mode=TwoWay}"
             ItemsSource="{Binding Floors, Mode=TwoWay}"
             Height="86">
-        
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <WrapPanel Orientation="Horizontal"  Height="80" Width="80" >
-                        <RadioButton IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}, Mode=FindAncestor}}"
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <RadioButton IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}, Mode=FindAncestor}}"
                                     Content="{Binding FloorNumber, Mode=TwoWay}"  Style="{StaticResource CircleCheckbox}"
                       FontSize="20" Background="AntiqueWhite" HorizontalAlignment="Left" VerticalAlignment="Top" Height="80" Width="80" Cursor="Hand" Margin="0,0,0,0"/>
-                    </WrapPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"
+                                 />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
 
     </Grid>
 </Page>

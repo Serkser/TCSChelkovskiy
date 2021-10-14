@@ -25,7 +25,7 @@ namespace TCSchelkovskiyAPI
 
         }
 
-        public static string HOST = "https://navigator.useful.su";
+        public static string HOST { get; set; } = "https://navigator.useful.su";
         public static List<FloorModel> GetFloors()
         {
             
