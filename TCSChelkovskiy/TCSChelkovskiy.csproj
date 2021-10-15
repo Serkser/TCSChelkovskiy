@@ -48,6 +48,7 @@
     <None Remove="Images\MainWindow\Logo.png" />
     <None Remove="Images\MainWindow\Search.png" />
     <None Remove="Images\MainWindow\TrafficLight.png" />
+    <None Remove="Images\Navigation\accordionArrow.png" />
     <None Remove="Images\Navigation\FloopMarker.png" />
     <None Remove="Images\Navigation\FloorButton.png" />
     <None Remove="Images\Navigation\FloorButtonActive.png" />
@@ -94,6 +95,7 @@
     <Resource Include="Images\MainWindow\Logo.png" />
     <Resource Include="Images\MainWindow\Search.png" />
     <Resource Include="Images\MainWindow\TrafficLight.png" />
+    <Resource Include="Images\Navigation\accordionArrow.png" />
     <Resource Include="Images\Navigation\FloopMarker.png" />
     <Resource Include="Images\Samples\adv1.png" />
     <Resource Include="Images\Samples\adv2.png" />

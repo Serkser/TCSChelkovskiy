@@ -41,17 +41,14 @@
         <Button  Command="{Binding GoParking}" IsEnabled="True" Style="{StaticResource FloorButtonLeft}" Content="P"
             FontSize="20"  Margin="102,80,1262,0" VerticalAlignment="Top" Height="80"/>
         <ListView Margin="180,78,0,0" BorderThickness="0" 
-               
                   Style="{DynamicResource listView}"
                   ItemContainerStyle="{StaticResource listViewItems}"
-           
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Width="556"
             SelectedItem="{Binding CurrentFloor, Mode=TwoWay}"
             ItemsSource="{Binding Floors, Mode=TwoWay}"
             Height="86">
-        
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel Orientation="Horizontal"  Height="80" Width="80" >

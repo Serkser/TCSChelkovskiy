@@ -59,10 +59,7 @@ namespace TCEvropeyskiy.ViewModels
                 CurrentParkingFloor = ParkingUrls.FirstOrDefault();
             }
 
-            MessageBox.Show(BannersUrls.Count.ToString());
             LoadBanners();  /// ПРОВЕРИТЬ !!!
-
-
         }
 
         async Task LoadBanners()
@@ -433,7 +430,8 @@ namespace TCEvropeyskiy.ViewModels
         public RelayCommand GoBannersShop => goBannersShop ??= new RelayCommand(obj =>
         {
             BannerContainer banner = obj as BannerContainer;
-            var shop = KioskObjects.Shops.Where(o => o.ID == banner.BannerModel.ShopID).FirstOrDefault();
+            var shop = KioskObjects.Shops.FirstOrDefault(o => o.ID == banner.BannerModel.ShopID);
+            if(shop!=null)
             This.frame.Navigate(new ShopPage(shop));
         });
         #endregion

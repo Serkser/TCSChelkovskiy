@@ -5,33 +5,144 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TCSChelkovskiy.Controls"
              xmlns:controls="clr-namespace:TCSChelkovskiy.Controls"
-             mc:Ignorable="d"  Loaded="loaded" Height="413" Width="1104">
-    <Grid Margin="0,0,0,0">
-        <Expander Background="White" x:Name="expander" 
-                  Header="Вакансия"
+             mc:Ignorable="d">
+    <Expander Background="White" 
                   FontSize="20" 
+                  Header="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=Title}"
                   HorizontalAlignment="Left"
-                  Height="359"
-                  Margin="36,0,0,0"
-                  VerticalAlignment="Center" 
-                  Width="1037">
-            <Grid Background="White">
-                <TextBlock HorizontalAlignment="Left" Margin="10,27,0,0" Text="Контакты : " TextWrapping="Wrap" VerticalAlignment="Top" Width="118"/>
-                <TextBlock x:Name="contacts" HorizontalAlignment="Left" Margin="133,27,0,0" Text="Контакты : " TextWrapping="Wrap" VerticalAlignment="Top" Width="786" Height="60"/>
-                <ListView x:Name="vacancyBlocksList" Margin="10,92,10,10">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <WrapPanel  Width="500" Height="278">
-                                <controls:VacancyBlock Width="500" Height="278"
-                                      Title="{Binding Title,Mode=TwoWay}"   
-                                      Description="{Binding Description,Mode=TwoWay}"></controls:VacancyBlock>
-                            </WrapPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                  VerticalAlignment="Center"
+                  >
+        <Expander.Template>
+            <ControlTemplate TargetType="Expander">
+                <ToggleButton IsChecked="{Binding IsExpanded, Mode=TwoWay, 
+                  RelativeSource={RelativeSource TemplatedParent}}">
+                    <ToggleButton.Template>
+                        <ControlTemplate>
+                            <Grid Background="Transparent">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition x:Name="ContentRow">
+                                        <RowDefinition.Style>
+                                            <Style TargetType="RowDefinition">
+                                                <Setter Property="Height" Value="0"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Expander}, Path=IsExpanded}" Value="True">
+                                                        <Setter Property="Height" Value="{Binding ElementName=Content, Path=Height}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </RowDefinition.Style>
+                                    </RowDefinition>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0" Width="1141">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Expander}, Path=Header}"
+                                       FontFamily="{StaticResource Montserrat}"
+                                       FontSize="30"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"
+                                       FontWeight="Normal"/>
 
-            </Grid>
-        </Expander>
+                                    <Image Source="../Images/Navigation/accordionArrow.png"
+                                           x:Name="AccordionImage"
+                                           Grid.Column="1"
+                                           Height="50"
+                                           Width="50"
+                                           Margin="0,0,30,0"
+                                           HorizontalAlignment="Right"
+                                           RenderTransformOrigin=".5,.5">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=ToggleButton},Path=IsChecked}" Value="True">
+                                                        <DataTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation
+                                                                         Storyboard.TargetProperty="(Image.RenderTransform).(RotateTransform.Angle)"
+                                                                         To="0"
+                                                                         Duration="0:0:0.2"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.ExitActions>
+                                                        <DataTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation 
+                                                                        Storyboard.TargetProperty="(Image.RenderTransform).(RotateTransform.Angle)"
+                                                                        To="180"
+                                                                        Duration="0:0:0.2"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.EnterActions>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                        <Image.RenderTransform>
+                                            <RotateTransform x:Name="RotateTransformAccordion"/>
+                                        </Image.RenderTransform>
+                                    </Image>
+                                </Grid>
+                                <Rectangle Grid.Row="2"
+                                   Height="1"
+                                   Fill="#D9C79F"
+                                   VerticalAlignment="Bottom"/>
+                                <Border x:Name="Content"
+                            Grid.Row="1">
+                                    <ContentPresenter Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Expander}, Path=Content}"/>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </ToggleButton.Template>
+                </ToggleButton>
+                <!--<ControlTemplate.Triggers>
+                    <Trigger Property="IsExpanded" Value="True">
+                        <Setter TargetName="ContentRow"
+                                    Property="Height"
+                                    Value="{Binding ElementName=Content, Path=Height}"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>-->
+            </ControlTemplate>
+        </Expander.Template>
+        <Grid Background="White">
+            <TextBlock HorizontalAlignment="Left" 
+                           Margin="10,27,0,0" 
+                           Text="Контакты : " 
+                           TextWrapping="Wrap" 
+                           VerticalAlignment="Top" 
+                           Width="118"/>
+            <TextBlock 
+                           HorizontalAlignment="Left" 
+                           Margin="133,27,0,0" 
+                           Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=Contacts}" 
+                           TextWrapping="Wrap" 
+                           VerticalAlignment="Top" 
+                           Width="786" 
+                           Height="60"/>
+            <ListView  Margin="10,92,10,10"
+                          ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, 
+                    Path=VacancyBlocks}"
+                          BorderThickness="0">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <controls:VacancyBlock 
+                                            Title="{Binding Title,Mode=TwoWay}"   
+                                            Description="{Binding Description,Mode=TwoWay}"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
 
-    </Grid>
+        </Grid>
+    </Expander>
 </UserControl>

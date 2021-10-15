@@ -526,7 +526,7 @@ namespace NavigationMap.Controls
             ScenarioCommands.CollectionChanged += ScenarioCommandsOnCollectionChanged;
 
             _state.OnAreaSelected += _state_OnAreaSelected;
-            //MapImageDisposable = new DisposableImage(Path.GetFullPath(SelectedFloor?.Image));
+            MapImageDisposable = new DisposableImage(Path.GetFullPath(SelectedFloor?.Image));
         }
 
         private void Map_OnUnloaded(object sender, RoutedEventArgs e)

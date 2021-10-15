@@ -83,21 +83,18 @@ namespace TradeCenterAdmin.Storage
             }
             string json = File.ReadAllText(FilePath);
             //if (File.Exists(FilePath)){ File.Delete(FilePath); }
-
-            
         }
-        private static ObservableCollection<Floor> ConvertToFloors(List<FloorModel> floors)
+        private async static Task<ObservableCollection<Floor>> ConvertToFloors(List<FloorModel> floors)
         {
-
             List<Floor> floorList = new List<Floor>();
             foreach (var fl in floors)
             {
-                Services.ImageDownloader.DownloadImage(fl.ImagesPrefix + fl.Image, fl.Image);
+                await  Services.ImageDownloader.DownloadImage(fl.ImagesPrefix + fl.Image, fl.Image);
                 Floor floor = new Floor
                 {
                     Name = fl.Name,
                     Id = fl.ID,
-                    Image = Path.Combine(Environment.CurrentDirectory, "AllImages",)
+                    Image = Path.Combine(Environment.CurrentDirectory, "AllImages", fl.Image),
                     Width = 9000,
                     Height = 9000,
                 };
