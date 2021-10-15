@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using Simplify.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,9 +16,19 @@ namespace TCSchelkovskiyAPI
         static RestRequest request;
         static IRestResponse response;
 
-        public static string HOST = "https://navigator.useful.su";
+        /// <summary>
+        /// Сможешь вызвать этот метод?
+        /// </summary>
+        public static void FF<f,a,d,g,j,k,l,z,x,cv,b,n,m,q,w,e,r,t,y,u,i,o,aa,ss,dd,ff,gg,hh,jj,kk,ll,zz,xx,cc,vv,bb,nn,mm>
+            (int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9, int a10, int a11)
+        {
+
+        }
+
+        public static string HOST { get; set; } = "https://navigator.useful.su";
         public static List<FloorModel> GetFloors()
         {
+            
             string url = HOST + "/api/v1/floors";
             List<FloorModel> floors = new List<FloorModel>();
             try
@@ -38,6 +50,8 @@ namespace TCSchelkovskiyAPI
                         ID = Convert.ToInt32(user.id),
                         Floor = Convert.ToInt32(user.floor),
                         Name = user.name.ToString(),
+                        File = user.file,
+                        FilePrefix = user.filePrefix
                     };
                     List<ShopModel> shops = new List<ShopModel>();
                     try
@@ -731,13 +745,38 @@ namespace TCSchelkovskiyAPI
             dynamic data = JsonConvert.DeserializeObject(response.Content);
             foreach (var station in data)
             {
-               
+                Enums.MapTerminalPointType _enum = Enums.MapTerminalPointType.ATMCash;
+                switch (station.type.ToString())
+                {
+                    case "terminals":
+                        _enum = Enums.MapTerminalPointType.Termanals;
+                        break;
+                    case "wc":
+                        _enum = Enums.MapTerminalPointType.WC;
+                        break;
+                    case "lift":
+                        _enum = Enums.MapTerminalPointType.Lift;
+                        break;
+                    case "escolator":
+                        _enum = Enums.MapTerminalPointType.Escolator;
+                        break;
+                    case "stairs":
+                        _enum = Enums.MapTerminalPointType.Stairs;
+                        break;
+                    case "atmcash":
+                        _enum = Enums.MapTerminalPointType.ATMCash;
+                        break;
+                }
+
                 try
                 {
+                 
                     TerminalModel terminal = new TerminalModel()
                     {
                         ID = Convert.ToInt32(station.id),
                         Name = station.name.ToString(),
+                        Type = _enum
+                        
                     };
                     try
                     {
@@ -763,6 +802,24 @@ namespace TCSchelkovskiyAPI
             return terminals;
         }
 
-        
+        public static string UploadFloorJsonToServer(string filepath,int floorNumber)
+        {
+            string url = HOST + $"/api/v1/floor/point/{floorNumber}";
+            RestClient client = new RestClient(url);
+            client.Timeout = -1;
+            request = new RestRequest(Method.POST);
+
+            //request.AddHeader("Content-Disposition", $"form-data; name=\"{Path.GetFileName(filepath)}\";" +
+            //    $" filename=\"{filepath}\"");
+            //request.AddHeader("Content-Type", "application/json");
+            //MessageBox.ShowMessageBox(Path.GetFileName(filepath));
+            //MessageBox.ShowMessageBox(Path.GetFullPath(filepath));
+
+            request.AddFile("file", Path.GetFullPath(filepath));
+ 
+            response = client.Execute(request);
+            return response.Content;
+        }
+
     }
 }

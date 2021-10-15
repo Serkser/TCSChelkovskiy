@@ -356,7 +356,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RadioButton}">
                     <Grid>
-                        <Border Margin="0" x:Name="highlightCircle" BorderThickness="0" CornerRadius="10" BorderBrush="Gray">
+                        <Border Margin="0" x:Name="highlightCircle" BorderThickness="0" CornerRadius="0" BorderBrush="Gray">
                             <Border.Background >
                                 <LinearGradientBrush >
                                     <GradientStop Offset="0" Color="White"/>

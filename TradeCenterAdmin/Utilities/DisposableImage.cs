@@ -41,9 +41,9 @@ namespace TradeCenterAdmin.Utilities
         {
             Dispose();
 
-            if (path != null)
+            if (!string.IsNullOrEmpty(path))
             {
-
+                
                 var bitmap = new BitmapImage();
                 if (path.Contains("pack://application:,,,"))
                 {

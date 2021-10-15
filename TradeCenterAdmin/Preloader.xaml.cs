@@ -24,37 +24,42 @@ namespace TradeCenterAdmin
         public Preloader()
         {
             InitializeComponent();
-            this.DataContext = this;
         }
 
+        public static readonly DependencyProperty ProgressProperty = DependencyProperty.Register(
+            "Progress", typeof(int), typeof(Preloader), new PropertyMetadata(default(int)));
 
-        private int progress;
         public int Progress
         {
-            get { return progress; }
-            set
-            {
-                progress = value;
-                OnPropertyChanged("Progress");
-            }
+            get => (int)GetValue(ProgressProperty);
+            set => SetValue(ProgressProperty, value);
         }
+
         private int floors = 0;
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoadData();
         }
 
 
-        async void LoadData()
+        async Task LoadData()
         {
-
-
-
-            if (progress == 100)
+            await Task.Run(async() =>
             {
-                this.Close();
-                MainWindow f = new MainWindow(); f.Show();
-            }
+                Storage.KioskObjects.LoadAllObjects();
+                while (true)
+                {
+                    Progress = Storage.KioskObjects.LoadingPercent;
+                    await Task.Delay(1000);
+
+                    if (Progress == 100)
+                    {
+                        this.Close();
+                        MainWindow f = new MainWindow(); f.Show();
+                    }
+                }
+            });
+           
         }
 
 

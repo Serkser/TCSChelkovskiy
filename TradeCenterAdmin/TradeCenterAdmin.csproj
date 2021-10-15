@@ -80,13 +80,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ChangesPool\Abstractions\ChangeEntry.cs" />
+    <Compile Include="ChangesPool\ActionPlaceInfo\ListItemActionPlaceInfo.cs" />
+    <Compile Include="ChangesPool\ActionPlaceInfo\ObjectActionPlaceInfo.cs" />
+    <Compile Include="ChangesPool\ActionPlaceInfo\ListActionPlaceInfo.cs" />
+    <Compile Include="ChangesPool\Entries\ComplexChangeEntry.cs" />
+    <Compile Include="ChangesPool\Entries\ListChangeEntry.cs" />
+    <Compile Include="ChangesPool\Entries\ListItemChangeEntry.cs" />
+    <Compile Include="ChangesPool\Entries\ObjectChangeEntry.cs" />
+    <Compile Include="ChangesPool\Enums\ChangeType.cs" />
+    <Compile Include="ChangesPool\Events\EventArgs\EntryAddedEventArgs.cs" />
+    <Compile Include="ChangesPool\Events\EventArgs\RedoEventArgs.cs" />
+    <Compile Include="ChangesPool\Events\EventArgs\UndoEventArgs.cs" />
+    <Compile Include="ChangesPool\Events\EventHandlers.cs" />
+    <Compile Include="ChangesPool\RedoActionsInfo\ListItemRedoActionInfo.cs" />
+    <Compile Include="ChangesPool\RedoActionsInfo\ObjectRedoActionInfo.cs" />
+    <Compile Include="ChangesPool\RedoActionsInfo\ListRedoActionInfo.cs" />
+    <Compile Include="ChangesPool\UndoActionsInfo\ListItemUndoActionInfo.cs" />
+    <Compile Include="ChangesPool\UndoActionsInfo\ObjectUndoActionInfo.cs" />
+    <Compile Include="ChangesPool\UndoActionsInfo\ListUndoActionInfo.cs" />
     <Compile Include="Enums\MapEditorTool.cs" />
+    <Compile Include="Enums\PointState.cs" />
     <Compile Include="Preloader.xaml.cs">
       <DependentUpon>Preloader.xaml</DependentUpon>
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Services\BitmapToImageSourceConverter.cs" />
     <Compile Include="Services\ImageDownloader.cs" />
+    <Compile Include="Services\JsonToServerUploader.cs" />
+    <Compile Include="ChangesPool\ChangesPool.cs" />
     <Compile Include="Storage\KioskObjects.cs" />
     <Compile Include="Utilities\DisposableImage.cs" />
     <Compile Include="ViewModels\FloorsWindowViewModel.cs" />
@@ -148,6 +170,9 @@
     </Compile>
     <Compile Include="Views\Windows\SelectNextFloorForWay.xaml.cs">
       <DependentUpon>SelectNextFloorForWay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\ShowFullList.xaml.cs">
+      <DependentUpon>ShowFullList.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -241,6 +266,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Windows\ShowFullList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -270,7 +299,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Images\" />
     <Folder Include="Models\" />
     <Folder Include="Resources\" />
   </ItemGroup>
@@ -283,6 +311,69 @@
       <Project>{8bf31ea1-a2a7-4ead-b281-18268e920251}</Project>
       <Name>TCSchelkovskiyAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\AreaIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\ATMIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\CursorIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\ElevatorIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\EntranceIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\EscalatorIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\HandIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\StairsIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\StationIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\WayIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\WCIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Zoom\ZoomIn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Zoom\ZoomOut.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\Highligthted\AreaIcon.png" />
+    <Resource Include="Images\Icons\Highligthted\ATMIcon.png" />
+    <Resource Include="Images\Icons\Highligthted\CursorIcon.png" />
+    <Resource Include="Images\Icons\Highligthted\ElevatorIcon.png" />
+    <Resource Include="Images\Icons\Highligthted\EntranceIcon.png" />
+    <Resource Include="Images\Icons\Highligthted\EscalatorIcon.png" />
+    <Resource Include="Images\Icons\Highligthted\HandIcon.png" />
+    <Resource Include="Images\Icons\Highligthted\StairsIcon.png" />
+    <Resource Include="Images\Icons\Highligthted\StationIcon.png" />
+    <Resource Include="Images\Icons\Highligthted\WayIcon.png" />
+    <Resource Include="Images\Icons\Highligthted\WCIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Interface\RedoIcon.png" />
+    <Resource Include="Images\Interface\UndoIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Interface\DetailsArrow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

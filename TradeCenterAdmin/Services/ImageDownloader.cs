@@ -25,7 +25,7 @@ namespace TradeCenterAdmin.Services
                     url += uri;
                     using (WebClient client = new WebClient())
                     {
-                        client.DownloadFile(url, Path.GetFullPath(imageFile));
+                       client.DownloadFile(url, Path.GetFullPath(imageFile));
                     }
                 }
                 return new DisposableImage(Path.GetFullPath(imageFile));

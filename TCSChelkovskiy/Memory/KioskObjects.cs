@@ -3,8 +3,10 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -82,30 +84,82 @@ namespace TCSChelkovskiy.Memory
         static JsonSerializer serializer = new JsonSerializer();
         public static void RestoreSettings()
         {
-            if (File.Exists(FilePath))
-            {
-                using (StreamReader file = File.OpenText(FilePath))
-                {
-                    Floors = (ObservableCollection<Floor>)serializer.Deserialize(file, typeof(ObservableCollection<Floor>));
-                    //MessageBox.Show(Floors.Count.ToString());dssd
-                }
-            }
-
-            //string json = "";
-            //    if (!string.IsNullOrEmpty(json))
-            //    {
-            //        using (JsonTextReader stream = new JsonTextReader(new StringReader(json)))
-            //        {
-            //            var settings = serializer.Deserialize(stream);
-            //            JObject jObj = (JObject)settings;
-            //            Floors = jObj.ToObject<ObservableCollection<Floor>>();
-            //        }
-            //    }
-
+            Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
+            ConvertToFloorsFromJson(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
+            Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
 
         }
         public static string FilePath = @"settings.json";
+        private static ObservableCollection<Floor> ConvertToFloors(List<FloorModel> floors)
+        {
 
-      
+            List<Floor> floorList = new List<Floor>();
+            foreach (var fl in floors)
+            {
+                if (!File.Exists(Path.Combine(Environment.CurrentDirectory, "AllImages", fl.Image)))
+                {
+                    Services.ImageDownloader.DownloadImage(fl.ImagesPrefix + fl.Image, fl.Image).Wait();
+                }
+                Floor floor = new Floor
+                {
+                    Name = fl.Name,
+                    FloorNumber = fl.Floor.ToString(),
+                    Id = fl.ID,
+                    Image = Path.Combine(Environment.CurrentDirectory, "AllImages", fl.Image),
+                    Width = 9000,
+                    Height = 9000,
+                };
+                floorList.Add(floor);
+            }
+            return new ObservableCollection<Floor>(floorList);
+        }
+
+        static int floorCount = 0;
+        static int floorCounter = 0;
+        private static void ConvertToFloorsFromJson(List<FloorModel> floors)
+        {
+            floorCount = floors.Count;
+            List<Floor> floorList = new List<Floor>();
+
+            foreach (var fl in floors)
+            {
+                try
+                {
+                    floorCounter++;
+                    Floor floorFromJson = new Floor();
+                    string url = "https://navigator.useful.su/" + fl.FilePrefix + fl.File;
+                    var jsonFile = Path.Combine(Environment.CurrentDirectory, "JSON", fl.File);
+                    if (!Directory.Exists("JSON"))
+                        Directory.CreateDirectory("JSON");
+
+                    WebClient client = new WebClient();
+                    client.DownloadFile(url, jsonFile);
+
+                    if (File.Exists(jsonFile))
+                    {
+
+                        using (StreamReader file = File.OpenText(jsonFile))
+                        {
+                            floorFromJson = (Floor)serializer.Deserialize(file, typeof(Floor));
+                        }
+                    }
+                    var selected = Floors.Where(o => o.Id == floorFromJson.Id).FirstOrDefault();
+                    if (selected != null)
+                    {
+
+                        int itemIndex = Floors.IndexOf(selected);
+                        string img = Floors[itemIndex].Image;
+                        Floors[itemIndex] = floorFromJson;
+                        Floors[itemIndex].Image = img;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message); MessageBox.Show(ex.StackTrace);
+                    Debug.WriteLine("Не удалось загрузить файл");
+                }
+            }
+        }
+
     }
 }

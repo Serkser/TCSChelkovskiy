@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TradeCenterAdmin"
         mc:Ignorable="d" Loaded="Window_Loaded"
-        Title="Preloader" Height="300" Width="500" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Preloader" Height="300" Width="500" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid>
         <TextBlock FontWeight="Bold" FontSize="25" HorizontalAlignment="Left" Margin="124,39,0,0" TextWrapping="Wrap" Text="Идет загрузка карт" VerticalAlignment="Top"/>
         <TextBlock FontWeight="DemiBold" FontSize="25" HorizontalAlignment="Left" Margin="100,224,0,0" TextWrapping="Wrap" Text="Подождите пожалуйста" VerticalAlignment="Top"/>
