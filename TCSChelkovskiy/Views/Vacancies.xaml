@@ -11,13 +11,23 @@
     <Grid Background="#E5E5E5">
         <Border Background="White" CornerRadius="20" Margin="74,66,74,67">
             <Grid Margin="0,0,0,0">
-                <TextBlock HorizontalAlignment="Left" Margin="475,37,0,0" Text="Вакансии" FontFamily="Manrope" TextAlignment="Center" 
-                    FontSize="35px" Foreground="Black" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="47"/>
+                <TextBlock HorizontalAlignment="Left" 
+                           Margin="475,37,0,0" 
+                           Text="Вакансии" 
+                           FontFamily="Manrope" 
+                           TextAlignment="Center" 
+                            FontSize="35px" 
+                           Foreground="Black" 
+                           FontWeight="SemiBold" 
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Top" 
+                           Width="294" 
+                           Height="47"/>
                 <ScrollViewer VerticalScrollBarVisibility="Disabled"
                  HorizontalAlignment="Left"
                  PanningMode="VerticalOnly"
                  Margin="69,84,0,0" 
-                 Width="1124" 
+                 Width="1141" 
                  VerticalAlignment="Top"
                  Height="549">
                     <ListBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=AllVacancies}" 

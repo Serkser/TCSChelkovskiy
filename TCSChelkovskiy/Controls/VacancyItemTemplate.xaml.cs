@@ -47,11 +47,9 @@ namespace TCSChelkovskiy.Controls
             set { SetValue(VacancyBlocksProperty, value); }
         }
 
-        private void loaded(object sender, RoutedEventArgs e)
+        private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
         {
-            vacancyBlocksList.ItemsSource = VacancyBlocks;
-            expander.Header = Title;
-            contacts.Text = Contacts;
+            
         }
     }
 }

@@ -85,7 +85,6 @@ namespace TradeCenterAdmin.Storage
 
         private static ObservableCollection<Floor> ConvertToFloors(List<FloorModel> floors)
         {
-
             List<Floor> floorList = new List<Floor>();
             foreach (var fl in floors)
             {

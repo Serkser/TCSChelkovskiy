@@ -264,7 +264,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
-                    <Border Background="#C4C4C4"
+                    <Border Background="Transparent"
                             CornerRadius="0,10,10,0"/>
                 </ControlTemplate>
             </Setter.Value>
@@ -279,7 +279,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
-                    <Border Background="#C4C4C4"
+                    <Border Background="Transparent"
                             CornerRadius="10,0,0,10"/>
                 </ControlTemplate>
             </Setter.Value>
@@ -313,7 +313,17 @@
                           Command="ScrollBar.LineUpCommand" >
             </RepeatButton>
             <Track Name="PART_Track" Grid.Row="1" 
-                  >
+                 >
+                <Track.Style>
+                    <Style TargetType="Track">
+                        <Setter Property="IsDirectionReversed" Value="True"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ScrollViewer}, Path=VerticalScrollBarVisibility}" Value="{x:Static ScrollBarVisibility.Disabled}">
+                                <Setter Property="IsDirectionReversed" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Track.Style>
                 <Track.DecreaseRepeatButton>
                     <RepeatButton Command="ScrollBar.PageUpCommand" Style="{StaticResource ScrollBarPageButtonStyleLeft}">
                     </RepeatButton>
@@ -403,7 +413,7 @@
                             <Setter Property="Foreground" Value="Black"></Setter>
                             <Setter TargetName="highlightCircle" Property="Background">
                                 <Setter.Value>
-                                    <ImageBrush ImageSource="/Views/FloorButton.png" Stretch="Fill"/>
+                                    <ImageBrush ImageSource="/Images/Navigation/FloorButton.png" Stretch="Fill"/>
                                 </Setter.Value>
                             </Setter>
 
@@ -412,7 +422,7 @@
                             <Setter Property="Foreground" Value="White"></Setter>
                             <Setter TargetName="highlightCircle" Property="Background">
                                 <Setter.Value>
-                                    <ImageBrush ImageSource="/Views/FloorButtonActive.png" Stretch="Fill"/>
+                                    <ImageBrush ImageSource="/Images/Navigation/FloorButtonActive.png" Stretch="Fill"/>
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
@@ -420,6 +430,9 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+
+
     </Style>
+
     <!--//-->
 </ResourceDictionary>

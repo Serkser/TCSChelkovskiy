@@ -8,6 +8,7 @@
         xmlns:nav="clr-namespace:NavigationMap.Controls;assembly=NavigationMap"
         xmlns:Controls="clr-namespace:TCSChelkovskiy.Controls"  x:Class="TCEvropeyskiy.MainWindow"
         mc:Ignorable="d"
+        Loaded="MainWindow_OnLoaded"
         Title="MainWindow" Height="1080" Width="1920" WindowStyle="None" Background="#E5E5E5" WindowState="Maximized">
     <Grid >
         <Viewbox Margin="10,36,352,136">
@@ -53,16 +54,18 @@
                 </Button>
                 <ListBox x:Name="bannersListBox" ItemsSource="{Binding BannersUrls,Mode=TwoWay}" 
             Background="Transparent" 
+            HorizontalAlignment="Left"
             ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-            BorderThickness="0"  Margin="0,0,1463,0">
+            BorderThickness="0" 
+            Width="480">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}">
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
                                         <Image Stretch="Fill" Source="{Binding Image.Source}" 
-                                               Width="457"
-                                               Height="360"></Image>
+                                               Width="480"
+                                               Height="357"/>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>

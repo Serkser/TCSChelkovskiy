@@ -42,7 +42,8 @@
                                             <Image
                                                 Height="500"
                                                 Width="500"
-                                                Source="{Binding Source}"/>
+                                                Source="{Binding Source}"
+                                                RenderOptions.BitmapScalingMode="HighQuality"/>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>

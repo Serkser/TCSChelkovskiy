@@ -3,11 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:TCSChelkovskiy.Controls" Loaded="loaded"
-             mc:Ignorable="d" d:DesignWidth="500" Height="278">
+             xmlns:local="clr-namespace:TCSChelkovskiy.Controls" 
+             mc:Ignorable="d" d:DesignWidth="500" >
     <Grid>
-        <TextBlock x:Name="title" HorizontalAlignment="Left" Margin="10,10,0,0" Text="Название блока" TextWrapping="Wrap" VerticalAlignment="Top" Width="347" Height="21"/>
-        <TextBlock x:Name="description" HorizontalAlignment="Center" Margin="0,31,0,0" Text="Описание" TextWrapping="Wrap" VerticalAlignment="Top" Width="480" Height="237"/>
+        <StackPanel Margin="10,10,0,0" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
+            <TextBlock HorizontalAlignment="Left" 
+                       Text="{Binding Title}"
+                       TextWrapping="Wrap" 
+                       VerticalAlignment="Top"/>
 
+            <TextBlock HorizontalAlignment="Center" 
+                       Margin="0,20,0,0" 
+                       Text="{Binding Description}"
+                       TextWrapping="Wrap" 
+                       MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=ActualWidth}"
+                       VerticalAlignment="Top"/>
+        </StackPanel>
     </Grid>
 </UserControl>

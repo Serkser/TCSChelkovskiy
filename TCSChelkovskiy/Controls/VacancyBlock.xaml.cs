@@ -38,10 +38,5 @@ namespace TCSChelkovskiy.Controls
             set { SetValue(DescriptionProperty, value); }
         }
 
-        private void loaded(object sender, RoutedEventArgs e)
-        {
-            title.Text = Title;
-            description.Text = Description;
-        }
     }
 }
