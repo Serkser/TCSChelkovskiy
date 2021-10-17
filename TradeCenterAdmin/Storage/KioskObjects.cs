@@ -27,10 +27,11 @@ namespace TradeCenterAdmin.Storage
         public static ObservableCollection<ShopModel> Shops { get; set; } = new ObservableCollection<ShopModel>();
         public static ObservableCollection<TerminalModel> Terminals { get; set; } = new ObservableCollection<TerminalModel>();
         public static ObservableCollection<TerminalModel> ATMs { get; set; } = new ObservableCollection<TerminalModel>();
+        public static ObservableCollection<TerminalModel> WCs { get; set; } = new ObservableCollection<TerminalModel>();
         public static ObservableCollection<TerminalModel> Escolators { get; set; } = new ObservableCollection<TerminalModel>();
         public static ObservableCollection<TerminalModel> Lifts { get; set; } = new ObservableCollection<TerminalModel>();
         public static ObservableCollection<TerminalModel> Stairs { get; set; } = new ObservableCollection<TerminalModel>();
-        public static ObservableCollection<TerminalModel> WCs { get; set; } = new ObservableCollection<TerminalModel>();
+
         //public static ObservableCollection<ShopGalleryModel> Gallery { get; set; } = new ObservableCollection<ShopGalleryModel>();
 
         static KioskObjects()
@@ -57,10 +58,11 @@ namespace TradeCenterAdmin.Storage
 
             Terminals = new ObservableCollection<TerminalModel>(rawTerminalObjects.Where(o => o.Type == MapTerminalPointType.Termanals).ToList());
             Stairs = new ObservableCollection<TerminalModel>(rawTerminalObjects.Where(o => o.Type == MapTerminalPointType.Stairs).ToList());
-            WCs = new ObservableCollection<TerminalModel>(rawTerminalObjects.Where(o => o.Type == MapTerminalPointType.WC).ToList());
+       
             Escolators = new ObservableCollection<TerminalModel>(rawTerminalObjects.Where(o => o.Type == MapTerminalPointType.Escolator).ToList());
             Lifts = new ObservableCollection<TerminalModel>(rawTerminalObjects.Where(o => o.Type == MapTerminalPointType.Lift).ToList());
             ATMs = new ObservableCollection<TerminalModel>(rawTerminalObjects.Where(o => o.Type == MapTerminalPointType.ATMCash).ToList());
+            WCs = new ObservableCollection<TerminalModel>(rawTerminalObjects.Where(o => o.Type == MapTerminalPointType.WC).ToList());
             //await Task.Run(() =>
             //{
             //    //Categories = new ObservableCollection<CategoryModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetCategories());

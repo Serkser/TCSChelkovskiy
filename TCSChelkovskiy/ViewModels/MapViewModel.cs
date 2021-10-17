@@ -33,10 +33,19 @@ namespace TCSChelkovskiy.ViewModels
             Gallery = KioskObjects.Gallery;
             if (Floors.Count > 0)
             {
-                CurrentFloor = Floors.FirstOrDefault();
-                This.Map.SelectedStation = CurrentFloor.Stations.FirstOrDefault();
+                This.Map.SelectedStation = KioskObjects.CurrentStation;
+                foreach (var floor in KioskObjects.Floors)
+                {
+                    foreach (var station in floor.Stations)
+                    {
+                        if (station.Id == KioskObjects.CurrentStation.Id)
+                        {
+                            CurrentFloor = floor; break;
+                        }
+                    }
+                }
             }
-            
+
         }
         public MapViewModel(Views.MapPage _this, MainWindow main)
         {

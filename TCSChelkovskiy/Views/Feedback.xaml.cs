@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TCSChelkovskiy.Models;
+using TCSchelkovskiyAPI.Models;
 
 namespace TCSChelkovskiy.Views
 {
@@ -105,19 +105,10 @@ namespace TCSChelkovskiy.Views
                         else
                         {
                             FeedbackModel.FirstValidationError = string.Empty;
-
-                            MailAddress from = new MailAddress("", FeedbackModel.EmailOrPhone);
-                            MailAddress to = new MailAddress("");
-                            MailMessage message = new MailMessage(from, to);
-                            message.Subject = FeedbackModel.Topic;
-                            message.Body = FeedbackModel.Text;
-                            SmtpClient smtp = new SmtpClient("", 587);
-                            // логин и пароль
-                            smtp.Credentials = new NetworkCredential("", "");
-                            smtp.EnableSsl = true;
-                            smtp.Send(message);
+                        
+                            TCSchelkovskiyAPI.TCSchelkovskiyAPI.SendFeedback(FeedbackModel);
+                            new CustomMessageBox("Уведомление", "Ваш отзыв был успешно нами получен").ShowDialog();
                         }
-
                     }));
             }
         }

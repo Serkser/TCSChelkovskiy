@@ -17,6 +17,9 @@ namespace TCSChelkovskiy.Memory
 {
     public static class KioskObjects
     {
+
+        public static Station CurrentStation { get; set; }
+
         public static ObservableCollection<FloorModel> FilterFloors { get; set; } = new ObservableCollection<FloorModel>();
         public static ObservableCollection<Floor> Floors { get; set; } = new ObservableCollection<Floor>();
         public static ObservableCollection<CategoryModel> Categories { get; set; } = new ObservableCollection<CategoryModel>();
@@ -86,7 +89,35 @@ namespace TCSChelkovskiy.Memory
         {
             Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
             ConvertToFloorsFromJson(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
-            Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
+            GetCurrentStationFromTxt();
+        }
+        public static void GetCurrentStationFromTxt()
+        {
+            string fllepath = Path.Combine(Environment.CurrentDirectory, "ConfigStation.txt");
+            string kioskName = "";
+            if (File.Exists(fllepath))
+            {
+                using (StreamReader sr = File.OpenText(fllepath))
+                {
+                    kioskName = sr.ReadToEnd();
+                }
+            }
+
+            foreach (var floor in KioskObjects.Floors)
+            {
+                foreach (var station in floor.Stations)
+                {
+                    if (station.Name.Contains(kioskName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        CurrentStation = station; break;
+                    }
+                }
+            }
+
+            if (CurrentStation == null)
+            {
+                CurrentStation = CurrentStation = Floors[0].Stations.FirstOrDefault();
+            }
 
         }
         public static string FilePath = @"settings.json";

@@ -25,7 +25,7 @@ namespace TradeCenterAdmin.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://navigator.useful.su")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://europa.useful.su")]
         public string host {
             get {
                 return ((string)(this["host"]));

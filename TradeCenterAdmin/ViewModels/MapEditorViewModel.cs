@@ -152,7 +152,7 @@ namespace TradeCenterAdmin.ViewModels
                     {
                         foreach (var way in area.Ways)
                         {
-                            if (way.WayPoints.Where(o => o.FloorId == SelectedFloor.Id).FirstOrDefault() != null)
+                            if (way.FloorId == SelectedFloor.Id)
                             {
                                 This.DrawWays(way, SelectedFloor.Id);
                             }

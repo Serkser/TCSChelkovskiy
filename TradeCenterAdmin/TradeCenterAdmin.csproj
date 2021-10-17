@@ -101,6 +101,7 @@
     <Compile Include="ChangesPool\UndoActionsInfo\ListUndoActionInfo.cs" />
     <Compile Include="Enums\MapEditorTool.cs" />
     <Compile Include="Enums\PointState.cs" />
+    <Compile Include="Models\WaysContainer.cs" />
     <Compile Include="Preloader.xaml.cs">
       <DependentUpon>Preloader.xaml</DependentUpon>
     </Compile>
@@ -111,6 +112,7 @@
     <Compile Include="ChangesPool\ChangesPool.cs" />
     <Compile Include="Storage\KioskObjects.cs" />
     <Compile Include="Utilities\DisposableImage.cs" />
+    <Compile Include="Utilities\UserInactivity.cs" />
     <Compile Include="ViewModels\FloorsWindowViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MapEditorViewModel.cs" />
@@ -299,7 +301,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>

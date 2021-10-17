@@ -4,7 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TCSChelkovskiy.Views"
-      xmlns:Controls="clr-namespace:TCSChelkovskiy.Controls" xmlns:syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TCSChelkovskiy.Views.Feedback"
+      xmlns:Controls="clr-namespace:TCSChelkovskiy.Controls" xmlns:models="clr-namespace:TCSChelkovskiy.Models"
+    x:Class="TCSChelkovskiy.Views.Feedback"
       mc:Ignorable="d" 
       d:DesignHeight="830" d:DesignWidth="1297"
       Title="Feedback">
@@ -19,38 +20,6 @@
         </Grid.ColumnDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="5,52,0,0" Text="ОБРАТНАЯ СВЯЗЬ" FontWeight="DemiBold" FontFamily="Manrope" TextAlignment="Left" 
             FontSize="35px" Foreground="Black" TextWrapping="Wrap" VerticalAlignment="Top" Width="461" Height="57" Grid.Column="1"/>
-        <TextBox  BorderBrush="#A3A3A3" Foreground="#A3A3A3" FontSize="20" Height="70" VerticalContentAlignment="Center"
-                  HorizontalAlignment="Left" Margin="5,109,0,0" Padding="20" Text="{Binding FeedbackModel.Topic,Mode=TwoWay}"  TextWrapping="Wrap" VerticalAlignment="Top" Width="1189" Grid.Column="1" GotFocus="TextBox_GotFocus">
-            <TextBox.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="10"/>
-                </Style>
-            </TextBox.Resources>
-        </TextBox>
-        <TextBox GotFocus="TextBox_GotFocus"  BorderBrush="#A3A3A3" Foreground="#A3A3A3" FontSize="20" Height="70" VerticalContentAlignment="Center"
-            HorizontalAlignment="Left" Margin="5,198,0,0" Padding="20" Text="{Binding FeedbackModel.Name,Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="575" Grid.Column="1">
-            <TextBox.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="10"/>
-                </Style>
-            </TextBox.Resources>
-        </TextBox>
-        <TextBox GotFocus="TextBox_GotFocus"  BorderBrush="#A3A3A3" Foreground="#A3A3A3" FontSize="20" Height="70" VerticalContentAlignment="Center"
-            HorizontalAlignment="Left" Margin="619,198,0,0" Padding="20" Text="{Binding FeedbackModel.EmailOrPhone,Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="575" Grid.Column="1">
-            <TextBox.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="10"/>
-                </Style>
-            </TextBox.Resources>
-        </TextBox>
-        <TextBox  GotFocus="TextBox_GotFocus" BorderBrush="#A3A3A3" Foreground="#A3A3A3" FontSize="20" Height="193" 
-            HorizontalAlignment="Left" Margin="5,293,0,0" Padding="20" Text="{Binding FeedbackModel.Text,Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="1189" Grid.Column="1" Grid.RowSpan="2">
-            <TextBox.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="10"/>
-                </Style>
-            </TextBox.Resources>
-        </TextBox>
         <CheckBox FontSize="11" IsChecked="{Binding FeedbackModel.AgreementState,Mode=TwoWay}" HorizontalAlignment="Left" Margin="5,110,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1">
             <CheckBox.LayoutTransform>
                 <ScaleTransform ScaleX="2.5" ScaleY="2.5" />
@@ -66,6 +35,15 @@
         <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="60,115,0,0" FontSize="20" Text="Даю согласие на обработку персональных данных" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Row="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="5,172,0,0" Text="{Binding FirstValidationError,Mode=TwoWay}" TextAlignment="Center" FontWeight="DemiBold" FontFamily="Manrope"
             FontSize="35px" Foreground="Black" TextWrapping="Wrap" VerticalAlignment="Top" Width="1184" Height="56" Grid.Column="1" Grid.Row="1"/>
+        <Controls:PlaceholderTextBox  Text="{Binding FeedbackModel.Topic, Mode=TwoWay}"  PlaceholderVerticalAlligment="Center"
+            Placeholder="Тема" GotFocus="TextBox_GotFocus" Grid.Column="1" Width="1184" Margin="10,128,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="67" RenderTransformOrigin="0.47,0.513" />
+        <Controls:PlaceholderTextBox  Text="{Binding FeedbackModel.EmailOrPhone, Mode=TwoWay}" PlaceholderVerticalAlligment="Center"
+            Placeholder="E-mail / телефон" GotFocus="TextBox_GotFocus" Grid.Column="1" Width="592" Margin="602,200,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="67" RenderTransformOrigin="0.47,0.513" />
+        <Controls:PlaceholderTextBox  Text="{Binding FeedbackModel.EmailOrPhone, Mode=TwoWay}" 
+                                      PlaceholderVerticalAlligment="Top" PlaceholderMargin="0,15,0,0"
+            Placeholder="Введите текст" GotFocus="TextBox_GotFocus" Grid.Column="1" Width="1184" Margin="10,274,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="205" RenderTransformOrigin="0.47,0.513" Grid.RowSpan="2" />
+        <Controls:PlaceholderTextBox  Text="{Binding FeedbackModel.Name, Mode=TwoWay}"  PlaceholderVerticalAlligment="Center"
+            Placeholder="Имя" GotFocus="TextBox_GotFocus" Width="587" Margin="10,200,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="67" RenderTransformOrigin="0.47,0.513" Grid.Column="1" />
 
 
     </Grid>

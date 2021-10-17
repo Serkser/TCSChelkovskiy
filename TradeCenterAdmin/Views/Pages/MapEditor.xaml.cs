@@ -24,6 +24,7 @@ using TradeCenterAdmin.ChangesPool.Entries;
 using TradeCenterAdmin.ChangesPool.Enums;
 using TradeCenterAdmin.ChangesPool.RedoActionsInfo;
 using TradeCenterAdmin.ChangesPool.UndoActionsInfo;
+using TradeCenterAdmin.Models;
 using TradeCenterAdmin.Storage;
 using TradeCenterAdmin.ViewModels;
 
@@ -135,9 +136,17 @@ namespace TradeCenterAdmin.Views.Pages
             endRouteBtn.Click += (sender1, e1) => {
                 if (currentWay != null)
                 {
-                    ((ViewModels.MapEditorViewModel)this.DataContext).Floors.Where(o => o.Id == firstFloor.Id).FirstOrDefault()
-                    .Areas.Where(o => o.Id == currentArea.Id).FirstOrDefault()
-                    .Ways.Where(o => o.Id == currentWay.Id).FirstOrDefault().StationId = station.Id;
+                    var area = ((ViewModels.MapEditorViewModel)this.DataContext).Floors.Where(o => o.Id == firstFloor.Id).FirstOrDefault()
+                    .Areas.Where(o => o.Id == currentArea.Id).FirstOrDefault();
+                    foreach(var way in area.Ways)
+                    {                      
+                        way.StationId = station.Id;
+                        foreach (var point in way.WayPoints)
+                        {
+                            point.StationId = station.Id;
+                        }
+                    }
+
                     currentWay = null;
                     currentArea = null;
                     currentFloor = null;
@@ -801,23 +810,20 @@ namespace TradeCenterAdmin.Views.Pages
                     IsFilled = false,
                     IsClosed = false
                 };
+                figure.StartPoint = new Point(way.WayPoints[0].X, way.WayPoints[0].Y);
+                //if (way.WayPoints[0].FloorId == floorID)
+                //{
+                  
+                //}
+                //else
+                //{
+                //    //Получаем последнюю точку предыдущего этажа через 1-ю точку следующего этажа
+                //    //var firstPointOfNextFloot = way.WayPoints.Where(o => o.FloorId == floorID).FirstOrDefault();
+                //    //int firstPointOfNextFlootIndex = way.WayPoints.IndexOf(firstPointOfNextFloot);
 
-                if (way.WayPoints[0].FloorId == floorID)
-                {
-                    figure.StartPoint = new Point(way.WayPoints[0].X, way.WayPoints[0].Y);
-                }
-                else
-                {
-                    //Получаем последнюю точку предыдущего этажа через 1-ю точку следующего этажа
-                    var firstPointOfNextFloot = way.WayPoints.Where(o => o.FloorId == floorID).FirstOrDefault();
-                    int firstPointOfNextFlootIndex = way.WayPoints.IndexOf(firstPointOfNextFloot);
-
-                    figure.StartPoint = new Point(way.WayPoints[firstPointOfNextFlootIndex-1].X, way.WayPoints[firstPointOfNextFlootIndex-1].Y);
-                }
+                //    //figure.StartPoint = new Point(way.WayPoints[firstPointOfNextFlootIndex-1].X, way.WayPoints[firstPointOfNextFlootIndex-1].Y);
+                //}
               
-
-
-
 
                 geometry.Figures.Add(figure);
 
@@ -1603,7 +1609,7 @@ namespace TradeCenterAdmin.Views.Pages
                             currentWay = new Way();
                             currentWay.AreaId = currentArea.Id;
                             currentWay.FloorId = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Id;
-                            currentWay.Id = rnd.Next(Int32.MinValue, Int32.MaxValue);
+                            currentWay.Id = rnd.Next(Int32.MinValue, Int32.MaxValue);                           
                             if (((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Areas.Where(o => o.Id == currentArea.Id).FirstOrDefault() == null){
                                 return;
                             }
@@ -1615,21 +1621,43 @@ namespace TradeCenterAdmin.Views.Pages
                             var _fl = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor;
                             AddWayToChangesPool(currentArea,currentWay, $"Удалить путь области на {_fl.Name}е", $"Вернуть путь области на {_fl.Name}е");
                         }
-
                         Point coordinatesClick = e.GetPosition(canvasMap);
-
                         WayPoint wayPoint = new WayPoint
                         {
-
                             PointType = NavigationMap.Enums.PointTypeEnum.Way,
                             Id = randomId,
                             X = coordinatesClick.X,
                             Y = coordinatesClick.Y,
                             AreaId = currentArea.Id,
-                            FloorId = currentFloor.Id
+                            FloorId = ((MapEditorViewModel)this.DataContext).SelectedFloor.Id
                         };
-                        currentWay.WayPoints.Add(wayPoint); 
+                   
 
+                        if (currentArea.Ways != null)
+                        {
+                            if (currentArea.Ways.LastOrDefault().WayPoints.Count == 0)
+                            {                               
+                                currentWay.WayPoints.Add(wayPoint);
+                            }
+                            else
+                            {
+                                if (currentArea.Ways.LastOrDefault().FloorId != ((MapEditorViewModel)this.DataContext).SelectedFloor.Id)
+                                {
+                                    Way newWay = new Way();
+                                    newWay.AreaId = currentArea.Id;
+                                    newWay.FloorId = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Id;
+                                    newWay.Id = currentArea.Ways.LastOrDefault().Id;
+                                    currentArea.Ways.Add(newWay);
+                                    currentWay = currentArea.Ways.LastOrDefault();
+                                    currentArea.Ways.LastOrDefault().WayPoints.Add(wayPoint);
+                                }
+                                else
+                                {
+                                    currentArea.Ways.LastOrDefault().WayPoints.Add(wayPoint);
+                                }
+                            }
+                        }
+                        
 
                         DrawWays(currentWay, 
                             ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Id);
@@ -1689,7 +1717,31 @@ namespace TradeCenterAdmin.Views.Pages
         {
             areaTitle.Text = area.Name;
             areaFloor.Text = ((MapEditorViewModel)this.DataContext).Floors.Where(o => o.Id == area.FloorId).FirstOrDefault()?.Name;
-            areaWays.ItemsSource = null; areaWays.ItemsSource = area.Ways;
+            ObservableCollection<WaysContainer> ways = new ObservableCollection<WaysContainer>();
+            int currentId = -1;
+            WaysContainer container = new WaysContainer();
+
+            int counter = 0;
+            foreach (var way in area.Ways)
+            {
+                counter++;
+              
+                if (way.Id != currentId && currentId != -1)
+                {
+                    container.FloorsCount = container.Ways.Count;
+                    ways.Add(container);
+                    container = new WaysContainer();
+                }
+                currentId = way.Id;
+                container.WayID = way.Id;
+                container.Ways.Add(way);
+                 if (counter == area.Ways.Count)
+                {
+                    container.FloorsCount = container.Ways.Count;
+                    ways.Add(container); break;
+                }
+            }
+            areaWays.ItemsSource = null; areaWays.ItemsSource = ways;
         }
         private void areaDeleteWayHandler(object sender, RoutedEventArgs e)
         {
@@ -1698,36 +1750,28 @@ namespace TradeCenterAdmin.Views.Pages
                 if (MessageBox.Show("Вы действительно хотите удалить этот маршрут?",
                     "Подтверждение",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    for (int floor = 0; floor < ((MapEditorViewModel)this.DataContext).Floors.Count; floor++)
+                    var selectedContainer = areaWays.SelectedItem as WaysContainer;
+                    List<Way> deletedWays = new List<Way>();
+                    if (selectedContainer != null)
                     {
-                        var floorAreas = ((MapEditorViewModel)this.DataContext).Floors[floor].Areas;
-                        if (floorAreas != null)
+                        for (int i = 0; i < currentArea.Ways.Count; i++)
                         {
-                            for (int area = 0; area < floorAreas.Count; area++)
+                          
+                            for (int j = 0; j < selectedContainer.Ways.Count; j++)
                             {
-                                if (floorAreas[area].Id == currentArea.Id)
+                                if (currentArea.Ways[i].Id == selectedContainer.WayID)
                                 {
-                                    var way = areaWays.SelectedItem as Way;
-                                    if (way != null)
-                                    {
-                                        ((MapEditorViewModel)this.DataContext).Floors[floor].Areas[area].Ways.Remove(way);
-                                        ShowAreaInfo(((MapEditorViewModel)this.DataContext).Floors[floor].Areas[area]);
-                                        RemovingWayToChangesPool(currentArea, way, $"Восстановить путь области магазина {Name}",
-                                            $"Удалить путь области магазина {Name}");
-                                        if (areaShowOwnWays.IsChecked == true)
-                                        {
-                                            ((MapEditorViewModel)this.DataContext).LoadFloorObjects(currentArea);
-                                        }
-                                        else
-                                        {
-                                            ((MapEditorViewModel)this.DataContext).LoadFloorObjects();
-                                        }
-                                    }                                  
+                                    deletedWays.Add(currentArea.Ways[i]);
+                                    currentArea.Ways.RemoveAt(i);                                  
+                                    ((MapEditorViewModel)this.DataContext).LoadFloorObjects();
+                                    ShowAreaInfo(currentArea);
                                 }
                             }
                         }
-                      
+                        RemovingWayToChangesPool(currentArea,deletedWays, $"Отменить удаление пути области магазина {currentArea.Name}",
+                                       $"Удалить путь области магазина {currentArea.Name}");
                     }
+                  
                 }
             }
         }
@@ -2396,10 +2440,22 @@ namespace TradeCenterAdmin.Views.Pages
             changes.ActionPlaceInfo.RedoActionInfo.MakeRemoveFromListMethod(way, callbacks);
             return changes;
         }
-        public void RemovingWayToChangesPool(Area area, Way way, string undoText, string redoText)
-        {
-            var changes = CreateRemovingWayEntry(area, way, undoText, redoText);
-            KioskObjects.ChangesPool.AddEntry(changes);
+        public void RemovingWayToChangesPool(Area area, List<Way> ways, string undoText, string redoText)
+        {      
+            List<ChangeEntry> changes = new List<ChangeEntry>();
+            foreach (var way in ways)
+            {
+                var change = CreateRemovingWayEntry(area, way, undoText, redoText);
+                changes.Add(change);
+            }
+
+            ComplexChangeEntry complexChange = new ComplexChangeEntry
+            {
+                Conditions = changes,
+                UndoText = undoText,
+                RedoText = redoText
+            };
+            KioskObjects.ChangesPool.AddEntry(complexChange);
         }
         public void RemovingAllAreaWaysToChangesPool(Area area, string undoText, string redoText)
         {

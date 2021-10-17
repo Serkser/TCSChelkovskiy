@@ -25,7 +25,7 @@ namespace TCSchelkovskiyAPI
 
         }
 
-        public static string HOST { get; set; } = "https://navigator.useful.su";
+        public static string HOST { get; set; } = "https://europa.useful.su";
         public static List<FloorModel> GetFloors()
         {
             
@@ -821,5 +821,18 @@ namespace TCSchelkovskiyAPI
             return response.Content;
         }
 
+        public static void SendFeedback(FeedbackModel feedback)
+        {
+            var client = new RestClient(HOST + "/api/v1/feedback");
+            client.Timeout = -1;
+            var request = new RestRequest(Method.POST);
+            request.AlwaysMultipartFormData = true;
+            request.AddParameter("userName", feedback.Name);
+            request.AddParameter("title", feedback.Topic);
+            request.AddParameter("contacts", feedback.EmailOrPhone);
+            request.AddParameter("message", feedback.Text);
+            IRestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
+        }
     }
 }
