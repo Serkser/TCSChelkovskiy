@@ -1,0 +1,46 @@
+﻿<Window x:Class="TCAMultiJson.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TCAMultiJson"
+        xmlns:vm="clr-namespace:TCAMultiJson.ViewModels"
+        mc:Ignorable="d"
+        
+     
+        Title="TCAMultiJson" Height="372" Width="504" 
+        ResizeMode="NoResize">
+    <Grid>
+        <Button Command="{Binding AddJsonFiles}"
+            Content="Добавить JSON файлы" HorizontalAlignment="Left" Margin="33,244,0,0" VerticalAlignment="Top" Height="33" Width="184"/>
+        <ListBox ItemsSource="{Binding InputJsonFilepaths,Mode=TwoWay}"              
+            Margin="33,28,0,0" 
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 Height="211" Width="453">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}">
+                        <TextBlock.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Удалить файл"
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemoveJsonFile}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=SelectedItem}"
+                                    ></MenuItem>
+                            </ContextMenu>
+                        </TextBlock.ContextMenu>
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Command="{Binding GenerateJsonFile}"
+            Content="Сгенерировать единый JSON" HorizontalAlignment="Left" Margin="222,244,0,0" VerticalAlignment="Top" Height="33" Width="264"/>
+        <TextBlock HorizontalAlignment="Left" Margin="33,10,0,0" Text="Список загруженных JSON файлов" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="31,282,0,0" Text="Путь для сгенерированного JSON файла" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock Text="{Binding ResultJsonFilepath}"
+            HorizontalAlignment="Left" Margin="31,303,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="356"/>
+        <Button Command="{Binding SelectJsonFilePath}"
+            Content="Выбрать путь" HorizontalAlignment="Left" Margin="392,298,0,0" VerticalAlignment="Top" Height="25" Width="94"/>
+
+    </Grid>
+</Window>

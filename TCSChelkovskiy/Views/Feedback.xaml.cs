@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TCSChelkovskiy.Controls;
 using TCSchelkovskiyAPI.Models;
 
 namespace TCSChelkovskiy.Views
@@ -30,7 +31,7 @@ namespace TCSChelkovskiy.Views
             InitializeComponent();
         }
 
-        TextBox selectedTextBox;
+        PlaceholderTextBox selectedTextBox;
         private void buttonPressed(object sender, EventArgs e)
         {
             if (selectedTextBox != null)
@@ -65,7 +66,7 @@ namespace TCSChelkovskiy.Views
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            selectedTextBox = sender as TextBox;
+            selectedTextBox = sender as PlaceholderTextBox;
         }
 
         #region Обратная связь
@@ -101,13 +102,14 @@ namespace TCSChelkovskiy.Views
                                 FeedbackModel.ValidationErrors.Add(error.ErrorMessage);
                             }
                             FeedbackModel.FirstValidationError = FeedbackModel.ValidationErrors.FirstOrDefault();
+                            MessageBox.Show(FeedbackModel.ValidationErrors.Count.ToString());
                         }
                         else
                         {
                             FeedbackModel.FirstValidationError = string.Empty;
                         
                             TCSchelkovskiyAPI.TCSchelkovskiyAPI.SendFeedback(FeedbackModel);
-                            new CustomMessageBox("Уведомление", "Ваш отзыв был успешно нами получен").ShowDialog();
+                            new CustomMessageBox("Ваш отзыв был успешно нами получен", "Уведомление").ShowDialog();
                         }
                     }));
             }
@@ -115,5 +117,9 @@ namespace TCSChelkovskiy.Views
 
         #endregion
 
+        private void PlaceholderTextBox_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

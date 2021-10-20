@@ -1066,24 +1066,12 @@ namespace TradeCenterAdmin.Views.Pages
                 //выбор объекта для редактирования
                 perimeter.MouseDown += (sender, e) =>
                 {
-                    #region Подсветка выбранной области
-
-                    //Убираем подсветку с других областей
-                    for (int i = 0; i < canvasMap.Children.Count; i++)
-                    {
-                        var uielement = canvasMap.Children[i];
-                        if (uielement is Path)
-                        {
-                            ((Path)uielement).Fill = Brushes.AliceBlue;
-                        }
-                    }
-
-                    //Подсвечиваем выбранную область
-                    perimeter.Fill = Brushes.Yellow;    
-                    #endregion
                     currentArea = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Areas
                     .Where(o => o.Id == Convert.ToInt32(perimeter.Uid)).FirstOrDefault();
                     ShowAreaInfo(area);
+
+
+                    ((ViewModels.MapEditorViewModel)this.DataContext).HighlightArea(currentArea);
                 };
                 #region Удаление области
                 MenuItem delButton = new MenuItem
@@ -1121,6 +1109,35 @@ namespace TradeCenterAdmin.Views.Pages
                 perimeter.ContextMenu.Items.Add(delButton);
                 #endregion
 
+              
+
+                #region Убираем назначение магазина
+                MenuItem removeAssignedShop = new MenuItem
+                {
+                    Header = "Убрать назначение магазина",
+                };               
+                removeAssignedShop.Click += (sender1, e1) =>
+                {
+                    var oldArea = (Area)area.Clone();
+
+                    area.Id = -1;
+                    area.Name = "";
+                    area.Description = "";
+                    perimeter.ToolTip = $"Область магазина {area.Name}";
+                    AreaShopChangedToChangesPool(oldArea, area, $"Вернуть назначение области магазина на {oldArea.Name}",
+                        $"Удалить назначение области магазина");
+                    //CreateText();,
+                    perimeter.ContextMenu.Items.Remove(removeAssignedShop);
+                    ShowAreaInfo(area);
+
+                };
+                if (!string.IsNullOrEmpty(area.Name))
+                {
+                    perimeter.ContextMenu.Items.Add(removeAssignedShop);
+                }
+
+                #endregion
+
                 #region Назначение магазина
                 MenuItem assignShop = new MenuItem
                 {
@@ -1128,18 +1145,26 @@ namespace TradeCenterAdmin.Views.Pages
                 };
                 assignShop.Click += (sender1, e1) =>
                 {
-                  
-                    Views.Windows.AssingShop f = new Windows.AssingShop();
+                    var shops = ((MapEditorViewModel)this.DataContext).Shops;
+                    var floors = ((MapEditorViewModel)this.DataContext).Floors;
+                    Views.Windows.AssingShop f = new Windows.AssingShop(shops, floors);
                     f.DataContext = this.DataContext;
+
                     var oldArea = (Area)area.Clone();
                     if (f.ShowDialog() == true)
                     {
-                        area.Id = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.ID;                     
+                        area.Id = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.ID;
                         area.Name = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.Name;
                         area.Description = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.Description;
                         perimeter.ToolTip = $"Область магазина {area.Name}";
                         AreaShopChangedToChangesPool(oldArea, area, $"Сменить назначение области с {oldArea.Name} на {area.Name}",
                             $"Сменить назначение области с {area.Name} на {oldArea.Name}");
+
+                        if (!perimeter.ContextMenu.Items.Contains(removeAssignedShop))
+                        {
+                            perimeter.ContextMenu.Items.Add(removeAssignedShop);
+                        }
+
                         //CreateText();,
                     }
                     ShowAreaInfo(area);
@@ -1230,10 +1255,15 @@ namespace TradeCenterAdmin.Views.Pages
                         Mouse.Capture(null);
                         canmove = false;
                         int number = Convert.ToInt32(entry.Uid.Replace($"{area.Id}button", "").Trim());
+
+
+                        var oldPoint = (AreaPoint)area.Points[number - 1].Clone();
+
+                        Control c = o1 as Control;
                         area.Points[number - 1] = new AreaPoint
                         {
-                            X = e1.GetPosition(canvasMap).X - p.X,
-                            Y = e1.GetPosition(canvasMap).Y - p.Y,
+                            X = c.Margin.Left,
+                            Y = c.Margin.Top,
                         };
 
                         for (int i = 0; i < 5; i++)
@@ -1241,9 +1271,10 @@ namespace TradeCenterAdmin.Views.Pages
                             DrawAreaPerimeter(area); 
                         }
 
-                        var oldPoint = (AreaPoint)area.Points[number - 1];
-                        area.Points.Where(o => o.Id == area.Points[number - 1].Id).FirstOrDefault().X = entry.Margin.Left;
-                        area.Points.Where(o => o.Id == area.Points[number - 1].Id).FirstOrDefault().Y = entry.Margin.Top;
+                     
+                        //area.Points.Where(o => o.Id == area.Points[number - 1].Id).FirstOrDefault().X = entry.Margin.Left;
+                        //area.Points.Where(o => o.Id == area.Points[number - 1].Id).FirstOrDefault().Y = entry.Margin.Top;
+
                         var fl = ((MapEditorViewModel)this.DataContext).SelectedFloor;
                         LocationChangedAreaPointToChangesPool(area, number - 1,oldPoint, area.Points[number - 1],
                             $"Переместить точку области на шаг назад на {fl.Name}е",
@@ -1631,8 +1662,8 @@ namespace TradeCenterAdmin.Views.Pages
                             AreaId = currentArea.Id,
                             FloorId = ((MapEditorViewModel)this.DataContext).SelectedFloor.Id
                         };
-                   
 
+                       
                         if (currentArea.Ways != null)
                         {
                             if (currentArea.Ways.LastOrDefault().WayPoints.Count == 0)
@@ -1657,7 +1688,9 @@ namespace TradeCenterAdmin.Views.Pages
                                 }
                             }
                         }
-                        
+
+
+                        ((ViewModels.MapEditorViewModel)this.DataContext).EditingWay = currentWay;
 
                         DrawWays(currentWay, 
                             ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Id);
@@ -1713,10 +1746,11 @@ namespace TradeCenterAdmin.Views.Pages
 
 
         #region Работа с левым меню, выделенная область
-        void ShowAreaInfo(Area area)
+        public void ShowAreaInfo(Area area)
         {
             areaTitle.Text = area.Name;
-            areaFloor.Text = ((MapEditorViewModel)this.DataContext).Floors.Where(o => o.Id == area.FloorId).FirstOrDefault()?.Name;
+            var areaShop = KioskObjects.Shops.Where(o => o.ID == area.Id).FirstOrDefault();
+            areaFloor.Text = areaShop?.Floor?.Name;
             ObservableCollection<WaysContainer> ways = new ObservableCollection<WaysContainer>();
             int currentId = -1;
             WaysContainer container = new WaysContainer();
@@ -1742,6 +1776,7 @@ namespace TradeCenterAdmin.Views.Pages
                 }
             }
             areaWays.ItemsSource = null; areaWays.ItemsSource = ways;
+            ((MapEditorViewModel)this.DataContext).LoadFloorAreaWrappers();
         }
         private void areaDeleteWayHandler(object sender, RoutedEventArgs e)
         {
@@ -1817,10 +1852,16 @@ namespace TradeCenterAdmin.Views.Pages
         /// Подсвечивание выбранного маршута области
         private void areaWaysSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var way = areaWays.SelectedItem as Way;
+            var wayContainer = areaWays.SelectedItem as WaysContainer;
+            if (wayContainer == null) { return; }
+            var way = wayContainer.Ways.Where(o => o.FloorId == ((MapEditorViewModel)this.DataContext).SelectedFloor.Id).FirstOrDefault();
             if (way != null)
             {
                 ((MapEditorViewModel)this.DataContext).LoadFloorObjectsWithWayHighlighting(way);
+                if (areaShowOwnWays.IsChecked == true)
+                {
+                    ((MapEditorViewModel)this.DataContext).LoadFloorObjectsWithWayHighlighting(way,true);
+                }
             }        
         }
         #region Показ маршрутов только выделенной области
@@ -2014,7 +2055,17 @@ namespace TradeCenterAdmin.Views.Pages
             Expander expander = sender as Expander;
             expander.Height = 471;
         }
+        private void shopsExpanderCollapsed(object sender, RoutedEventArgs e)
+        {
+            Expander expander = sender as Expander;
+            expander.Height = 26;
+        }
 
+        private void shopsExpanderExpanded(object sender, RoutedEventArgs e)
+        {
+            Expander expander = sender as Expander;
+            expander.Height = 347;
+        }
 
         #endregion
         private void CollapseAllExpanders()
@@ -2023,6 +2074,7 @@ namespace TradeCenterAdmin.Views.Pages
             areaExpander.IsExpanded = false;
             floorsExpander.IsExpanded = false;
             toolsExpander.IsExpanded = false;
+            shopsExpander.IsExpanded = false;
         }
         #region Удаление объектов посредством экспандера объектов
         private void kioskTabDelete(object sender, RoutedEventArgs e)
@@ -2579,6 +2631,6 @@ namespace TradeCenterAdmin.Views.Pages
              
         }
 
- 
+       
     }
 }

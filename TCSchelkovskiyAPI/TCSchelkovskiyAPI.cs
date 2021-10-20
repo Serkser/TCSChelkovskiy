@@ -244,7 +244,7 @@ namespace TCSchelkovskiyAPI
             {
                 pages = Convert.ToInt32(data.countPage);
             }
-            catch (UnauthorizedAccessException ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.StackTrace);
                 Debug.WriteLine(ex.Message);

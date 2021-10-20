@@ -99,8 +99,11 @@
     <Compile Include="ChangesPool\UndoActionsInfo\ListItemUndoActionInfo.cs" />
     <Compile Include="ChangesPool\UndoActionsInfo\ObjectUndoActionInfo.cs" />
     <Compile Include="ChangesPool\UndoActionsInfo\ListUndoActionInfo.cs" />
+    <Compile Include="Enums\AreaSorts\SortByShops.cs" />
+    <Compile Include="Enums\AreaSorts\SortByWays.cs" />
     <Compile Include="Enums\MapEditorTool.cs" />
     <Compile Include="Enums\PointState.cs" />
+    <Compile Include="Models\AreaWrapper.cs" />
     <Compile Include="Models\WaysContainer.cs" />
     <Compile Include="Preloader.xaml.cs">
       <DependentUpon>Preloader.xaml</DependentUpon>
@@ -110,6 +113,12 @@
     <Compile Include="Services\ImageDownloader.cs" />
     <Compile Include="Services\JsonToServerUploader.cs" />
     <Compile Include="ChangesPool\ChangesPool.cs" />
+    <Compile Include="Services\MapObjectLoaders\IMapObjectLoader.cs" />
+    <Compile Include="Services\MapObjectLoaders\LocalJsonMapObjectsLoader.cs" />
+    <Compile Include="Services\MapObjectLoaders\ServerJsonMapObjectsLoader.cs" />
+    <Compile Include="Services\MapObjectSavers\IMapObjectSaver.cs" />
+    <Compile Include="Services\MapObjectSavers\LocalJsonMapObjectsSaver.cs" />
+    <Compile Include="Services\MapObjectSavers\ServerMapObjectsSaver.cs" />
     <Compile Include="Storage\KioskObjects.cs" />
     <Compile Include="Utilities\DisposableImage.cs" />
     <Compile Include="Utilities\UserInactivity.cs" />

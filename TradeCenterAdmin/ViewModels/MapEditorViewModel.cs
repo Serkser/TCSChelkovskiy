@@ -13,10 +13,13 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using TCSchelkovskiyAPI.Enums;
 using TCSchelkovskiyAPI.Models;
 using TradeCenterAdmin.ChangesPool.Abstractions;
 using TradeCenterAdmin.Enums;
+using TradeCenterAdmin.Models;
+using TradeCenterAdmin.Services.MapObjectSavers;
 using TradeCenterAdmin.Storage;
 using TradeCenterAdmin.Utilities;
 using Image = System.Windows.Controls.Image;
@@ -152,11 +155,21 @@ namespace TradeCenterAdmin.ViewModels
                     {
                         foreach (var way in area.Ways)
                         {
-                            if (way.FloorId == SelectedFloor.Id)
+                            if (!HideAllWays)
                             {
-                                This.DrawWays(way, SelectedFloor.Id);
-                            }
+                                if (way.FloorId == SelectedFloor.Id)
+                                {
+                                    This.DrawWays(way, SelectedFloor.Id);
+                                }
+                            }                          
                         }
+                    }                 
+                }
+                if (HideAllWays)
+                {
+                    if (EditingWay != null)
+                    {
+                        This.DrawWays(EditingWay, SelectedFloor.Id, System.Windows.Media.Brushes.Red);
                     }                 
                 }
             }
@@ -166,6 +179,16 @@ namespace TradeCenterAdmin.ViewModels
         {
             BaseDrawing();
             //Рисуем пути магазинов
+
+            if (HideAllWays)
+            {
+                if (EditingWay != null)
+                {
+                    This.DrawWays(EditingWay, SelectedFloor.Id, System.Windows.Media.Brushes.Red);
+                }
+                return;   
+            }
+
 
             foreach (var floor in Floors)
             {
@@ -188,6 +211,17 @@ namespace TradeCenterAdmin.ViewModels
         public void LoadFloorObjects(Area selectedArea)
         {
             BaseDrawing();
+
+
+            if (HideAllWays)
+            {
+                if (EditingWay != null)
+                {
+                    This.DrawWays(EditingWay, SelectedFloor.Id, System.Windows.Media.Brushes.Red);
+                }
+                return;
+            }
+
             //Рисуем пути магазинов
             if (selectedArea == null)
             {
@@ -211,10 +245,19 @@ namespace TradeCenterAdmin.ViewModels
             }
         }
         //Загрузка объектов, отрисовка всех путей, подсветка выбранного пути
-        public void LoadFloorObjectsWithWayHighlighting(Way selectedWay)
+        public void LoadFloorObjectsWithWayHighlighting(Way selectedWay, bool hideOther = false)
         {
             BaseDrawing();
             //Рисуем пути магазинов
+            if (HideAllWays)
+            {
+                if (EditingWay != null)
+                {
+                    This.DrawWays(EditingWay, SelectedFloor.Id, System.Windows.Media.Brushes.Red);
+                }
+                return;
+            }
+
 
             foreach (var floor in Floors)
             {
@@ -230,11 +273,34 @@ namespace TradeCenterAdmin.ViewModels
                             }
                             else
                             {
-                                This.DrawWays(way, SelectedFloor.Id);
+                                if (!hideOther)
+                                {
+                                    This.DrawWays(way, SelectedFloor.Id);
+                                }                            
                             }
 
                         }
                     }
+                }
+            }
+        }
+
+        public void HighlightArea(Area selectedArea)
+        {
+            //Убираем подсветку с других областей
+            for (int i = 0; i < This.canvasMap.Children.Count; i++)
+            {
+                var uielement = This.canvasMap.Children[i];
+                if (uielement is Path)
+                {
+                    if (uielement.Uid == selectedArea.Id.ToString())
+                    {
+                        ((Path)uielement).Fill = System.Windows.Media.Brushes.Yellow;
+                    }
+                    else
+                    {
+                        ((Path)uielement).Fill = System.Windows.Media.Brushes.AliceBlue;
+                    }              
                 }
             }
         }
@@ -612,7 +678,7 @@ namespace TradeCenterAdmin.ViewModels
                     LoadFloorObjects();
                     CurrentFloorImage?.Dispose();
                     CurrentFloorImage = new DisposableImage(selectedFloor.Image);
-
+                    LoadFloorAreaWrappers();
 
                 }
                 OnPropertyChanged("SelectedFloor");
@@ -1265,6 +1331,193 @@ namespace TradeCenterAdmin.ViewModels
         #endregion
 
 
+        #region Сокрытие путей
+        private bool hideAllWays;
+        public bool HideAllWays
+        {
+            get { return hideAllWays; }
+            set
+            {
+                hideAllWays = value;              
+                OnPropertyChanged("HideAllWays");
+                LoadFloorObjects();
+            }
+        }
+        private Way editingWay;
+        public Way EditingWay
+        {
+            get { return editingWay; }
+            set
+            {
+                editingWay = value;
+                OnPropertyChanged("EditingWay");
+            }
+        }
+
+        #endregion
+
+        #region Экспандер областей на этаже
+
+
+        private ObservableCollection<AreaWrapper> floorAreaWrappers;
+        public ObservableCollection<AreaWrapper> FloorAreaWrappers
+        {
+            get { return floorAreaWrappers; }
+            set
+            {
+                floorAreaWrappers = value;
+                OnPropertyChanged("FloorAreaWrappers");
+            }
+        }
+        private RelayCommand highlightSelectedArea;
+        public RelayCommand HighlightSelectedArea
+        {
+            get
+            {
+                return highlightSelectedArea ??
+                    (highlightSelectedArea = new RelayCommand(obj =>
+                    {
+                        AreaWrapper wrapper = obj as AreaWrapper;
+                        if (wrapper != null)
+                        {
+                            HighlightArea(wrapper.Area);
+                            This.ShowAreaInfo(wrapper.Area);
+                        }                  
+                    }));
+            }
+        }
+        public void LoadFloorAreaWrappers()
+        {
+            List<AreaWrapper> wrappers = new List<AreaWrapper>();
+            foreach (var area in SelectedFloor.Areas)
+            {
+                AreaWrapper wrapper = new AreaWrapper(area);
+                wrappers.Add(wrapper);
+            }
+            //Сортировка по областям
+            if (SortAreasWithShop)
+            {
+                wrappers = wrappers.Where(o => o.Area.Id > 0).ToList();
+            }
+            else if (sortAreasWithNoShop)
+            {
+                wrappers = wrappers.Where(o => o.Area.Id < 1).ToList();
+            }
+            else if (SortAllAreas)
+            {
+                wrappers = wrappers.ToList();
+            }
+
+            //Сортировка по путям
+            if (SortAreasWithWay)
+            {
+                wrappers = wrappers.Where(o => o.Area.Ways.Count > 0).ToList();
+            }
+            else if (SortAreasWithNoWay)
+            {
+                wrappers = wrappers.Where(o => o.Area.Ways.Count ==0).ToList();
+            }
+            else if (SortAllAreasWay)
+            {
+                wrappers = wrappers.ToList();
+            }
+            else if (SortAreasWithFloorsWay)
+            {
+                wrappers = wrappers.Where(o => o.UsedFloorsByRoutes == AffectedFloorsByAreaRoutes).ToList();
+            }
+
+            FloorAreaWrappers = new ObservableCollection<AreaWrapper>(wrappers);
+
+        }
+
+        //Сортировка по областям
+
+        private int affectedFloorsByAreaRoutes;
+        public int AffectedFloorsByAreaRoutes
+        {
+            get { return affectedFloorsByAreaRoutes; }
+            set
+            {
+                if (value > -1 && SortAreasWithFloorsWay)
+                {
+                    LoadFloorAreaWrappers();
+                }
+                affectedFloorsByAreaRoutes = value; OnPropertyChanged("SortAllAreas");
+            }
+        }
+
+        private bool sortAllAreas;
+        public bool SortAllAreas
+        {
+            get { return sortAllAreas; }
+            set {
+                LoadFloorAreaWrappers();
+                sortAllAreas = value; OnPropertyChanged("SortAllAreas"); }
+        }
+
+        private bool sortAreasWithShop;
+        public bool SortAreasWithShop
+        {
+            get { return sortAreasWithShop; }
+            set
+            {
+                LoadFloorAreaWrappers();
+                sortAreasWithShop = value; OnPropertyChanged("SortAreasWithShop"); }
+        }
+        private bool sortAreasWithNoShop;
+        public bool SortAreasWithNoShop
+        {
+            get { return sortAreasWithNoShop; }
+            set
+            {
+                LoadFloorAreaWrappers();
+                sortAreasWithNoShop = value; OnPropertyChanged("SortAreasWithNoShop"); }
+        }
+
+        //Сортировка по путям
+
+        private bool sortAllAreasWay;
+        public bool SortAllAreasWay
+        {
+            get { return sortAllAreasWay; }
+            set
+            {
+                LoadFloorAreaWrappers();
+                sortAllAreasWay = value; OnPropertyChanged("SortAllAreasWay"); }
+        }
+
+        private bool sortAreasWithWay;
+        public bool SortAreasWithWay
+        {
+            get { return sortAreasWithWay; }
+            set
+            {
+                LoadFloorAreaWrappers();
+                sortAreasWithWay = value; OnPropertyChanged("SortAreasWithWay"); }
+        }
+        private bool sortAreasWithNoWay;
+        public bool SortAreasWithNoWay
+        {
+            get { return sortAreasWithNoWay; }
+            set
+            {
+                LoadFloorAreaWrappers();
+                sortAreasWithNoWay = value; OnPropertyChanged("SortAreasWithNoWay"); }
+        }
+        private bool sortAreasWithFloorsWay;
+        public bool SortAreasWithFloorsWay
+        {
+            get { return sortAreasWithFloorsWay; }
+            set
+            {
+                LoadFloorAreaWrappers();
+                sortAreasWithFloorsWay = value; OnPropertyChanged("SortAreasWithFloorsWay");
+            }
+        }
+
+
+        #endregion
+
         #region Прочие команды
         /// <summary>
         /// Открытие окна для изменения этажей
@@ -1309,8 +1562,10 @@ namespace TradeCenterAdmin.ViewModels
                 return saveChanges ??
                     (saveChanges = new RelayCommand(obj =>
                     {
-                        Services.JsonToServerUploader<Floor> uploader = new Services.JsonToServerUploader<Floor>();
-                        uploader.UploadListToServer(Floors, "floor");
+                        //IMapObjectSaver saver = new ServerMapObjectsSaver();
+                        //saver.Save(Floors);
+                        IMapObjectSaver saver2 = new LocalJsonMapObjectsSaver();
+                        saver2.Save(Floors);
 
                         MessageBox.Show("Изменения успешно сохранены");
                     }));

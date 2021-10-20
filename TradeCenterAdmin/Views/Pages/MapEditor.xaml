@@ -33,17 +33,7 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <Image x:Name="img" MouseDown="click" Stretch="Fill"  Source="{Binding CurrentFloorImage.Source}" Width="9000" Height="9000" Canvas.Left="0" Canvas.Top="0"/>
-
-                        <Expander Header="Expander" Height="100" Canvas.Left="1133" Canvas.Top="229" Width="100">
-                            <Grid Background="#FFE5E5E5"/>
-                        </Expander>
-
-
-
-
-
                     </Canvas>
-
                 </ScrollViewer>
 
             </Viewbox>
@@ -127,6 +117,10 @@
                     <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Zoom/ZoomOut.png"/>
                 </Button.Background>
             </Button>
+            <CheckBox IsChecked="{Binding HideAllWays, Mode=TwoWay}" 
+                      HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Width="143" Canvas.Left="586" Canvas.Top="217" Grid.Column="1" Margin="240.2,3,0,0">
+                <TextBlock TextWrapping="Wrap" Width="123"><Run Text="Скрыть маршруты"/></TextBlock>
+            </CheckBox>
             <Button Command="{Binding ZoomIn}" Content="" BorderThickness="0" Width="46" Height="43" Margin="965.2,573.6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1">
                 <Button.Background>
                     <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Zoom/ZoomIn.png"/>
@@ -503,7 +497,58 @@
 
                     </Grid>
                 </Expander>
+                <Expander  Collapsed="shopsExpanderCollapsed" Expanded="shopsExpanderExpanded" x:Name="shopsExpander"
+                           Header="Области на этаже" IsExpanded="True" Grid.Column="1" Width="330" HorizontalAlignment="Left" VerticalAlignment="Top" Height="347" Grid.Row="1">
+                    <Grid Background="#FFE5E5E5">
+                        <ListBox ItemsSource="{Binding FloorAreaWrappers,Mode=TwoWay}" FontSize="10"                           
+                                    HorizontalAlignment="Left" Height="178" Margin="10,28,0,0" VerticalAlignment="Top" Width="322">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                    <Run>Область </Run><Run Text=""></Run> 
+                                    <Run Text="{Binding AreaShopName,Mode=TwoWay}"/>
+                                    <Run Text=" ("/>
+                                    <Run Text="{Binding AreaFloorName,Mode=TwoWay}"/>
+                                    <Run Text=")"/><LineBreak/>
+                                    <Run>Маршруты на этажах : </Run><Run Text=" "></Run>
+                                    <Run Text="{Binding AreaWaysText,Mode=TwoWay}"/>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction
+                                     Command="{Binding HighlightSelectedArea}"
+                                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=SelectedItem}"
+                                    ></i:InvokeCommandAction>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ListBox>
+                        <TextBlock VerticalAlignment="Top" Text="Список областей :" Margin="10,10,0,0" HorizontalAlignment="Left" FontSize="10"/>
+                        <RadioButton  IsChecked="{Binding SortAllAreas,Mode=TwoWay}"
+                        FontSize="10" Content="Показать все области" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top"/>
+                        <RadioButton  IsChecked="{Binding SortAreasWithNoShop,Mode=TwoWay}"
+                        FontSize="10" Content="Области без магазинов" HorizontalAlignment="Left" Margin="141,220,0,0" VerticalAlignment="Top"/>
+                        <RadioButton  IsChecked="{Binding SortAreasWithShop,Mode=TwoWay}"
+                        FontSize="10" Content="Области с магазинами" HorizontalAlignment="Left" Margin="10,235,0,0" VerticalAlignment="Top"/>
+                        <TextBlock VerticalAlignment="Top" Text="Наличие маршрутов :" Margin="10,249,0,0" HorizontalAlignment="Left" FontSize="10"/>
+                        <RadioButton IsChecked="{Binding SortAreasWithWay,Mode=TwoWay}"
+                        FontSize="10" GroupName="routes" Content="С маршрутами" HorizontalAlignment="Left" Margin="93,266,0,0" VerticalAlignment="Top"/>
+                        <RadioButton IsChecked="{Binding SortAreasWithNoWay,Mode=TwoWay}"
+                        FontSize="10" GroupName="routes" Content="Без маршрутов" HorizontalAlignment="Left" Margin="185,265,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.315,0.457"/>
+                        <TextBlock VerticalAlignment="Top" Text="Сортировка :" Margin="10,206,0,0" HorizontalAlignment="Left" FontSize="10"/>
+                        <RadioButton IsChecked="{Binding SortAllAreasWay,Mode=TwoWay}"
+                        FontSize="10" GroupName="routes" Content="Без фильтра" HorizontalAlignment="Left" Margin="10,266,0,0" VerticalAlignment="Top"/>
+                        <RadioButton IsChecked="{Binding SortAreasWithFloorsWay, Mode=TwoWay}"
+                        FontSize="10" GroupName="routes" Content="По количеству затронутых маршрутами этажей" HorizontalAlignment="Left" Margin="30,287,0,0" VerticalAlignment="Top"/>
+                        <TextBox Text="{Binding AffectedFloorsByAreaRoutes,Mode=TwoWay}"
+                        FontSize="10" HorizontalAlignment="Left" Height="18" Margin="10,285,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="17"/>
+                    </Grid>
+                </Expander>
             </StackPanel>
+
+
+         
 
             <TextBlock Height="23" 
                        TextAlignment="Left"

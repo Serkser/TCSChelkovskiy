@@ -4,19 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TCSChelkovskiy.Controls"
-             mc:Ignorable="d" Height="49" Width="265" MaxWidth="10000"
-             VerticalAlignment="Stretch"
+              mc:Ignorable="d" Height="99" Width="324" MaxWidth="10000"
+             VerticalAlignment="Stretch" Loaded="loaded"
              HorizontalAlignment="Stretch">
     <Grid>
         <TextBox HorizontalAlignment="Stretch" 
+                 GotFocus="gotfocus"
+                 TextChanged="textchanged" 
+                 Padding="10,0,0,0"
                  BorderBrush="#A3A3A3"
-                 Foreground="#A3A3A3" 
-                 Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=PlaceholderVisibility}"
-                 Margin="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=PlaceholderMargin}"
+                 Foreground="#A3A3A3"                                
                  FontSize="20" 
-                 Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=Text}"
+                 Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=Text,Mode=TwoWay}"
                  TextWrapping="Wrap" 
                  VerticalAlignment="Stretch"
+                 VerticalContentAlignment="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=UserControl},Path=PlaceholderVerticalAlligment}"
                   >
             <TextBox.Resources>
                 <Style TargetType="{x:Type Border}">
@@ -25,12 +27,14 @@
             </TextBox.Resources>
         </TextBox>
 
-        <TextBlock 
+        <TextBlock  x:Name="placeholder" GotFocus="gotfocus"
                    Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=Placeholder}"
-                   VerticalAlignment="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=UserControl},Path=PlaceholderVerticalAlligment}"
+                   Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=PlaceholderVisibility}"
+                   TextAlignment="Left"
+                   HorizontalAlignment="Left"                 
                    FontSize="20" 
                    TextWrapping="Wrap" 
-                   Foreground="#A3A3A3" HorizontalAlignment="Left" Width="250" Margin="10,0,0,0"/>
+                   Foreground="#A3A3A3" Width="314"  Margin="10,6,0,6"/>
 
     </Grid>
 </UserControl>

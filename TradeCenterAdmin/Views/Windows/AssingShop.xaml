@@ -9,7 +9,10 @@
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Магазины" VerticalAlignment="Top"/>
 
-        <ListBox x:Name="lists" SelectedItem="{Binding SelectedShop,Mode=TwoWay}" ItemsSource="{Binding Shops}" HorizontalAlignment="Left" Height="198" Margin="11,40,0,0" VerticalAlignment="Top" Width="426"/>
+        <ListBox x:Name="lists" SelectedItem="{Binding SelectedShop,Mode=TwoWay}"
+                 HorizontalAlignment="Left" Height="198" Margin="11,40,0,0" VerticalAlignment="Top" Width="426">
+
+        </ListBox>
         <Button Click="select" Content="Назначить выбранный магазин" HorizontalAlignment="Left" Margin="11,243,0,0" VerticalAlignment="Top" Width="426" RenderTransformOrigin="0.0,0.177"/>
 
     </Grid>

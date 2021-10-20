@@ -48,7 +48,8 @@
                 </ListBox.ItemContainerStyle>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding  RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=GoToShopsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=SelectedItem}"/>
+                        <i:InvokeCommandAction Command="{Binding  RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=GoToShopsCommand}"
+                                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=SelectedItem}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 

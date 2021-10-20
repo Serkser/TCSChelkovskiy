@@ -29,16 +29,15 @@ namespace TCSChelkovskiy.Controls
         {
             get { return (string)GetValue(TextProperty); }
             set
-            { 
-                SetValue(TextProperty, value);    
-                if (Text.Length == 0)
+            {
+                SetValue(TextProperty, value);
+                if (string.IsNullOrEmpty(Text))
                 {
-                    PlaceholderVisibility = false;
+                    PlaceholderVisibility = Visibility.Visible;
                 }
                 else
                 {
-                  
-                    PlaceholderVisibility = true;
+                    PlaceholderVisibility = Visibility.Hidden;
                 }
             }
         }
@@ -48,24 +47,50 @@ namespace TCSChelkovskiy.Controls
             get { return (string)GetValue(PlaceholderProperty); }
             set { SetValue(PlaceholderProperty, value); }
         }
-        public static readonly DependencyProperty PlaceholderVisibilityProperty = DependencyProperty.Register("PlaceholderVisibility", typeof(bool), typeof(PlaceholderTextBox));
-        public bool PlaceholderVisibility
+        public static readonly DependencyProperty PlaceholderVisibilityProperty = DependencyProperty.Register("PlaceholderVisibility", typeof(Visibility), typeof(PlaceholderTextBox));
+        public Visibility PlaceholderVisibility
         {
-            get { return (bool)GetValue(PlaceholderVisibilityProperty); }
+            get { return (Visibility)GetValue(PlaceholderVisibilityProperty); }
             set { SetValue(PlaceholderVisibilityProperty, value); }
         }
-        public static readonly DependencyProperty PlaceholderVerticalAlligmentProperty = DependencyProperty.Register("PlaceholderVerticalAlligment", typeof(VerticalAlignment), typeof(PlaceholderTextBox),
-            new PropertyMetadata(new Thickness(0,0,0,0)));
+        public static readonly DependencyProperty PlaceholderVerticalAlligmentProperty = DependencyProperty.Register("PlaceholderVerticalAlligment", typeof(VerticalAlignment), typeof(PlaceholderTextBox));
         public VerticalAlignment PlaceholderVerticalAlligment
         {
             get { return (VerticalAlignment)GetValue(PlaceholderVerticalAlligmentProperty); }
             set { SetValue(PlaceholderVerticalAlligmentProperty, value); }
         }
-        public static readonly DependencyProperty PlaceholderMarginProperty = DependencyProperty.Register("PlaceholderMargin", typeof(VerticalAlignment), typeof(Thickness));
-        public Thickness PlaceholderMargin
+
+        private void loaded(object sender, RoutedEventArgs e)
         {
-            get { return (Thickness)GetValue(PlaceholderMarginProperty); }
-            set { SetValue(PlaceholderMarginProperty, value); }
+            if (PlaceholderVerticalAlligment == VerticalAlignment.Top)
+            {
+
+                placeholder.VerticalAlignment = VerticalAlignment.Stretch;
+            }
+            else
+            {
+                placeholder.VerticalAlignment = VerticalAlignment.Center;
+            }
+        }
+
+        private void textchanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            Text = tb.Text;
+            if (string.IsNullOrEmpty(Text))
+            {
+                PlaceholderVisibility = Visibility.Visible;
+            }
+            else
+            {
+                PlaceholderVisibility = Visibility.Hidden;
+            }
+        }
+
+        private void gotfocus(object sender, RoutedEventArgs e)
+        {
+            this.OnGotFocus(e);
         }
     }
 }
+

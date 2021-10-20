@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using TCSchelkovskiyAPI.Enums;
 using TCSchelkovskiyAPI.Models;
+using TradeCenterAdmin.Services.MapObjectLoaders;
+using TradeCenterAdmin.Services.MapObjectSavers;
 
 namespace TradeCenterAdmin.Storage
 {
@@ -78,8 +80,11 @@ namespace TradeCenterAdmin.Storage
         {
             Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
             ConvertToFloorsFromJson(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
-           // Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
-         
+            // Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
+
+            IMapObjectSaver saver2 = new LocalJsonMapObjectsSaver();
+            saver2.Save(Floors);
+
         }
         public static string FilePath = Path.Combine(Environment.CurrentDirectory, "settings.json");
 
@@ -110,47 +115,9 @@ namespace TradeCenterAdmin.Storage
         static int floorCounter = 0;
         private static void ConvertToFloorsFromJson(List<FloorModel> floors)
         {
-            floorCount = floors.Count;
-            List<Floor> floorList = new List<Floor>();
+            IMapObjectLoader mapObjectLoader = new LocalJsonMapObjectsLoader();
+            mapObjectLoader.LoadObjects(floors);
           
-            foreach (var fl in floors)
-            {
-                try
-                {
-                    floorCounter++;
-                    Floor floorFromJson = new Floor();
-                    string url = Properties.Settings.Default.host + fl.FilePrefix + fl.File;
-                    var jsonFile = Path.Combine(Environment.CurrentDirectory,"JSON", fl.File);
-                if (!Directory.Exists("JSON"))
-                    Directory.CreateDirectory("JSON");
-
-                    WebClient client = new WebClient();
-                    client.DownloadFile(url,jsonFile);
-
-                    if (File.Exists(jsonFile))
-                    {
-                       
-                        using (StreamReader file = File.OpenText(jsonFile))
-                        {
-                            floorFromJson = (Floor)serializer.Deserialize(file, typeof(Floor));
-                        }
-                    }
-                    var selected = Floors.Where(o => o.Id == floorFromJson.Id).FirstOrDefault();          
-                    if (selected != null)
-                    {
-                        
-                        int itemIndex =  Floors.IndexOf(selected);
-                        string img = Floors[itemIndex].Image;
-                        Floors[itemIndex] = floorFromJson;
-                        Floors[itemIndex].Image = img;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message); MessageBox.Show(ex.StackTrace);
-                    Debug.WriteLine("Не удалось загрузить файл");
-                }
-            }
         }
 
         private static void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)

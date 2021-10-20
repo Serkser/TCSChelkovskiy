@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCSchelkovskiyAPI", "TCSche
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeCenterAdmin", "TradeCenterAdmin\TradeCenterAdmin.csproj", "{87FB9010-18B9-4182-89F2-5D3B96314332}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCAMultiJson", "TCAMultiJson\TCAMultiJson.csproj", "{F4653B82-9AD5-4F72-B472-335ABD108B5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,14 @@ Global
 		{87FB9010-18B9-4182-89F2-5D3B96314332}.Release|Any CPU.Build.0 = Release|Any CPU
 		{87FB9010-18B9-4182-89F2-5D3B96314332}.Release|x64.ActiveCfg = Release|Any CPU
 		{87FB9010-18B9-4182-89F2-5D3B96314332}.Release|x64.Build.0 = Release|Any CPU
+		{F4653B82-9AD5-4F72-B472-335ABD108B5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4653B82-9AD5-4F72-B472-335ABD108B5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4653B82-9AD5-4F72-B472-335ABD108B5E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F4653B82-9AD5-4F72-B472-335ABD108B5E}.Debug|x64.Build.0 = Debug|Any CPU
+		{F4653B82-9AD5-4F72-B472-335ABD108B5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4653B82-9AD5-4F72-B472-335ABD108B5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4653B82-9AD5-4F72-B472-335ABD108B5E}.Release|x64.ActiveCfg = Release|Any CPU
+		{F4653B82-9AD5-4F72-B472-335ABD108B5E}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
