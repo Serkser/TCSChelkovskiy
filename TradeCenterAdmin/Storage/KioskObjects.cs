@@ -127,8 +127,7 @@ namespace TradeCenterAdmin.Storage
                     Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, "AllImages"));
                 }
                 fl.Image = newfilepath;
-            }
-          
+            }      
         }
 
 
