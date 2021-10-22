@@ -217,7 +217,8 @@
             </StackPanel>
             <TextBlock x:Name="hints" Text="Подсказки" TextAlignment="Center" TextWrapping="Wrap" Margin="264.2,560.6,264.2,42.8" Grid.Row="1" Grid.Column="1"/>
             <StackPanel Width="330" Height="640" Margin="10,45,719.2,15.8" Grid.RowSpan="2" Grid.ColumnSpan="2">
-                <Expander x:Name="objectsExpander" IsExpanded="True" Collapsed="objectsExpanderCollapsed" Expanded="objectsExpanderExpanded"
+                <Expander x:Name="objectsExpander" 
+                          IsExpanded="True" Collapsed="objectsExpanderCollapsed" Expanded="objectsExpanderExpanded"
                   Header="Списки доступных объектов"  Height="409" Width="328"  HorizontalAlignment="Left" VerticalAlignment="Top" >
                     <Grid Background="#FFE5E5E5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,-11.6,0" Width="328" Height="389">
                         <TabControl x:Name="objectsTabControl" SelectionChanged="objectsTabControlSwitched" 
@@ -548,7 +549,7 @@
             </StackPanel>
 
 
-         
+
 
             <TextBlock Height="23" 
                        TextAlignment="Left"

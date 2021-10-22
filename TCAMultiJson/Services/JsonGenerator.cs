@@ -3,11 +3,13 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace TCAMultiJson.Services
 {
@@ -15,27 +17,48 @@ namespace TCAMultiJson.Services
     {
         public ObservableCollection<string> InputJsonFilepaths { get; set; } = new ObservableCollection<string>();
         public string ResultJsonFilepath { get; set; }
+        public bool OverrideAssignedShops { get; set; }
+        public bool OverrideAreaPositions { get; set; }
 
 
         private JsonSerializer serializer = new JsonSerializer();
         private ObservableCollection<Floor> ResultFloors = new ObservableCollection<Floor>();
-        private List<int> HandledKioskIDs = new List<int>();
+        private ObservableCollection<Floor> firstJson = new ObservableCollection<Floor>();
         public void GenerateJSON()
         {
-            int counter = 0;
-            foreach (var path in InputJsonFilepaths)
+            for (int i=0;i<InputJsonFilepaths.Count;i++)
             {
-                counter++;
-                var currentFloors = LoadFloorsFromJSON(path);
-
-                if (counter == 1)
+              
+                if (i == 0)
                 {
-                    ResultFloors = currentFloors;
-                    continue;
+                    ResultFloors = LoadFloorsFromJSON(InputJsonFilepaths[0]);
                 }
-                UnionFloorObjects(currentFloors);
-            }
+                else
+                {
+                    ResultFloors = LoadFloorsFromJSON(Path.Combine(Environment.CurrentDirectory, "intermediate", "i.json"));
+                }
+                if (i+1 == InputJsonFilepaths.Count) { break; }
+                var currentFloors = LoadFloorsFromJSON(InputJsonFilepaths[i+1]);
 
+                UnionFloorObjects(currentFloors);
+                if (OverrideAssignedShops)
+                {
+                    Debug.WriteLine("Замена магазинов");
+                    OverrideAssignedAreaShops(currentFloors);
+                }
+                if (OverrideAreaPositions)
+                {
+                    Debug.WriteLine("Замена точек арены");
+                    OverrideAreaPointsPositions(currentFloors);
+                }
+
+                //Промежуточный результат
+                if (!Directory.Exists("intermediate"))
+                {
+                    Directory.CreateDirectory("intermediate");
+                }
+                SaveGeneratedJSON(Path.Combine(Environment.CurrentDirectory, "intermediate", "i.json"));
+            }
             SaveGeneratedJSON();
         }
 
@@ -62,12 +85,22 @@ namespace TCAMultiJson.Services
                 {
                     var inputArea = inputFloors[f].Areas[a];
                     if (inputArea == null) { continue; }
+                    if (inputArea.Points.Count == 0) { continue; }
 
-                    var resultFloorArea = ResultFloors[f].Areas.Where(o => o.Id == inputArea.Id).FirstOrDefault();
-                    if (resultFloorArea == null)
-                    {
-                        ResultFloors[f].Areas.Add(inputArea);
-                    }
+
+                    //Если по 1-й точке нет области, ищем область по id. если не находим на карте, то добавляем такую область
+
+                    var resultFloorArea = ResultFloors[f].Areas.Where(p=>p.Points.Count>0).Where(o => (int)o.Points[0].X == (int)inputArea.Points[0].X
+                        && (int)o.Points[0].Y == (int)inputArea.Points[0].Y).FirstOrDefault();
+                        if (resultFloorArea == null)
+                        {
+                            resultFloorArea = ResultFloors[f].Areas.Where(o => o.Id == inputArea.Id).FirstOrDefault();
+                            if (resultFloorArea == null)
+                            {
+                                ResultFloors[f].Areas.Add(inputArea);
+                            }
+                        }
+                 
                 }
             }
             //Мержим пути
@@ -109,11 +142,64 @@ namespace TCAMultiJson.Services
                     }
                 }
             }
+
+            
+        }
+        private void OverrideAssignedAreaShops(ObservableCollection<Floor> inputFloors)
+        {
+            for (int f = 0; f < inputFloors.Count; f++)
+            {
+                for (int a = 0; a < inputFloors[f].Areas.Count; a++)
+                {
+                    var inputArea = inputFloors[f].Areas[a];
+                    var resultArea = ResultFloors[f].Areas.Where(o => o.Points[0].X == inputArea.Points[0].X &&
+                     o.Points[0].Y == inputArea.Points[0].Y).FirstOrDefault();
+                    var resultAreaIndex = ResultFloors[f].Areas.IndexOf(resultArea);
+                    if (resultArea != null)
+                    {
+                        if (inputArea.EditDate > resultArea.EditDate)
+                        {
+                            Debug.WriteLine("Замена магазина арены "+ inputArea.Name);
+                            ResultFloors[f].Areas[resultAreaIndex] = inputArea;
+                    
+                        }
+                    }                  
+                }
+            }
+        }
+        private void OverrideAreaPointsPositions(ObservableCollection<Floor> inputFloors)
+        {
+            for (int f = 0; f < inputFloors.Count; f++)
+            {
+                for (int a = 0; a < inputFloors[f].Areas.Count; a++)
+                {
+                    var inputArea = inputFloors[f].Areas[a];
+                    if (inputArea == null) { continue; }
+                    if (inputArea.Points.Count ==0) { continue; }
+
+                    var resultFloorArea = ResultFloors[f].Areas.Where(o=>o.Points.Count >0).Where(o => o.Points[0].X == inputArea.Points[0].X &&
+                     o.Points[0].Y == inputArea.Points[0].Y).FirstOrDefault();
+                    int resultFloorAreaIndex = ResultFloors[f].Areas.IndexOf(resultFloorArea);
+                    if (resultFloorArea != null)
+                    {
+                        if (inputArea.EditDate > resultFloorArea.EditDate)
+                        {
+                            Debug.WriteLine("Замена точек арены " + inputArea.Name);
+                            ResultFloors[f].Areas[resultFloorAreaIndex] = inputFloors[f].Areas[a];
+
+                        }
+                    }
+                }
+            }
         }
 
-        private void SaveGeneratedJSON()
+        private void SaveGeneratedJSON(string filepath= null)
         {
             string resultFileName = Path.Combine(ResultJsonFilepath, "settings.json");
+            if (!string.IsNullOrEmpty(filepath))
+            {
+                resultFileName = filepath;
+            }
 
             if (File.Exists(resultFileName)) { File.Delete(resultFileName); }
             using (StreamWriter sw = new StreamWriter(resultFileName))

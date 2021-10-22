@@ -94,6 +94,16 @@ namespace NavigationMap.Models
                 OnPropertyChanged();
             }
         }
+        private DateTime _editDate;
+        public DateTime EditDate
+        {
+            get =>  _editDate;
+            set
+            {
+                _editDate = value;
+                OnPropertyChanged();
+            }
+        }
         public Point MiddlePoint => GeometryHelper.GetMiddlePoint(PointCollection);
 
         private Point _position;

@@ -40,6 +40,26 @@ namespace TCAMultiJson.ViewModels
                 OnPropertyChanged("InputJsonFilepaths");
             }
         }
+        private bool overrideAssignedShop;
+        public bool OverrideAssignedShop
+        {
+            get { return overrideAssignedShop; }
+            set
+            {
+                overrideAssignedShop = value;
+                OnPropertyChanged("OverrideAssignedShop");
+            }
+        }
+        private bool overrideAreaPositions;
+        public bool OverrideAreaPositions
+        {
+            get { return overrideAreaPositions; }
+            set
+            {
+                overrideAreaPositions = value;
+                OnPropertyChanged("OverrideAreaPositions");
+            }
+        }
 
         private RelayCommand addJsonFiles;
         public RelayCommand AddJsonFiles
@@ -54,9 +74,9 @@ namespace TCAMultiJson.ViewModels
                         ofd.Filter = "json files (*.json)|*.json";
                         if (ofd.ShowDialog() == true)
                         {
-                            foreach(var path in ofd.FileNames)
+                           for (int i=0;i<ofd.FileNames.Length;i++)
                             {
-                                InputJsonFilepaths.Add(path);
+                                InputJsonFilepaths.Add(ofd.FileNames[i]);
                             }
                         }                       
                     }));
@@ -87,6 +107,22 @@ namespace TCAMultiJson.ViewModels
                 return generateJsonFile ??
                     (generateJsonFile = new RelayCommand(obj =>
                     {
+                        if (string.IsNullOrEmpty(ResultJsonFilepath))
+                        {
+                            MessageBox.Show("Укажите путь выходного файла"); return;
+                        }
+                        if (InputJsonFilepaths.Count < 2)
+                        {
+                            MessageBox.Show("Добавьте не менее 2-х файлов для объединения"); return;
+                        }
+
+                        Services.JsonGenerator generator = new Services.JsonGenerator();
+                        generator.InputJsonFilepaths = InputJsonFilepaths;
+                        generator.ResultJsonFilepath = ResultJsonFilepath;
+                        generator.OverrideAssignedShops = OverrideAssignedShop;
+                        generator.OverrideAreaPositions = OverrideAreaPositions;
+                        generator.GenerateJSON();
+                        MessageBox.Show("Файл успешно сгенерирован");
 
                     }));
             }

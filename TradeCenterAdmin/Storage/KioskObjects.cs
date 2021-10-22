@@ -117,8 +117,21 @@ namespace TradeCenterAdmin.Storage
         {
             IMapObjectLoader mapObjectLoader = new LocalJsonMapObjectsLoader();
             mapObjectLoader.LoadObjects(floors);
+
+            foreach (var fl in Floors)
+            {
+                string filename = Path.GetFileName(fl.Image);
+                string newfilepath = Path.Combine(Environment.CurrentDirectory, "AllImages", filename);
+                if (!Directory.Exists(Path.Combine(Environment.CurrentDirectory, "AllImages")))
+                {
+                    Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, "AllImages"));
+                }
+                fl.Image = newfilepath;
+            }
           
         }
+
+
 
         private static void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {

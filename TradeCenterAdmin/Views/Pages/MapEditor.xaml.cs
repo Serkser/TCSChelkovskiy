@@ -188,6 +188,7 @@ namespace TradeCenterAdmin.Views.Pages
                     ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().AreaPoint.X = kiosk.Margin.Left;
                     ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().AreaPoint.Y = kiosk.Margin.Top;
                     var fl = ((MapEditorViewModel)this.DataContext).SelectedFloor;
+                    ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().EditDate = DateTime.Now;
                     LocationChangedStationPointToChangesPool(oldStation, station,$"Переместить киоск на шаг назад на {fl.Name}е",
                         $"Переместить киоск на шаг вперед на {fl.Name}е");
                 }
@@ -278,6 +279,7 @@ namespace TradeCenterAdmin.Views.Pages
                     ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().AreaPoint.X = entry.Margin.Left;
                     ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().AreaPoint.Y = entry.Margin.Top;
                     var fl = ((MapEditorViewModel)this.DataContext).SelectedFloor;
+                    ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().EditDate = DateTime.Now;
                     LocationChangedStationPointToChangesPool(oldStation, station, $"Переместить вход на шаг назад на {fl.Name}е",
                         $"Переместить вход на шаг вперед на {fl.Name}е");
                 }
@@ -381,6 +383,7 @@ namespace TradeCenterAdmin.Views.Pages
                     ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().AreaPoint.X = entry.Margin.Left;
                     ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().AreaPoint.Y = entry.Margin.Top;
                     var fl = ((MapEditorViewModel)this.DataContext).SelectedFloor;
+                    ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().EditDate = DateTime.Now;
                     LocationChangedStationPointToChangesPool(oldStation, station, $"Переместить лестницу на шаг назад на {fl.Name}е",
                         $"Переместить лестницу на шаг вперед на {fl.Name}е");
                 }
@@ -486,6 +489,7 @@ namespace TradeCenterAdmin.Views.Pages
                     ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().AreaPoint.X = entry.Margin.Left;
                     ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().AreaPoint.Y = entry.Margin.Top;
                     var fl = ((MapEditorViewModel)this.DataContext).SelectedFloor;
+                    ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().EditDate = DateTime.Now;
                     LocationChangedStationPointToChangesPool(oldStation, station, $"Переместить лифт на шаг назад на {fl.Name}е",
                         $"Переместить лифт на шаг вперед на {fl.Name}е");
                 }
@@ -591,6 +595,7 @@ namespace TradeCenterAdmin.Views.Pages
                     ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().AreaPoint.X = entry.Margin.Left;
                     ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().AreaPoint.Y = entry.Margin.Top;
                     var fl = ((MapEditorViewModel)this.DataContext).SelectedFloor;
+                    ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().EditDate = DateTime.Now;
                     LocationChangedStationPointToChangesPool(oldStation, station, $"Переместить эскалатор на шаг назад на {fl.Name}е",
                         $"Переместить эскалатор на шаг вперед на {fl.Name}е");
                 }
@@ -680,6 +685,7 @@ namespace TradeCenterAdmin.Views.Pages
                     ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().AreaPoint.X = entry.Margin.Left;
                     ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().AreaPoint.Y = entry.Margin.Top;
                     var fl = ((MapEditorViewModel)this.DataContext).SelectedFloor;
+                    ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().EditDate = DateTime.Now;
                     LocationChangedStationPointToChangesPool(oldStation, station, $"Переместить туалет на шаг назад на {fl.Name}е",
                         $"Переместить туалет на шаг вперед на {fl.Name}е");
                 }
@@ -765,6 +771,7 @@ namespace TradeCenterAdmin.Views.Pages
                     var oldStation = (Station)station.Clone();
                     ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().AreaPoint.X = entry.Margin.Left;
                     ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().AreaPoint.Y = entry.Margin.Top;
+                    ((MapEditorViewModel)this.DataContext).SelectedFloor.Stations.Where(o => o.Id == station.Id).FirstOrDefault().EditDate = DateTime.Now;
                     var fl = ((MapEditorViewModel)this.DataContext).SelectedFloor;
                     LocationChangedStationPointToChangesPool(oldStation, station, $"Переместить банкомат на шаг назад на {fl.Name}е",
                         $"Переместить банкомат на шаг вперед на {fl.Name}е");
@@ -810,21 +817,7 @@ namespace TradeCenterAdmin.Views.Pages
                     IsFilled = false,
                     IsClosed = false
                 };
-                figure.StartPoint = new Point(way.WayPoints[0].X, way.WayPoints[0].Y);
-                //if (way.WayPoints[0].FloorId == floorID)
-                //{
-                  
-                //}
-                //else
-                //{
-                //    //Получаем последнюю точку предыдущего этажа через 1-ю точку следующего этажа
-                //    //var firstPointOfNextFloot = way.WayPoints.Where(o => o.FloorId == floorID).FirstOrDefault();
-                //    //int firstPointOfNextFlootIndex = way.WayPoints.IndexOf(firstPointOfNextFloot);
-
-                //    //figure.StartPoint = new Point(way.WayPoints[firstPointOfNextFlootIndex-1].X, way.WayPoints[firstPointOfNextFlootIndex-1].Y);
-                //}
-              
-
+                figure.StartPoint = new Point(way.WayPoints[0].X, way.WayPoints[0].Y);           
                 geometry.Figures.Add(figure);
 
 
@@ -1123,12 +1116,14 @@ namespace TradeCenterAdmin.Views.Pages
                     area.Id = -1;
                     area.Name = "";
                     area.Description = "";
+                    area.EditDate = DateTime.Now;
                     perimeter.ToolTip = $"Область магазина {area.Name}";
                     AreaShopChangedToChangesPool(oldArea, area, $"Вернуть назначение области магазина на {oldArea.Name}",
                         $"Удалить назначение области магазина");
                     //CreateText();,
                     perimeter.ContextMenu.Items.Remove(removeAssignedShop);
                     ShowAreaInfo(area);
+                
 
                 };
                 if (!string.IsNullOrEmpty(area.Name))
@@ -1156,6 +1151,7 @@ namespace TradeCenterAdmin.Views.Pages
                         area.Id = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.ID;
                         area.Name = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.Name;
                         area.Description = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedShop.Description;
+                        area.EditDate = DateTime.Now;
                         perimeter.ToolTip = $"Область магазина {area.Name}";
                         AreaShopChangedToChangesPool(oldArea, area, $"Сменить назначение области с {oldArea.Name} на {area.Name}",
                             $"Сменить назначение области с {area.Name} на {oldArea.Name}");
@@ -1164,7 +1160,7 @@ namespace TradeCenterAdmin.Views.Pages
                         {
                             perimeter.ContextMenu.Items.Add(removeAssignedShop);
                         }
-
+                        
                         //CreateText();,
                     }
                     ShowAreaInfo(area);
@@ -1256,10 +1252,12 @@ namespace TradeCenterAdmin.Views.Pages
                         canmove = false;
                         int number = Convert.ToInt32(entry.Uid.Replace($"{area.Id}button", "").Trim());
 
-
+                   
                         var oldPoint = (AreaPoint)area.Points[number - 1].Clone();
 
                         Control c = o1 as Control;
+
+                        area.EditDate = DateTime.Now;
                         area.Points[number - 1] = new AreaPoint
                         {
                             X = c.Margin.Left,
@@ -1271,10 +1269,11 @@ namespace TradeCenterAdmin.Views.Pages
                             DrawAreaPerimeter(area); 
                         }
 
-                     
+
                         //area.Points.Where(o => o.Id == area.Points[number - 1].Id).FirstOrDefault().X = entry.Margin.Left;
                         //area.Points.Where(o => o.Id == area.Points[number - 1].Id).FirstOrDefault().Y = entry.Margin.Top;
-
+                
+                       // MessageBox.Show(area.EditDate.ToString());
                         var fl = ((MapEditorViewModel)this.DataContext).SelectedFloor;
                         LocationChangedAreaPointToChangesPool(area, number - 1,oldPoint, area.Points[number - 1],
                             $"Переместить точку области на шаг назад на {fl.Name}е",
@@ -1313,6 +1312,7 @@ namespace TradeCenterAdmin.Views.Pages
                                 var fl = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor;
                                 RemovingAreaPointToChangesPool(area, areaPoint, $"Вернуть точку области на {fl.Name}е", 
                                     $"Удалить точку области на {fl.Name}е");
+                                area.EditDate = DateTime.Now;
                                 area.Points.Remove(areaPoint);
 
                             }
@@ -1352,11 +1352,12 @@ namespace TradeCenterAdmin.Views.Pages
                                 return;
                             }
                         }
-                       
+
                         var station = new NavigationMap.Models.Station
                         {
                             Id = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedTerminal.ID,
                             Name = "Киоск " + randomId + " : " + ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Name,
+                            EditDate = DateTime.Now,
                             AreaPoint = new NavigationMap.Models.AreaPoint
                             {
                                 PointType = NavigationMap.Enums.PointTypeEnum.Station,
@@ -1386,6 +1387,7 @@ namespace TradeCenterAdmin.Views.Pages
                     var entry = new NavigationMap.Models.Station
                     {
                         Id = randomId,
+                        EditDate = DateTime.Now,
                         Name = "Вход " + randomId + " : " + ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Name,
                         AreaPoint = new NavigationMap.Models.AreaPoint
                         {
@@ -1419,6 +1421,7 @@ namespace TradeCenterAdmin.Views.Pages
                         var stairs = new NavigationMap.Models.Station
                         {
                             Id = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedStairs.ID,
+                            EditDate = DateTime.Now,
                             Name = "Лестница " + randomId + " : " + ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Name,
                             AreaPoint = new NavigationMap.Models.AreaPoint
                             {
@@ -1458,6 +1461,7 @@ namespace TradeCenterAdmin.Views.Pages
                         var stairs = new NavigationMap.Models.Station
                         {
                             Id = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedEscolator.ID,
+                            EditDate = DateTime.Now,
                             Name = "Эскалатор " + randomId + " : " + ((ViewModels.MapEditorViewModel)this.DataContext).SelectedEscolator.Name,
                             AreaPoint = new NavigationMap.Models.AreaPoint
                             {
@@ -1497,6 +1501,7 @@ namespace TradeCenterAdmin.Views.Pages
                         var stairs = new NavigationMap.Models.Station
                         {
                             Id = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedLift.ID,
+                            EditDate = DateTime.Now,
                             Name = "Лифт " + randomId + " : " + ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Name,
                             AreaPoint = new NavigationMap.Models.AreaPoint
                             {
@@ -1536,6 +1541,7 @@ namespace TradeCenterAdmin.Views.Pages
                         var stairs = new NavigationMap.Models.Station
                         {
                             Id = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedWC.ID,
+                            EditDate = DateTime.Now,
                             Name = "Туалет " + randomId + " : " + ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Name,
                             AreaPoint = new NavigationMap.Models.AreaPoint
                             {
@@ -1576,6 +1582,7 @@ namespace TradeCenterAdmin.Views.Pages
                         {
                             Id = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedATM.ID,
                             Name = "Банкомат " + randomId + " : " + ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor.Name,
+                            EditDate = DateTime.Now,
                             AreaPoint = new NavigationMap.Models.AreaPoint
                             {
                                 PointType = NavigationMap.Enums.PointTypeEnum.Station,
@@ -1624,6 +1631,7 @@ namespace TradeCenterAdmin.Views.Pages
                         
                     };
                     currentArea.Points.Add(point);
+                    currentArea.EditDate = DateTime.Now;
                     var _fl = ((ViewModels.MapEditorViewModel)this.DataContext).SelectedFloor;
                     AddAreaPointToChangesPool(currentArea, point, $"Удалить точку области на {_fl.Name}е", $"Вернуть точку области на {_fl.Name}е");
                     DrawAreaPerimeter(currentArea);
@@ -1669,6 +1677,7 @@ namespace TradeCenterAdmin.Views.Pages
                             if (currentArea.Ways.LastOrDefault().WayPoints.Count == 0)
                             {                               
                                 currentWay.WayPoints.Add(wayPoint);
+                                currentArea.EditDate = DateTime.Now;
                             }
                             else
                             {
@@ -1681,9 +1690,11 @@ namespace TradeCenterAdmin.Views.Pages
                                     currentArea.Ways.Add(newWay);
                                     currentWay = currentArea.Ways.LastOrDefault();
                                     currentArea.Ways.LastOrDefault().WayPoints.Add(wayPoint);
+                                    currentArea.EditDate = DateTime.Now;
                                 }
                                 else
                                 {
+                                    currentArea.EditDate = DateTime.Now;
                                     currentArea.Ways.LastOrDefault().WayPoints.Add(wayPoint);
                                 }
                             }

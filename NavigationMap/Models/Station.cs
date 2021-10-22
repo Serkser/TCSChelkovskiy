@@ -6,8 +6,17 @@ namespace NavigationMap.Models
 {
     public class Station : ObservableObject,ICloneable
     {
+        private DateTime _editDate;
+        public DateTime EditDate
+        {
+            get => _editDate;
+            set
+            {
+                _editDate = value;
+                OnPropertyChanged();
+            }
+        }
         private AreaPoint _areaPoint;
-
         public AreaPoint AreaPoint
         {
             get => _areaPoint;

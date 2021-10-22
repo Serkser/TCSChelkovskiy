@@ -287,6 +287,7 @@ namespace TradeCenterAdmin.ViewModels
 
         public void HighlightArea(Area selectedArea)
         {
+            if (selectedArea == null) { return; }
             //Убираем подсветку с других областей
             for (int i = 0; i < This.canvasMap.Children.Count; i++)
             {

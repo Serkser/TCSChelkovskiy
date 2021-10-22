@@ -10,6 +10,16 @@ namespace NavigationMap.Models
 {
     public class Way : ObservableObject, IMapElement, IDisposable
     {
+        private DateTime _editDate;
+        public DateTime EditDate
+        {
+            get => _editDate;
+            set
+            {
+                _editDate = value;
+                OnPropertyChanged();
+            }
+        }
         private bool _disposed;
 
         private Point _position;
