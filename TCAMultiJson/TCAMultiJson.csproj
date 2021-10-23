@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NavigationMap\NavigationMap.csproj" />
+    <ProjectReference Include="..\TCSchelkovskiyAPI\TCSchelkovskiyAPI.csproj" />
   </ItemGroup>
 
 </Project>

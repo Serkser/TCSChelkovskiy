@@ -144,7 +144,19 @@ namespace TCAMultiJson.ViewModels
                     }));
             }
         }
-
+        private RelayCommand openUploadToServerWindow;
+        public RelayCommand OpenUploadToServerWindow
+        {
+            get
+            {
+                return openUploadToServerWindow ??
+                    (openUploadToServerWindow = new RelayCommand(obj =>
+                    {
+                        Views.Windows.UploadToServer f = new Views.Windows.UploadToServer();
+                        f.Show();
+                    }));
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {

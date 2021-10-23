@@ -117,13 +117,44 @@ namespace TCAMultiJson.Services
                         var resultFloorArea = ResultFloors[f].Areas.Where(o => o.Id == inputFloors[f].Areas[a].Id).FirstOrDefault();
                         if (resultFloorArea == null) { continue; }
 
+
+                        int waysCount = inputFloors[f].Areas[a].Ways.Where(o => o.Id == inputFloors[f].Areas[a].Ways[w].Id).Count();
                         var resultFloorAreaWay = resultFloorArea.Ways.Where(o => o.Id == inputFloors[f].Areas[a].Ways[w].Id).FirstOrDefault();
+
                         if (resultFloorAreaWay == null)
                         {
-                            ResultFloors[f].Areas.Where(o => o.Id == resultFloorArea.Id).FirstOrDefault().
-                                Ways.Add(inputWay);
+                            foreach (var way in inputFloors[f].Areas[a].Ways.Where(o => o.Id == inputFloors[f].Areas[a].Ways[w].Id).ToList())
+                            {
+                                ResultFloors[f].Areas.Where(o => o.Id == resultFloorArea.Id).FirstOrDefault().
+                              Ways.Add(way);
+                            }
+                       
+                        }
+                        else
+                        {
+
                         }
                     }
+
+                    //var inputArea = inputFloors[f].Areas[a];
+                    //if (inputArea == null) { continue; }
+                    //if (inputArea.Points.Count == 0) { continue; }
+
+                    //var resultFloorArea = ResultFloors[f].Areas.Where(o => o.Points.Count > 0).Where(o => o.Points[0].X == inputArea.Points[0].X &&
+                    //    o.Points[0].Y == inputArea.Points[0].Y).FirstOrDefault();
+                    //int resultFloorAreaIndex = ResultFloors[f].Areas.IndexOf(resultFloorArea);
+                    //if (resultFloorArea != null)
+                    //{
+                    //    if (inputArea.EditDate > resultFloorArea.EditDate)
+                    //    {
+                    //        ResultFloors[f].Areas[resultFloorAreaIndex].Ways.Clear();
+                    //        foreach (var way in inputFloors[f].Areas[a].Ways)
+                    //        {
+                    //            ResultFloors[f].Areas[resultFloorAreaIndex].Ways.Add(way);
+                    //        }
+
+                    //    }
+                    //}
                 }
             }
 
@@ -142,7 +173,23 @@ namespace TCAMultiJson.Services
                     }
                 }
             }
-
+            
+            ////Присваиваем этаж областям и путям
+            //for (int f = 0; f < ResultFloors.Count; f++)
+            //{
+            //    for (int a = 0; a < ResultFloors[f].Areas.Count; a++)
+            //    {
+            //        ResultFloors[f].Areas[a].FloorId = ResultFloors[f].Id;
+            //        for (int w=0;w < ResultFloors[f].Areas[a].Ways.Count; w++)
+            //        {
+            //            ResultFloors[f].Areas[a].Ways[w].FloorId = ResultFloors[f].Id;
+            //        }
+            //        for (int p = 0; p< ResultFloors[f].Areas[a].Points.Count; p++)
+            //        {
+            //            ResultFloors[f].Areas[a].Points[p].FloorId = ResultFloors[f].Id;
+            //        }
+            //    }
+            //}
             
         }
         private void OverrideAssignedAreaShops(ObservableCollection<Floor> inputFloors)

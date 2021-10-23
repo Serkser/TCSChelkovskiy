@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         
      
-        Title="TCAMultiJson" Height="437" Width="504" 
+        Title="TCAMultiJson" Height="463" Width="504" 
         ResizeMode="NoResize">
     <Grid>
         <Button Command="{Binding AddJsonFiles}"
@@ -46,6 +46,8 @@
             Content="Переопределить присвоенные магазины, если были изменены" HorizontalAlignment="Left" Margin="31,354,0,0" VerticalAlignment="Top"/>
         <CheckBox IsChecked="{Binding OverrideAreaPositions, Mode=TwoWay}"
             Content="Переопределить местоположения и точки области, если были изменены" HorizontalAlignment="Left" Margin="31,374,0,0" VerticalAlignment="Top"/>
+        <Button Command="{Binding OpenUploadToServerWindow}"
+            Content="Залить на сервак" HorizontalAlignment="Left" Margin="33,394,0,0" VerticalAlignment="Top" Height="25" Width="453"/>
 
     </Grid>
 </Window>
