@@ -59,7 +59,7 @@ namespace TradeCenterAdmin.Views.Pages
             }
             kiosk.Width = 100;
             kiosk.Height = 100;
-            kiosk.Uid = station.Id.ToString();
+            kiosk.Uid = station.Id.ToString()+"kioskuid";
 
             BitmapImage icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/StationIcon.png"));
             kiosk.Background = new ImageBrush(icon);
@@ -312,7 +312,7 @@ namespace TradeCenterAdmin.Views.Pages
             }
             entry.Width = 50;
             entry.Height = 50;
-            entry.Uid = station.Id.ToString();
+            entry.Uid = station.Id.ToString() + "stairsuid";
 
 
             BitmapImage icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/StairsIcon.png"));
@@ -418,7 +418,7 @@ namespace TradeCenterAdmin.Views.Pages
             }
             entry.Width = 100;
             entry.Height = 100;
-            entry.Uid = station.Id.ToString();
+            entry.Uid = station.Id.ToString() + "liftuid";
 
 
             BitmapImage icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/ElevatorIcon.png"));
@@ -524,7 +524,7 @@ namespace TradeCenterAdmin.Views.Pages
             }
             entry.Width = 100;
             entry.Height = 100;
-            entry.Uid = station.Id.ToString();
+            entry.Uid = station.Id.ToString() + "escalatoruid";
 
 
             BitmapImage icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/EscalatorIcon.png"));
@@ -630,7 +630,7 @@ namespace TradeCenterAdmin.Views.Pages
             }
             entry.Width = 100;
             entry.Height = 100;
-            entry.Uid = station.Id.ToString();
+            entry.Uid = station.Id.ToString() + "wcuid";
 
             BitmapImage icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/WCIcon.png"));
             entry.Background = new ImageBrush(icon);
@@ -718,7 +718,7 @@ namespace TradeCenterAdmin.Views.Pages
             }
             entry.Width = 100;
             entry.Height = 100;
-            entry.Uid = station.Id.ToString();
+            entry.Uid = station.Id.ToString() + "atmuid";
 
             BitmapImage icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/ATMIcon.png"));
             entry.Background = new ImageBrush(icon);
@@ -2092,6 +2092,16 @@ namespace TradeCenterAdmin.Views.Pages
         {
             var selected = ((MapEditorViewModel)this.DataContext).CurrentExistingTerminal;
             ((MapEditorViewModel)this.DataContext).RemoveTerminalModelPoint(selected);
+
+        }
+        private void kioskTabDeleteExceptIt(object sender, RoutedEventArgs e)
+        {
+            var selected = ((MapEditorViewModel)this.DataContext).CurrentExistingTerminal;
+            var others = KioskObjects.Terminals.Where(o => o.ID != selected.ID).ToList();
+            foreach (var kiosk in others)
+            {
+                ((MapEditorViewModel)this.DataContext).RemoveTerminalModelPoint(kiosk);
+            }
         }
 
         private void wcTabDelete(object sender, RoutedEventArgs e)
@@ -2610,6 +2620,32 @@ namespace TradeCenterAdmin.Views.Pages
         #endregion
 
 
+        public string GetTerminalMapObjectUIDPostfix(TerminalModel model)
+        {
+            string postfix = "";
+            switch (model.Type)
+            {
+                case MapTerminalPointType.Termanals:
+                    postfix = "kioskuid";
+                    break;
+                case MapTerminalPointType.ATMCash:
+                    postfix = "atmuid";
+                    break;
+                case MapTerminalPointType.Escolator:
+                    postfix = "escalatoruid";
+                    break;
+                case MapTerminalPointType.Stairs:
+                    postfix = "stairsuid";
+                    break;
+                case MapTerminalPointType.WC:
+                    postfix = "wcuid";
+                    break;
+                case MapTerminalPointType.Lift:
+                    postfix = "liftuid";
+                    break;
+            }
+            return postfix;
+        }
         private void keydown(object sender, KeyEventArgs e)
         {
             if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.Z)
@@ -2642,6 +2678,6 @@ namespace TradeCenterAdmin.Views.Pages
              
         }
 
-       
+      
     }
 }

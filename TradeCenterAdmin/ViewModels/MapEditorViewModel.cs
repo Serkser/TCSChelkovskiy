@@ -173,6 +173,10 @@ namespace TradeCenterAdmin.ViewModels
                     }                 
                 }
             }
+
+           // MessageBox.Show("canvasuid  " + This.canvasMap.Uid);
+
+          
         }
         //Загрузка объектов, отрисовка путей только выбранной станции
         public void LoadFloorObjects(TerminalModel selectedTerminal)
@@ -894,27 +898,21 @@ namespace TradeCenterAdmin.ViewModels
                (Storage.KioskObjects.WCs.Where(o => o.Floor.Name == floor.Name).ToList()); 
             }
 
-
             if (Floors != null)
             {
                 foreach (var wc in sort)
                 {
                     bool isUsed = false;
-                    foreach (var fl in Floors)
-                    {                   
-                        foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Туалет")).ToList())
+                    foreach (var st in Floors.SelectMany(o => o.Stations).ToList())
+                    {
+                        wc.StatusOnMap = "";
+                        if (st.Id == wc.ID)
                         {
-                            wc.StatusOnMap = "";
-                            if (obj.Id == wc.ID)
-                            {
-                                wc.StatusOnMap = "Установлен";
-                                isUsed = true; break;
-                            }
+                            isUsed = true;
                         }
-                      
                     }
-                    if (isUsed) { UsedWCs.Add(wc); }
-                    else { FreeWCs.Add(wc); }
+                    if (isUsed) { UsedWCs.Add(wc); wc.StatusOnMap = "Установлен"; }
+                    else { FreeWCs.Add(wc); wc.StatusOnMap = ""; }
                 }
             }
         }
@@ -936,21 +934,16 @@ namespace TradeCenterAdmin.ViewModels
                 foreach (var atm in sort)
                 {
                     bool isUsed = false;
-                    foreach (var fl in Floors)
+                    foreach (var st in Floors.SelectMany(o => o.Stations).ToList())
                     {
-                        foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Банкомат")).ToList())
+                        atm.StatusOnMap = "";
+                        if (st.Id == atm.ID)
                         {
-                            atm.StatusOnMap = "";
-                            if (obj.Id == atm.ID)
-                            {
-                                atm.StatusOnMap = "Установлен";
-                                isUsed = true; break;
-                            }
+                            isUsed = true;
                         }
-
                     }
-                    if (isUsed) { UsedATMs.Add(atm); }
-                    else { FreeATMs.Add(atm); }
+                    if (isUsed) { UsedATMs.Add(atm); atm.StatusOnMap = "Установлен"; }
+                    else { FreeATMs.Add(atm); atm.StatusOnMap = ""; }
                 }
             }
         }
@@ -972,21 +965,16 @@ namespace TradeCenterAdmin.ViewModels
                 foreach (var stairs in sort)
                 {
                     bool isUsed = false;
-                    foreach (var fl in Floors)
+                    foreach (var st in Floors.SelectMany(o => o.Stations).ToList())
                     {
-                        foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Лестница")).ToList())
+                        stairs.StatusOnMap = "";
+                        if (st.Id == stairs.ID)
                         {
-                            stairs.StatusOnMap = "";
-                            if (obj.Id == stairs.ID)
-                            {
-                                stairs.StatusOnMap = "Установлена";
-                                isUsed = true; break;
-                            }
+                            isUsed = true;
                         }
-
                     }
-                    if (isUsed) { UsedStairs.Add(stairs); }
-                    else { FreeStairs.Add(stairs); }
+                    if (isUsed) { UsedStairs.Add(stairs); stairs.StatusOnMap = "Установлен"; }
+                    else { FreeStairs.Add(stairs); stairs.StatusOnMap = ""; }
                 }
             }
         }
@@ -1010,21 +998,16 @@ namespace TradeCenterAdmin.ViewModels
                 foreach (var lift in sort)
                 {
                     bool isUsed = false;
-                    foreach (var fl in Floors)
+                    foreach (var st in Floors.SelectMany(o => o.Stations).ToList())
                     {
-                        foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Лифт")).ToList())
+                        lift.StatusOnMap = "";
+                        if (st.Id == lift.ID)
                         {
-                            lift.StatusOnMap = "";
-                            if (obj.Id == lift.ID)
-                            {
-                                lift.StatusOnMap = "Установлен";
-                                isUsed = true; break;
-                            }
+                            isUsed = true;
                         }
-
                     }
-                    if (isUsed) { UsedLifts.Add(lift); }
-                    else { FreeLifts.Add(lift); }
+                    if (isUsed) { UsedLifts.Add(lift); lift.StatusOnMap = "Установлен"; }
+                    else { FreeLifts.Add(lift); lift.StatusOnMap = ""; }
                 }
             }
         }
@@ -1046,21 +1029,16 @@ namespace TradeCenterAdmin.ViewModels
                 foreach (var kiosk in sort)
                 {
                     bool isUsed = false;
-                    foreach (var fl in Floors)
+                    foreach (var st in Floors.SelectMany(o => o.Stations).ToList())
                     {
-                        foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Киоск")).ToList())
-                        {
-                            kiosk.StatusOnMap = "";
-                            if (obj.Id == kiosk.ID)
-                            {
-                                kiosk.StatusOnMap = "Установлен";
-                                isUsed = true; break;
-                            }
+                        kiosk.StatusOnMap = "";
+                        if (st.Id == kiosk.ID)
+                        {                        
+                            isUsed = true; 
                         }
-
                     }
-                    if (isUsed) { UsedTerminals.Add(kiosk); }
-                    else { FreeTerminals.Add(kiosk); }
+                    if (isUsed) { UsedTerminals.Add(kiosk); kiosk.StatusOnMap = "Установлен"; }
+                    else { FreeTerminals.Add(kiosk); kiosk.StatusOnMap = ""; }
                 }
             }
         }
@@ -1082,21 +1060,16 @@ namespace TradeCenterAdmin.ViewModels
                 foreach (var escalator in sort)
                 {
                     bool isUsed = false;
-                    foreach (var fl in Floors)
+                    foreach (var st in Floors.SelectMany(o => o.Stations).ToList())
                     {
-                        foreach (var obj in fl.Stations.Where(o => o.Name.Contains("Эскалатор")).ToList())
+                        escalator.StatusOnMap = "";
+                        if (st.Id == escalator.ID)
                         {
-                            escalator.StatusOnMap = "";
-                            if (obj.Id == escalator.ID)
-                            {
-                                escalator.StatusOnMap = "Установлен";
-                                isUsed = true; break;
-                            }
+                            isUsed = true;
                         }
-
                     }
-                    if (isUsed) { UsedEscolators.Add(escalator); }
-                    else { FreeEscolators.Add(escalator); }
+                    if (isUsed) { UsedEscolators.Add(escalator); escalator.StatusOnMap = "Установлен"; }
+                    else { FreeEscolators.Add(escalator); escalator.StatusOnMap = ""; }
                 }
             }
         }
@@ -1617,6 +1590,10 @@ namespace TradeCenterAdmin.ViewModels
         {
             if (model != null)
             {
+                string uidpostfix = This.GetTerminalMapObjectUIDPostfix(model);
+               
+
+
                 for (int i = 0; i < Floors.Count; i++)
                 {
                     var floor = floors[i];
@@ -1630,18 +1607,17 @@ namespace TradeCenterAdmin.ViewModels
                 }
 
 
-
+                LoadFloorObjects();
                 for (int i=0; i<This.canvasMap.Children.Count;i++)
                 {
                     var uielement = This.canvasMap.Children[i];
                     if (uielement is Button)
                     {
-                        if (uielement.Uid == model.ID.ToString())
+                        if (uielement.Uid == model.ID.ToString()+ uidpostfix)
                         {
-                            BitmapImage icon = null;
-                           
-                          //  LoadFloorObjects();
-                      
+                         
+                            BitmapImage icon = null;                           
+                                   
                             switch (model.Type)
                             {
                                 case MapTerminalPointType.Termanals:                                 
@@ -1677,6 +1653,9 @@ namespace TradeCenterAdmin.ViewModels
             }
             return false;
         }
+
+
+      
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

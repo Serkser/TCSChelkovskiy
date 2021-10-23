@@ -151,19 +151,19 @@
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="10,61,0,0" TextWrapping="Wrap" Text="Курсор" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseKiosk}" Content="" HorizontalAlignment="Left" Margin="10,216,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                        <Button Command="{Binding UseKiosk}" Content="" HorizontalAlignment="Left" Margin="10,216,0,0" VerticalAlignment="Top" Width="59" Height="51" IsEnabled="False">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/StationIcon.png"/>
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="10,267,0,0" TextWrapping="Wrap" Text="Киоск" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseArea}" Content="" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                        <Button Command="{Binding UseArea}" Content="" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Width="59" Height="51" IsEnabled="False">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/AreaIcon.png"/>
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="10,130,0,0" TextWrapping="Wrap" Text="Область" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseEntry}" Content="" HorizontalAlignment="Left" Margin="83,79,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                        <Button Command="{Binding UseEntry}" Content="" HorizontalAlignment="Left" Margin="83,79,0,0" VerticalAlignment="Top" Width="59" Height="51" IsEnabled="False">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/EntranceIcon.png"/>
                             </Button.Background>
@@ -175,7 +175,7 @@
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="83,60,0,0" TextWrapping="Wrap" Text="Рука" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseStairs}" Content="" HorizontalAlignment="Left" Margin="83,149,0,0" VerticalAlignment="Top" Width="59" Height="51" Click="Button_Click">
+                        <Button Command="{Binding UseStairs}" Content="" HorizontalAlignment="Left" Margin="83,149,0,0" VerticalAlignment="Top" Width="59" Height="51" Click="Button_Click" IsEnabled="False">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/StairsIcon.png"/>
                             </Button.Background>
@@ -187,25 +187,25 @@
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="10,199,0,0" TextWrapping="Wrap" Text="Путь" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseLift}" Content="" HorizontalAlignment="Left" Margin="83,216,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                        <Button Command="{Binding UseLift}" Content="" HorizontalAlignment="Left" Margin="83,216,0,0" VerticalAlignment="Top" Width="59" Height="51" IsEnabled="False">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/ElevatorIcon.png"/>
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="83,267,0,0" TextWrapping="Wrap" Text="Лифт" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseWC}" Content="" HorizontalAlignment="Left" Margin="10,290,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                        <Button Command="{Binding UseWC}" Content="" HorizontalAlignment="Left" Margin="10,290,0,0" VerticalAlignment="Top" Width="59" Height="51" IsEnabled="False">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/WCIcon.png"/>
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="10,342,0,0" TextWrapping="Wrap" Text="Туалет" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseATM}" Content="" HorizontalAlignment="Left" Margin="83,290,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                        <Button Command="{Binding UseATM}" Content="" HorizontalAlignment="Left" Margin="83,290,0,0" VerticalAlignment="Top" Width="59" Height="51" IsEnabled="False">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/ATMIcon.png"/>
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="83,342,0,0" TextWrapping="Wrap" Text="Банкомат" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseEscalator}" Content="" HorizontalAlignment="Left" Margin="10,362,0,0" VerticalAlignment="Top" Width="59" Height="51">
+                        <Button Command="{Binding UseEscalator}" Content="" HorizontalAlignment="Left" Margin="10,362,0,0" VerticalAlignment="Top" Width="59" Height="51" IsEnabled="False">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/EscalatorIcon.png"/>
                             </Button.Background>
@@ -217,7 +217,7 @@
             </StackPanel>
             <TextBlock x:Name="hints" Text="Подсказки" TextAlignment="Center" TextWrapping="Wrap" Margin="264.2,560.6,264.2,42.8" Grid.Row="1" Grid.Column="1"/>
             <StackPanel Width="330" Height="640" Margin="10,45,719.2,15.8" Grid.RowSpan="2" Grid.ColumnSpan="2">
-                <Expander x:Name="objectsExpander" 
+                <Expander x:Name="objectsExpander" Visibility="Collapsed"
                           IsExpanded="True" Collapsed="objectsExpanderCollapsed" Expanded="objectsExpanderExpanded"
                   Header="Списки доступных объектов"  Height="409" Width="328"  HorizontalAlignment="Left" VerticalAlignment="Top" >
                     <Grid Background="#FFE5E5E5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,-11.6,0" Width="328" Height="389">
@@ -256,6 +256,7 @@
                                                             <ContextMenu>
                                                                 <MenuItem Click="kioskTabShow"  Header="Показать на карте"/>
                                                                 <MenuItem Click="kioskTabDelete" Header="Удалить с карты"/>
+                                                                <MenuItem Click="kioskTabDeleteExceptIt" Header="Удалить все киоски кроме этого"/>
                                                             </ContextMenu>
                                                         </TextBlock.ContextMenu>
                                                     </TextBlock>
