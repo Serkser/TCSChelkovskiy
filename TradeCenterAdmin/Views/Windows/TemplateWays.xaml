@@ -1,0 +1,20 @@
+﻿<Window x:Class="TradeCenterAdmin.Views.Windows.TemplateWays"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TradeCenterAdmin.Views.Windows"
+        mc:Ignorable="d"
+        Title="Выберите маршрут-переход для завершения" Height="306.8" Width="448.8">
+    <Grid>
+        <ListBox ItemsSource="{Binding AllFloorTemplateWays, Mode=TwoWay}" x:Name="listbox" HorizontalAlignment="Left" Height="173" Margin="30,49,0,0" VerticalAlignment="Top" Width="397"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,28,0,0" TextWrapping="Wrap" Text="Список маршрутов-переходов" VerticalAlignment="Top"/>
+        <Button Click="selectFloor" Content="Выбрать маршрут" HorizontalAlignment="Left" Margin="30,227,0,0" VerticalAlignment="Top" Width="397" Height="25"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="357,22,0,0" TextWrapping="NoWrap" 
+                 Text="{Binding FilterFloorTemplatesFloor,Mode=TwoWay}" VerticalAlignment="Top" Width="21"/>
+        <TextBlock HorizontalAlignment="Left" Margin="318,23,0,0" TextWrapping="Wrap" Text="Этаж" VerticalAlignment="Top"/>
+        <CheckBox IsChecked="{Binding FilterFloorTemplatesByFloor,Mode=TwoWay}"
+            Content="Фильтр по этажу" HorizontalAlignment="Left" Margin="318,4,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

@@ -71,7 +71,6 @@ namespace NavigationMap.Models
         }
 
         private int _floorId;
-
         public int FloorId
         {
             get => _floorId;
@@ -87,6 +86,8 @@ namespace NavigationMap.Models
 
         public TrulyObservableCollection<WayPoint> WayPoints { get; } = new();
 
+
+        public bool FromTemplates { get; set; }
         public Way()
         {
             WayPoints.CollectionChanged += WayPoints_CollectionChanged;

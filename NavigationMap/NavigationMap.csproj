@@ -81,6 +81,8 @@
     <Compile Include="Models\Station.cs" />
     <Compile Include="Models\Way.cs" />
     <Compile Include="Models\WayPoint.cs" />
+    <Compile Include="Models\ATM.cs" />
+    <Compile Include="Models\WC.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

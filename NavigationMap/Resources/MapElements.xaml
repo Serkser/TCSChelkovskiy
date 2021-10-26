@@ -16,6 +16,25 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type models:ATM}">
+        <Grid>
+            <!--<b:Interaction.Behaviors>
+                <behaviors:MapElementsScaleBehavior />
+            </b:Interaction.Behaviors>-->
+            <Image Width="400" Height="400" Source="/NavigationMap;component/Images/ATMIcon.png"></Image>
+        </Grid>
+    </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type models:WC}">
+        <Grid>
+            <!--<b:Interaction.Behaviors>
+                <behaviors:MapElementsScaleBehavior />
+            </b:Interaction.Behaviors>-->
+            <Image Width="400" Height="400" Source="/NavigationMap;component/Images/WCIcon.png"></Image>
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type models:Area}">
         <Grid x:Name="addButton">
             <b:Interaction.Triggers>

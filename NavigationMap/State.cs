@@ -30,6 +30,8 @@ namespace NavigationMap
         }
 
         public event Action<Area> OnAreaSelected;
+        public event Action<WC> OnWCSelected;
+        public event Action<ATM> OnATMSelected;
 
         public event Action<double> OnMapScaleChanged;
 
@@ -37,7 +39,14 @@ namespace NavigationMap
         {
             OnAreaSelected?.Invoke(area);
         }
-
+        public void SelectWC(WC wc)
+        {
+            OnWCSelected?.Invoke(wc);
+        }
+        public void SelectATM(ATM atm)
+        {
+            OnATMSelected?.Invoke(atm);
+        }
         public void ChangeMapScale(double mapScale)
         {
             MapScale = mapScale;

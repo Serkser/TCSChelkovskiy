@@ -99,17 +99,27 @@
     <Compile Include="ChangesPool\UndoActionsInfo\ListItemUndoActionInfo.cs" />
     <Compile Include="ChangesPool\UndoActionsInfo\ObjectUndoActionInfo.cs" />
     <Compile Include="ChangesPool\UndoActionsInfo\ListUndoActionInfo.cs" />
+    <Compile Include="Drawing\MapObjectsCreator.cs" />
+    <Compile Include="Drawing\MapObjectsDrawer.cs" />
     <Compile Include="Enums\AreaSorts\SortByShops.cs" />
     <Compile Include="Enums\AreaSorts\SortByWays.cs" />
     <Compile Include="Enums\MapEditorTool.cs" />
     <Compile Include="Enums\PointState.cs" />
+    <Compile Include="Enums\WayType.cs" />
+    <Compile Include="MapEditorGUIModules\AreasExpander.cs" />
+    <Compile Include="MapEditorGUIModules\AvailableObjectsExpander.cs" />
+    <Compile Include="MapEditorGUIModules\FreeAndUsedObjectsSorter.cs" />
+    <Compile Include="MapEditorGUIModules\SelectedAreaExpander.cs" />
+    <Compile Include="MapEditorGUIModules\TemplateWaysExpander.cs" />
     <Compile Include="Models\AreaWrapper.cs" />
+    <Compile Include="Models\TemplateWaysContainer.cs" />
     <Compile Include="Models\WaysContainer.cs" />
     <Compile Include="Preloader.xaml.cs">
       <DependentUpon>Preloader.xaml</DependentUpon>
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Services\BitmapToImageSourceConverter.cs" />
+    <Compile Include="Services\ChangesPoolMethods.cs" />
     <Compile Include="Services\ImageDownloader.cs" />
     <Compile Include="Services\JsonToServerUploader.cs" />
     <Compile Include="ChangesPool\ChangesPool.cs" />
@@ -184,6 +194,9 @@
     </Compile>
     <Compile Include="Views\Windows\ShowFullList.xaml.cs">
       <DependentUpon>ShowFullList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\TemplateWays.xaml.cs">
+      <DependentUpon>TemplateWays.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -278,6 +291,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Windows\ShowFullList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\TemplateWays.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

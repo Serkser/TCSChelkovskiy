@@ -100,6 +100,8 @@ namespace NavigationMap.Models
 
         public ObservableCollection<Station> Stations { get; } = new();
 
+        public ObservableCollection<WC> WCs { get; } = new();
+        public ObservableCollection<ATM> ATMs { get; } = new();
 
         public void Dispose()
         {

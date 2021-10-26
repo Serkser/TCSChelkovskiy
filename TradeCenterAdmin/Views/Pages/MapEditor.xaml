@@ -12,7 +12,8 @@
       d:DesignHeight="700" d:DesignWidth="1059" 
      PreviewKeyDown="keydown"
      PreviewMouseWheel="scrolling"
-      Title="MapEditor" Unloaded="Page_Unloaded">
+    Loaded="MapEditorLoaded"
+      Title="MapEditor">
     <Viewbox>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -33,6 +34,7 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <Image x:Name="img" MouseDown="click" Stretch="Fill"  Source="{Binding CurrentFloorImage.Source}" Width="9000" Height="9000" Canvas.Left="0" Canvas.Top="0"/>
+
                     </Canvas>
                 </ScrollViewer>
 
@@ -151,19 +153,19 @@
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="10,61,0,0" TextWrapping="Wrap" Text="Курсор" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseKiosk}" Content="" HorizontalAlignment="Left" Margin="10,216,0,0" VerticalAlignment="Top" Width="59" Height="51" IsEnabled="False">
+                        <Button Command="{Binding UseKiosk}" Content="" HorizontalAlignment="Left" Margin="10,216,0,0" VerticalAlignment="Top" Width="59" Height="51">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/StationIcon.png"/>
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="10,267,0,0" TextWrapping="Wrap" Text="Киоск" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseArea}" Content="" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Width="59" Height="51" IsEnabled="False">
+                        <Button Command="{Binding UseArea}" Content="" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Width="59" Height="51">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/AreaIcon.png"/>
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="10,130,0,0" TextWrapping="Wrap" Text="Область" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseEntry}" Content="" HorizontalAlignment="Left" Margin="83,79,0,0" VerticalAlignment="Top" Width="59" Height="51" IsEnabled="False">
+                        <Button Command="{Binding UseEntry}" Content="" HorizontalAlignment="Left" Margin="83,79,0,0" VerticalAlignment="Top" Width="59" Height="51">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/EntranceIcon.png"/>
                             </Button.Background>
@@ -175,7 +177,7 @@
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="83,60,0,0" TextWrapping="Wrap" Text="Рука" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseStairs}" Content="" HorizontalAlignment="Left" Margin="83,149,0,0" VerticalAlignment="Top" Width="59" Height="51" Click="Button_Click" IsEnabled="False">
+                        <Button Command="{Binding UseStairs}" Content="" HorizontalAlignment="Left" Margin="83,149,0,0" VerticalAlignment="Top" Width="59" Height="51">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/StairsIcon.png"/>
                             </Button.Background>
@@ -187,25 +189,25 @@
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="10,199,0,0" TextWrapping="Wrap" Text="Путь" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseLift}" Content="" HorizontalAlignment="Left" Margin="83,216,0,0" VerticalAlignment="Top" Width="59" Height="51" IsEnabled="False">
+                        <Button Command="{Binding UseLift}" Content="" HorizontalAlignment="Left" Margin="83,216,0,0" VerticalAlignment="Top" Width="59" Height="51">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/ElevatorIcon.png"/>
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="83,267,0,0" TextWrapping="Wrap" Text="Лифт" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseWC}" Content="" HorizontalAlignment="Left" Margin="10,290,0,0" VerticalAlignment="Top" Width="59" Height="51" IsEnabled="False">
+                        <Button Command="{Binding UseWC}" Content="" HorizontalAlignment="Left" Margin="10,290,0,0" VerticalAlignment="Top" Width="59" Height="51">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/WCIcon.png"/>
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="10,342,0,0" TextWrapping="Wrap" Text="Туалет" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseATM}" Content="" HorizontalAlignment="Left" Margin="83,290,0,0" VerticalAlignment="Top" Width="59" Height="51" IsEnabled="False">
+                        <Button Command="{Binding UseATM}" Content="" HorizontalAlignment="Left" Margin="83,290,0,0" VerticalAlignment="Top" Width="59" Height="51">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/ATMIcon.png"/>
                             </Button.Background>
                         </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="83,342,0,0" TextWrapping="Wrap" Text="Банкомат" VerticalAlignment="Top"/>
-                        <Button Command="{Binding UseEscalator}" Content="" HorizontalAlignment="Left" Margin="10,362,0,0" VerticalAlignment="Top" Width="59" Height="51" IsEnabled="False">
+                        <Button Command="{Binding UseEscalator}" Content="" HorizontalAlignment="Left" Margin="10,362,0,0" VerticalAlignment="Top" Width="59" Height="51">
                             <Button.Background>
                                 <ImageBrush ImageSource="/TradeCenterAdmin;component/Images/Icons/EscalatorIcon.png"/>
                             </Button.Background>
@@ -217,7 +219,7 @@
             </StackPanel>
             <TextBlock x:Name="hints" Text="Подсказки" TextAlignment="Center" TextWrapping="Wrap" Margin="264.2,560.6,264.2,42.8" Grid.Row="1" Grid.Column="1"/>
             <StackPanel Width="330" Height="640" Margin="10,45,719.2,15.8" Grid.RowSpan="2" Grid.ColumnSpan="2">
-                <Expander x:Name="objectsExpander" Visibility="Collapsed"
+                <Expander x:Name="objectsExpander"
                           IsExpanded="True" Collapsed="objectsExpanderCollapsed" Expanded="objectsExpanderExpanded"
                   Header="Списки доступных объектов"  Height="409" Width="328"  HorizontalAlignment="Left" VerticalAlignment="Top" >
                     <Grid Background="#FFE5E5E5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,-11.6,0" Width="328" Height="389">
@@ -480,7 +482,8 @@
                         </TabControl>
                     </Grid>
                 </Expander>
-                <Expander  x:Name="areaExpander" IsExpanded="True" Collapsed="areaExpanderCollapsed" Expanded="areaExpanderExpanded"
+                <Expander  x:Name="areaExpander" 
+                           IsExpanded="True" Collapsed="areaExpanderCollapsed" Expanded="areaExpanderExpanded"
                   Header="Выбранная область" Height="137" Width="328"  HorizontalAlignment="Left" VerticalAlignment="Top">
                     <Grid Background="#FFE5E5E5" Margin="0,0,-1.6,0">
                         <TextBlock Text="Название :" FontSize="10" Margin="5,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
@@ -499,11 +502,12 @@
 
                     </Grid>
                 </Expander>
-                <Expander  Collapsed="shopsExpanderCollapsed" Expanded="shopsExpanderExpanded" x:Name="shopsExpander"
+                <Expander  
+                    Collapsed="shopsExpanderCollapsed" Expanded="shopsExpanderExpanded" x:Name="shopsExpander"
                            Header="Области на этаже" IsExpanded="True" Grid.Column="1" Width="330" HorizontalAlignment="Left" VerticalAlignment="Top" Height="347" Grid.Row="1">
                     <Grid Background="#FFE5E5E5">
                         <ListBox ItemsSource="{Binding FloorAreaWrappers,Mode=TwoWay}" FontSize="10"                           
-                                    HorizontalAlignment="Left" Height="178" Margin="10,28,0,0" VerticalAlignment="Top" Width="322">
+                                    HorizontalAlignment="Left" Height="178" Margin="10,28,0,0" VerticalAlignment="Top" Width="308">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock>
@@ -545,6 +549,33 @@
                         FontSize="10" GroupName="routes" Content="По количеству затронутых маршрутами этажей" HorizontalAlignment="Left" Margin="30,287,0,0" VerticalAlignment="Top"/>
                         <TextBox Text="{Binding AffectedFloorsByAreaRoutes,Mode=TwoWay}"
                         FontSize="10" HorizontalAlignment="Left" Height="18" Margin="10,285,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="17"/>
+                    </Grid>
+                </Expander>
+                <Expander 
+                    x:Name="templateWaysExpander" IsExpanded="True" Collapsed="templateWaysExpanderCollapsed" Expanded="templateWaysExpanderExpanded"
+                    Header="Маршруты-переходы" Height="326" Width="330" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Grid Background="#FFE5E5E5">
+                        <ListBox ItemsSource="{Binding FloorTemplateWays,Mode=TwoWay}"
+                                    HorizontalAlignment="Left" Height="265" Margin="10,29,0,0" VerticalAlignment="Top" Width="308">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontSize="9">
+                                        <Run>Маршрут-переход</Run><Run Text=" "></Run><Run Text="{Binding WayID}"></Run><LineBreak/>
+                                        <Run>C</Run><Run Text=" "></Run><Run Text="{Binding PointName}"></Run><Run Text=" до "></Run><Run Text="{Binding KioskName}"></Run><LineBreak/>
+                                        <Run>Этажи :</Run><Run Text=" "></Run><Run Text="{Binding FloorsString}"></Run>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction
+                                     Command="{Binding HighlightSelectedTemplateWay}"
+                                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=SelectedItem}"
+                                    ></i:InvokeCommandAction>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ListBox>
+                        <TextBlock VerticalAlignment="Top" Text="Список маршрутов-переходов :" Margin="10,10,0,0" HorizontalAlignment="Left" FontSize="10"/>
                     </Grid>
                 </Expander>
             </StackPanel>

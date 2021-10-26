@@ -46,6 +46,8 @@ namespace NavigationMap.Controls
         private readonly ReaderWriterLock _locker = new();
 
         public event Action<Area> OnAreaSelected;
+        public event Action<WC> OnWCSelected;
+        public event Action<ATM> OnATMSelected;
 
         #region Interface
 
@@ -183,7 +185,92 @@ namespace NavigationMap.Controls
 
            // ResetZoom();
         }
+        public void NavigateToWC(int wcId)
+        {
+            WC wc = Floors.SelectMany(f => f.WCs).FirstOrDefault(a => a.Id == wcId);
 
+            if (wc is null)
+            {
+                return;
+            }
+            IEnumerable<Way> ways = wc.TemplateWays.Reverse().Where(w => w.StationId == SelectedStation.Id);
+
+            foreach (Way way in ways)
+            {
+               
+                if (!way.WayPoints.Any())
+                {
+                    continue;
+                }
+
+                Floor floor = Floors.FirstOrDefault(f => f.Id == way.FloorId);
+
+                if (floor is null)
+                {
+                    continue;
+                }
+
+                var wayPointToNavigate = way.WayPoints.LastOrDefault();
+
+                if (wayPointToNavigate is null)
+                {
+                    continue;
+                }
+
+                Navigate(wayPointToNavigate.Position, floor);
+
+                double offsetX = wayPointToNavigate.Position.X;
+                double offsetY = wayPointToNavigate.Position.Y;
+
+                Point NormalizePoint(Point p)
+                {
+                    return new(offsetX - p.X, offsetY - p.Y);
+                }
+
+                PathGeometry animationPath = new();
+
+                PathFigure pFigure = new()
+                {
+                    StartPoint = NormalizePoint(wayPointToNavigate.Position)
+                };
+
+                PolyLineSegment line = new();
+
+                foreach (Point point in way.WayPoints.Reverse().Select(p => p.Position))
+                {
+                    line.Points.Add(NormalizePoint(point));
+                }
+
+                pFigure.Segments.Add(line);
+
+                animationPath.Figures.Add(pFigure);
+
+                animationPath.Freeze();
+
+                int duration = way.WayPoints.Count * 900;
+
+                MatrixAnimationUsingPath matrixAnimation =
+                    new()
+                    {
+                        PathGeometry = animationPath,
+                        Duration = TimeSpan.FromMilliseconds(duration),
+                        IsAdditive = true,
+                        IsAngleCumulative = true,
+                        IsOffsetCumulative = true
+                    };
+
+                ScenarioCommands.Add(new ScenarioCommand()
+                {
+                    Animation = matrixAnimation,
+                    ScenarioBeforeAction = () =>
+                    {
+                        SelectedAreaToStationWays.Add(way);
+                    }
+                });
+                // ResetZoom();
+            }
+            // ResetZoom();
+        }
         public void ZoomIn(double zoomStep = ZOOM_STEP)
         {
             Zoom(true, zoomStep);
@@ -526,6 +613,8 @@ namespace NavigationMap.Controls
             ScenarioCommands.CollectionChanged += ScenarioCommandsOnCollectionChanged;
 
             _state.OnAreaSelected += _state_OnAreaSelected;
+            _state.OnWCSelected += _state_OnWCSelected;
+            _state.OnATMSelected += _state_OnATMSelected;
             MapImageDisposable = new DisposableImage(Path.GetFullPath(SelectedFloor?.Image));
         }
 
@@ -533,6 +622,8 @@ namespace NavigationMap.Controls
         {
             ScenarioCommands.CollectionChanged -= ScenarioCommandsOnCollectionChanged;
             _state.OnAreaSelected -= _state_OnAreaSelected;
+            _state.OnWCSelected -= _state_OnWCSelected;
+            _state.OnATMSelected -= _state_OnATMSelected;
 
             SelectedAreaToStationWays.DisposeAndClear();
             ScenarioCommands.DisposeAndClear();
@@ -579,7 +670,14 @@ namespace NavigationMap.Controls
         {
             OnAreaSelected?.Invoke(obj);
         }
-
+        private void _state_OnWCSelected(WC obj)
+        {
+            OnWCSelected?.Invoke(obj);
+        }
+        private void _state_OnATMSelected(ATM obj)
+        {
+            OnATMSelected?.Invoke(obj);
+        }
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -1,5 +1,6 @@
 ﻿using NavigationMap.Core;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace NavigationMap.Models
@@ -86,6 +87,10 @@ namespace NavigationMap.Models
             }
         }
 
+        /// <summary>
+        /// Маршруты переходы от лифта/лестницы/эскалатора до киоска
+        /// </summary>
+        public ObservableCollection<Way> TemplateWays { get; } = new();
         public Station()
         {
             AreaPoint = new AreaPoint();

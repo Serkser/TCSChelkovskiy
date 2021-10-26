@@ -17,8 +17,11 @@ using System.Windows.Shapes;
 using TCSchelkovskiyAPI.Enums;
 using TCSchelkovskiyAPI.Models;
 using TradeCenterAdmin.ChangesPool.Abstractions;
+using TradeCenterAdmin.Drawing;
 using TradeCenterAdmin.Enums;
+using TradeCenterAdmin.MapEditorGUIModules;
 using TradeCenterAdmin.Models;
+using TradeCenterAdmin.Services;
 using TradeCenterAdmin.Services.MapObjectSavers;
 using TradeCenterAdmin.Storage;
 using TradeCenterAdmin.Utilities;
@@ -31,9 +34,16 @@ namespace TradeCenterAdmin.ViewModels
         Views.Pages.MapEditor This;
         public MapEditorViewModel(Views.Pages.MapEditor _this)
         {
+           
+        }
+
+        public void InitViewModel(Views.Pages.MapEditor _this)
+        {
+            This = _this;
+            ChangesPoolMethods.MapEditorDataContext = this;
+
             MapEditorTool = MapEditorTool.Cursor;
 
-            This = _this;
             Floors = Storage.KioskObjects.Floors;
             Shops = Storage.KioskObjects.Shops;
 
@@ -46,269 +56,25 @@ namespace TradeCenterAdmin.ViewModels
 
             if (Floors.Count > 0)
             {
-                SelectedFloor = Floors.FirstOrDefault();              
+                SelectedFloor = Floors.FirstOrDefault();
             }
             if (Terminals.Count > 0)
             {
                 SelectedTerminal = Terminals.FirstOrDefault();
             }
             MakeStartZoom();
-            SortAllPointObjects();
+            FreeAndUsedObjectsSorter.SortAllPointObjects();
 
             Storage.KioskObjects.ChangesPool.OnRedoing += ChangesPool_OnRedoing;
             Storage.KioskObjects.ChangesPool.OnUndoing += ChangesPool_OnUndoing;
             Storage.KioskObjects.ChangesPool.OnEntryAdded += ChangesPool_OnEntryAdded;
         }
-
      
 
 
-        //Загрузка всего, кроме путей
-        void BaseDrawing()
-        {
-            //очистка старых элементов
-            for (int a = 0; a < 5; a++)
-            {
-                for (int i = 0; i < This.canvasMap.Children.Count; i++)
-                {
-                    UIElement obj = This.canvasMap.Children[i];
-                    if (obj is Image)
-                    {
-                        if (((Image)obj).Name == "img")
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            This.canvasMap.Children.Remove(obj);
-                        }
-                    }
-                    else
-                    {
-                        This.canvasMap.Children.Remove(obj);
-                    }
-                }
-            }
-
-            if(SelectedFloor != null)
-            {
-                foreach (var obj in SelectedFloor?.Stations)
-                {
-                    switch (obj.AreaPoint.PointType)
-                    {
-                        case NavigationMap.Enums.PointTypeEnum.Entry:
-                            if (obj.Name.Contains("Вход"))
-                            {
-                                This.DrawEntry(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
-                            }
-                            else if (obj.Name.Contains("Лестница"))
-                            {
-                                This.DrawStairs(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
-                            }
-                            else if (obj.Name.Contains("Эскалатор"))
-                            {
-                                This.DrawEscalator(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
-                            }
-                            else if (obj.Name.Contains("Лифт"))
-                            {
-                                This.DrawLift(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
-                            }
-                            break;
-                        case NavigationMap.Enums.PointTypeEnum.Station:
-                            if (obj.Name.Contains("Киоск"))
-                            {
-                                This.DrawKiosk(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
-                            }
-                            else if (obj.Name.Contains("Туалет"))
-                            {
-                                This.DrawWC(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
-                            }
-                            else if (obj.Name.Contains("Банкомат"))
-                            {
-                                This.DrawATM(obj, new System.Windows.Point(obj.AreaPoint.X, obj.AreaPoint.Y), false);
-                            }
-                            break;
-                    }
-                }
-                //Рисуем области магазинов
-                foreach (var obj in SelectedFloor.Areas)
-                {
-                    This.DrawAreaPerimeter(obj);
-                }
-            }
-
-           
-           
-        }
-
-        //Загрузка всех объектов, всех путей
-        public void LoadFloorObjects()
-        {
-            BaseDrawing();
-            //Рисуем пути магазинов
-
-            foreach (var floor in Floors)
-            {
-                foreach (var area in floor.Areas)
-                {
-                    if (area != null)
-                    {
-                        foreach (var way in area.Ways)
-                        {
-                            if (!HideAllWays)
-                            {
-                                if (way.FloorId == SelectedFloor.Id)
-                                {
-                                    This.DrawWays(way, SelectedFloor.Id);
-                                }
-                            }                          
-                        }
-                    }                 
-                }
-                if (HideAllWays)
-                {
-                    if (EditingWay != null)
-                    {
-                        This.DrawWays(EditingWay, SelectedFloor.Id, System.Windows.Media.Brushes.Red);
-                    }                 
-                }
-            }
-
-           // MessageBox.Show("canvasuid  " + This.canvasMap.Uid);
-
-          
-        }
-        //Загрузка объектов, отрисовка путей только выбранной станции
-        public void LoadFloorObjects(TerminalModel selectedTerminal)
-        {
-            BaseDrawing();
-            //Рисуем пути магазинов
-
-            if (HideAllWays)
-            {
-                if (EditingWay != null)
-                {
-                    This.DrawWays(EditingWay, SelectedFloor.Id, System.Windows.Media.Brushes.Red);
-                }
-                return;   
-            }
+      
 
 
-            foreach (var floor in Floors)
-            {
-                foreach (var area in floor.Areas)
-                {
-                        if (area.Ways.Where(o => o.StationId == selectedTerminal.ID).ToList().Count > 0)
-                        {
-                            foreach (var way in area.Ways.Where(o => o.StationId == SelectedTerminal.ID).ToList())
-                            {
-                                if (way.WayPoints.Where(o => o.FloorId == SelectedFloor.Id).FirstOrDefault() != null)
-                                {
-                                    This.DrawWays(way, SelectedFloor.Id);
-                                }
-                            }
-                        }
-                }
-            }
-        }
-        //Загрузка объектов, отрисовка путей только выбранной области
-        public void LoadFloorObjects(Area selectedArea)
-        {
-            BaseDrawing();
-
-
-            if (HideAllWays)
-            {
-                if (EditingWay != null)
-                {
-                    This.DrawWays(EditingWay, SelectedFloor.Id, System.Windows.Media.Brushes.Red);
-                }
-                return;
-            }
-
-            //Рисуем пути магазинов
-            if (selectedArea == null)
-            {
-                LoadFloorObjects(); return;
-            }
-            foreach (var floor in Floors)
-            {
-                foreach (var area in floor.Areas)
-                {
-                    if (area.Id == selectedArea.Id)
-                    {
-                        foreach (var way in area.Ways.ToList())
-                        {
-                            if (way.WayPoints.Where(o => o.FloorId == SelectedFloor.Id).FirstOrDefault() != null)
-                            {
-                                This.DrawWays(way, SelectedFloor.Id);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        //Загрузка объектов, отрисовка всех путей, подсветка выбранного пути
-        public void LoadFloorObjectsWithWayHighlighting(Way selectedWay, bool hideOther = false)
-        {
-            BaseDrawing();
-            //Рисуем пути магазинов
-            if (HideAllWays)
-            {
-                if (EditingWay != null)
-                {
-                    This.DrawWays(EditingWay, SelectedFloor.Id, System.Windows.Media.Brushes.Red);
-                }
-                return;
-            }
-
-
-            foreach (var floor in Floors)
-            {
-                foreach (var area in floor.Areas)
-                {
-                    foreach (var way in area.Ways.ToList())
-                    {
-                        if (way.WayPoints.Where(o => o.FloorId == SelectedFloor.Id).FirstOrDefault() != null)
-                        {
-                            if (way.Id == selectedWay.Id)
-                            {
-                                This.DrawWays(way, SelectedFloor.Id, System.Windows.Media.Brushes.Red);
-                            }
-                            else
-                            {
-                                if (!hideOther)
-                                {
-                                    This.DrawWays(way, SelectedFloor.Id);
-                                }                            
-                            }
-
-                        }
-                    }
-                }
-            }
-        }
-
-        public void HighlightArea(Area selectedArea)
-        {
-            if (selectedArea == null) { return; }
-            //Убираем подсветку с других областей
-            for (int i = 0; i < This.canvasMap.Children.Count; i++)
-            {
-                var uielement = This.canvasMap.Children[i];
-                if (uielement is Path)
-                {
-                    if (uielement.Uid == selectedArea.Id.ToString())
-                    {
-                        ((Path)uielement).Fill = System.Windows.Media.Brushes.Yellow;
-                    }
-                    else
-                    {
-                        ((Path)uielement).Fill = System.Windows.Media.Brushes.AliceBlue;
-                    }              
-                }
-            }
-        }
         #region Свойства редактора карт
         private MapEditorTool mapEditorTool;
         public MapEditorTool MapEditorTool
@@ -680,10 +446,11 @@ namespace TradeCenterAdmin.ViewModels
                 selectedFloor = value;
                 if (value != null)
                 {
-                    LoadFloorObjects();
+                    MapObjectsDrawer.LoadFloorObjects();
                     CurrentFloorImage?.Dispose();
                     CurrentFloorImage = new DisposableImage(selectedFloor.Image);
-                    LoadFloorAreaWrappers();
+                    AreasExpander.LoadFloorAreaWrappers();
+                    TemplateWaysExpander.ShowTemplateWaysList();
 
                 }
                 OnPropertyChanged("SelectedFloor");
@@ -711,11 +478,11 @@ namespace TradeCenterAdmin.ViewModels
                 showOnlySelectedTerminalWays = value;
                 if (showOnlySelectedTerminalWays == false)
                 {
-                    LoadFloorObjects();
+                    MapObjectsDrawer.LoadFloorObjects();
                 }
                 else
                 {
-                    LoadFloorObjects(SelectedTerminal);
+                    MapObjectsDrawer.LoadFloorObjects(SelectedTerminal);
                 }
                 
                 OnPropertyChanged("ShowOnlySelectedTerminalWays");
@@ -875,205 +642,7 @@ namespace TradeCenterAdmin.ViewModels
         }
         #endregion
 
-        #region Сортировка списков объектов по типу доступен/установлен
-        public void SortAllPointObjects()
-        {
-            SortWCs();
-            SortATMs();
-            SortStairs();
-            SortLifts();
-            SortKiosks();
-            SortEscalators();
-        }
-        public void SortWCs(Floor floor = null)
-        {
-            FreeWCs = new ObservableCollection<TerminalModel>();
-            UsedWCs = new ObservableCollection<TerminalModel>();
-            WCs = new ObservableCollection<TerminalModel>(Storage.KioskObjects.WCs.ToList());
-            ObservableCollection<TerminalModel> sort = null;
-            if(floor == null) { sort = Storage.KioskObjects.WCs; }
-            else 
-            { 
-                sort = new ObservableCollection<TerminalModel>
-               (Storage.KioskObjects.WCs.Where(o => o.Floor.Name == floor.Name).ToList()); 
-            }
-
-            if (Floors != null)
-            {
-                foreach (var wc in sort)
-                {
-                    bool isUsed = false;
-                    foreach (var st in Floors.SelectMany(o => o.Stations).ToList())
-                    {
-                        wc.StatusOnMap = "";
-                        if (st.Id == wc.ID)
-                        {
-                            isUsed = true;
-                        }
-                    }
-                    if (isUsed) { UsedWCs.Add(wc); wc.StatusOnMap = "Установлен"; }
-                    else { FreeWCs.Add(wc); wc.StatusOnMap = ""; }
-                }
-            }
-        }
-        public void SortATMs(Floor floor = null)
-        {
-            FreeATMs = new ObservableCollection<TerminalModel>();
-            UsedATMs = new ObservableCollection<TerminalModel>();
-            ATMs = new ObservableCollection<TerminalModel>(Storage.KioskObjects.ATMs.ToList());
-            ObservableCollection<TerminalModel> sort = null;
-            if (floor == null) { sort = Storage.KioskObjects.ATMs; }
-            else
-            {
-                sort = new ObservableCollection<TerminalModel>
-               (Storage.KioskObjects.ATMs.Where(o => o.Floor.Name == floor.Name).ToList());
-            }
-
-            if (Floors != null)
-            {
-                foreach (var atm in sort)
-                {
-                    bool isUsed = false;
-                    foreach (var st in Floors.SelectMany(o => o.Stations).ToList())
-                    {
-                        atm.StatusOnMap = "";
-                        if (st.Id == atm.ID)
-                        {
-                            isUsed = true;
-                        }
-                    }
-                    if (isUsed) { UsedATMs.Add(atm); atm.StatusOnMap = "Установлен"; }
-                    else { FreeATMs.Add(atm); atm.StatusOnMap = ""; }
-                }
-            }
-        }
-        public void SortStairs(Floor floor = null)
-        {
-            FreeStairs = new ObservableCollection<TerminalModel>();
-            UsedStairs = new ObservableCollection<TerminalModel>();
-            Stairs = new ObservableCollection<TerminalModel>(Storage.KioskObjects.Stairs.ToList());
-            ObservableCollection<TerminalModel> sort = null;
-            if (floor == null) { sort = Storage.KioskObjects.Stairs; }
-            else
-            {
-                sort = new ObservableCollection<TerminalModel>
-               (Storage.KioskObjects.Stairs.Where(o => o.Floor.Name == floor.Name).ToList());
-            }
-
-            if (Floors != null)
-            {
-                foreach (var stairs in sort)
-                {
-                    bool isUsed = false;
-                    foreach (var st in Floors.SelectMany(o => o.Stations).ToList())
-                    {
-                        stairs.StatusOnMap = "";
-                        if (st.Id == stairs.ID)
-                        {
-                            isUsed = true;
-                        }
-                    }
-                    if (isUsed) { UsedStairs.Add(stairs); stairs.StatusOnMap = "Установлен"; }
-                    else { FreeStairs.Add(stairs); stairs.StatusOnMap = ""; }
-                }
-            }
-        }
-        public void SortLifts(Floor floor = null)
-        {
-            FreeLifts = new ObservableCollection<TerminalModel>();
-            UsedLifts = new ObservableCollection<TerminalModel>();
-            Lifts = new ObservableCollection<TerminalModel>(Storage.KioskObjects.Lifts.ToList());
-
-            ObservableCollection<TerminalModel> sort = null;
-            if (floor == null) { sort = Storage.KioskObjects.Lifts; }
-            else
-            {
-                sort = new ObservableCollection<TerminalModel>
-               (Storage.KioskObjects.Lifts.Where(o => o.Floor.Name == floor.Name).ToList());
-            }
-
-
-            if (Floors != null)
-            {
-                foreach (var lift in sort)
-                {
-                    bool isUsed = false;
-                    foreach (var st in Floors.SelectMany(o => o.Stations).ToList())
-                    {
-                        lift.StatusOnMap = "";
-                        if (st.Id == lift.ID)
-                        {
-                            isUsed = true;
-                        }
-                    }
-                    if (isUsed) { UsedLifts.Add(lift); lift.StatusOnMap = "Установлен"; }
-                    else { FreeLifts.Add(lift); lift.StatusOnMap = ""; }
-                }
-            }
-        }
-        public void SortKiosks(Floor floor = null)
-        {
-            FreeTerminals = new ObservableCollection<TerminalModel>();
-            UsedTerminals = new ObservableCollection<TerminalModel>();
-            Terminals = new ObservableCollection<TerminalModel>(Storage.KioskObjects.Terminals.ToList());
-            ObservableCollection<TerminalModel> sort = null;
-            if (floor == null) { sort = Storage.KioskObjects.Terminals; }
-            else
-            {
-                sort = new ObservableCollection<TerminalModel>
-               (Storage.KioskObjects.Terminals.Where(o => o.Floor.Name == floor.Name).ToList());
-            }
-
-            if (Floors != null)
-            {
-                foreach (var kiosk in sort)
-                {
-                    bool isUsed = false;
-                    foreach (var st in Floors.SelectMany(o => o.Stations).ToList())
-                    {
-                        kiosk.StatusOnMap = "";
-                        if (st.Id == kiosk.ID)
-                        {                        
-                            isUsed = true; 
-                        }
-                    }
-                    if (isUsed) { UsedTerminals.Add(kiosk); kiosk.StatusOnMap = "Установлен"; }
-                    else { FreeTerminals.Add(kiosk); kiosk.StatusOnMap = ""; }
-                }
-            }
-        }
-        public void SortEscalators(Floor floor = null)
-        {
-            FreeEscolators = new ObservableCollection<TerminalModel>();
-            UsedEscolators = new ObservableCollection<TerminalModel>();
-            Escolators = new ObservableCollection<TerminalModel>(Storage.KioskObjects.Escolators.ToList());
-            ObservableCollection<TerminalModel> sort = null;
-            if (floor == null) { sort = Storage.KioskObjects.Escolators; }
-            else
-            {
-                sort = new ObservableCollection<TerminalModel>
-               (Storage.KioskObjects.Escolators.Where(o => o.Floor.Name == floor.Name).ToList());
-            }
-
-            if (Floors != null)
-            {
-                foreach (var escalator in sort)
-                {
-                    bool isUsed = false;
-                    foreach (var st in Floors.SelectMany(o => o.Stations).ToList())
-                    {
-                        escalator.StatusOnMap = "";
-                        if (st.Id == escalator.ID)
-                        {
-                            isUsed = true;
-                        }
-                    }
-                    if (isUsed) { UsedEscolators.Add(escalator); escalator.StatusOnMap = "Установлен"; }
-                    else { FreeEscolators.Add(escalator); escalator.StatusOnMap = ""; }
-                }
-            }
-        }
-        #endregion
+    
 
         #region Работа с картой
         double scaleX = 1.0;
@@ -1314,7 +883,7 @@ namespace TradeCenterAdmin.ViewModels
             {
                 hideAllWays = value;              
                 OnPropertyChanged("HideAllWays");
-                LoadFloorObjects();
+                MapObjectsDrawer.LoadFloorObjects();
             }
         }
         private Way editingWay;
@@ -1354,55 +923,13 @@ namespace TradeCenterAdmin.ViewModels
                         AreaWrapper wrapper = obj as AreaWrapper;
                         if (wrapper != null)
                         {
-                            HighlightArea(wrapper.Area);
-                            This.ShowAreaInfo(wrapper.Area);
+                            MapObjectsDrawer.HighlightArea(wrapper.Area);
+                            SelectedAreaExpander.ShowAreaInfo(wrapper.Area);
                         }                  
                     }));
             }
         }
-        public void LoadFloorAreaWrappers()
-        {
-            List<AreaWrapper> wrappers = new List<AreaWrapper>();
-            foreach (var area in SelectedFloor.Areas)
-            {
-                AreaWrapper wrapper = new AreaWrapper(area);
-                wrappers.Add(wrapper);
-            }
-            //Сортировка по областям
-            if (SortAreasWithShop)
-            {
-                wrappers = wrappers.Where(o => o.Area.Id > 0).ToList();
-            }
-            else if (sortAreasWithNoShop)
-            {
-                wrappers = wrappers.Where(o => o.Area.Id < 1).ToList();
-            }
-            else if (SortAllAreas)
-            {
-                wrappers = wrappers.ToList();
-            }
-
-            //Сортировка по путям
-            if (SortAreasWithWay)
-            {
-                wrappers = wrappers.Where(o => o.Area.Ways.Count > 0).ToList();
-            }
-            else if (SortAreasWithNoWay)
-            {
-                wrappers = wrappers.Where(o => o.Area.Ways.Count ==0).ToList();
-            }
-            else if (SortAllAreasWay)
-            {
-                wrappers = wrappers.ToList();
-            }
-            else if (SortAreasWithFloorsWay)
-            {
-                wrappers = wrappers.Where(o => o.UsedFloorsByRoutes == AffectedFloorsByAreaRoutes).ToList();
-            }
-
-            FloorAreaWrappers = new ObservableCollection<AreaWrapper>(wrappers);
-
-        }
+  
 
         //Сортировка по областям
 
@@ -1414,7 +941,7 @@ namespace TradeCenterAdmin.ViewModels
             {
                 if (value > -1 && SortAreasWithFloorsWay)
                 {
-                    LoadFloorAreaWrappers();
+                    AreasExpander.LoadFloorAreaWrappers();
                 }
                 affectedFloorsByAreaRoutes = value; OnPropertyChanged("SortAllAreas");
             }
@@ -1425,7 +952,7 @@ namespace TradeCenterAdmin.ViewModels
         {
             get { return sortAllAreas; }
             set {
-                LoadFloorAreaWrappers();
+                AreasExpander.LoadFloorAreaWrappers();
                 sortAllAreas = value; OnPropertyChanged("SortAllAreas"); }
         }
 
@@ -1435,7 +962,7 @@ namespace TradeCenterAdmin.ViewModels
             get { return sortAreasWithShop; }
             set
             {
-                LoadFloorAreaWrappers();
+                AreasExpander.LoadFloorAreaWrappers();
                 sortAreasWithShop = value; OnPropertyChanged("SortAreasWithShop"); }
         }
         private bool sortAreasWithNoShop;
@@ -1444,7 +971,7 @@ namespace TradeCenterAdmin.ViewModels
             get { return sortAreasWithNoShop; }
             set
             {
-                LoadFloorAreaWrappers();
+                AreasExpander.LoadFloorAreaWrappers();
                 sortAreasWithNoShop = value; OnPropertyChanged("SortAreasWithNoShop"); }
         }
 
@@ -1456,7 +983,7 @@ namespace TradeCenterAdmin.ViewModels
             get { return sortAllAreasWay; }
             set
             {
-                LoadFloorAreaWrappers();
+                AreasExpander.LoadFloorAreaWrappers();
                 sortAllAreasWay = value; OnPropertyChanged("SortAllAreasWay"); }
         }
 
@@ -1466,7 +993,7 @@ namespace TradeCenterAdmin.ViewModels
             get { return sortAreasWithWay; }
             set
             {
-                LoadFloorAreaWrappers();
+                AreasExpander.LoadFloorAreaWrappers();
                 sortAreasWithWay = value; OnPropertyChanged("SortAreasWithWay"); }
         }
         private bool sortAreasWithNoWay;
@@ -1475,7 +1002,7 @@ namespace TradeCenterAdmin.ViewModels
             get { return sortAreasWithNoWay; }
             set
             {
-                LoadFloorAreaWrappers();
+                AreasExpander.LoadFloorAreaWrappers();
                 sortAreasWithNoWay = value; OnPropertyChanged("SortAreasWithNoWay"); }
         }
         private bool sortAreasWithFloorsWay;
@@ -1484,13 +1011,105 @@ namespace TradeCenterAdmin.ViewModels
             get { return sortAreasWithFloorsWay; }
             set
             {
-                LoadFloorAreaWrappers();
+                AreasExpander.LoadFloorAreaWrappers();
                 sortAreasWithFloorsWay = value; OnPropertyChanged("SortAreasWithFloorsWay");
             }
         }
 
 
         #endregion
+
+        #region Экспандер маршрутов-переходов
+
+        private ObservableCollection<TemplateWaysContainer> floorTemplateWays;
+        public ObservableCollection<TemplateWaysContainer> FloorTemplateWays
+        {
+            get { return floorTemplateWays; }
+            set
+            {
+                floorTemplateWays = value;
+                OnPropertyChanged("FloorTemplateWays");
+            }
+        }
+        private ObservableCollection<TemplateWaysContainer> allFloorTemplateWays;
+        public ObservableCollection<TemplateWaysContainer> AllFloorTemplateWays
+        {
+            get { return allFloorTemplateWays; }
+            set
+            {
+                allFloorTemplateWays = value;
+                OnPropertyChanged("AllFloorTemplateWays");
+            }
+        }
+
+        private bool filterFloorTemplatesByFloor;
+        public bool FilterFloorTemplatesByFloor
+        {
+            get { return filterFloorTemplatesByFloor; }
+            set
+            {
+                filterFloorTemplatesByFloor = value;
+                OnPropertyChanged("FilterFloorTemplatesByFloor");
+                if (FilterFloorTemplatesByFloor)
+                {
+                    TemplateWaysExpander.ShowTemplateWaysList(FilterFloorTemplatesFloor);
+                }
+                else
+                {
+                    TemplateWaysExpander.ShowTemplateWaysList();
+                }
+
+            }
+        }
+        private string filterFloorTemplatesFloor;
+        public string FilterFloorTemplatesFloor
+        {
+            get { return filterFloorTemplatesFloor; }
+            set
+            {
+                filterFloorTemplatesFloor = value;
+                OnPropertyChanged("FilterFloorTemplatesFloor");
+                if (FilterFloorTemplatesByFloor)
+                {
+                    TemplateWaysExpander.ShowTemplateWaysList(FilterFloorTemplatesFloor);
+                }
+                else
+                {
+                    TemplateWaysExpander.ShowTemplateWaysList();
+                }
+               
+            }
+        }
+
+        private RelayCommand highlightSelectedTemplateWay;
+        public RelayCommand HighlightSelectedTemplateWay
+        {
+            get
+            {
+                return highlightSelectedTemplateWay ??
+                    (highlightSelectedTemplateWay = new RelayCommand(obj =>
+                    {
+                        TemplateWaysContainer wrapper = obj as TemplateWaysContainer;
+                        if (wrapper != null)
+                        {
+                            var wayToHighlight = wrapper.Ways.Where(o => o.FloorId == SelectedFloor.Id).FirstOrDefault();
+                            if (wayToHighlight != null)
+                            {
+                                //MessageBox.Show(wrapper.Ways.Count.ToString());
+                                MapObjectsDrawer.LoadFloorObjectsWithWayHighlighting(wayToHighlight);
+                            }                       
+                        }
+                    }));
+            }
+        }
+
+
+
+       
+        #endregion
+
+
+
 
         #region Прочие команды
         /// <summary>
@@ -1509,6 +1128,7 @@ namespace TradeCenterAdmin.ViewModels
                     }));
             }
         }
+
         /// <summary>
         /// Открытие окна для назначения области магазина
         /// </summary>
@@ -1556,106 +1176,13 @@ namespace TradeCenterAdmin.ViewModels
                 return redrawFloorItems ??
                     (redrawFloorItems = new RelayCommand(obj =>
                     {
-                        LoadFloorObjects(); 
+                        MapObjectsDrawer.LoadFloorObjects(); 
                     }));
             }
         }    
         #endregion
 
-        public bool RemoveTerminalModelPoint(TerminalModel model)
-        {
-            if (model != null)
-            {
-                for (int i = 0; i < Floors.Count; i++)
-                {
-                    var floor = floors[i];
-                    for (int j = 0; j < floor.Stations.Count; j++)
-                    {
-                        if (model.ID == floor.Stations[j].Id)
-                        {
-                            This.RemovingStationPointToChangesPool(floor.Stations[j],
-                                 $"Отменить удаление точки на {SelectedFloor.Name}е",
-                                $"Удалить точку на {SelectedFloor.Name}е");
-                            floor.Stations.RemoveAt(j);                           
-                        }
-                    }
-                }
-                SortAllPointObjects();
-                LoadFloorObjects();
-                return true;
-            }
-            return false;
-        }
-        public bool ShowAndHighligthTerminalModelPoint(TerminalModel model)
-        {
-            if (model != null)
-            {
-                string uidpostfix = This.GetTerminalMapObjectUIDPostfix(model);
-               
-
-
-                for (int i = 0; i < Floors.Count; i++)
-                {
-                    var floor = floors[i];
-                    for (int j = 0; j < floor.Stations.Count; j++)
-                    {
-                        if (model.ID == floor.Stations[j].Id)
-                        {
-                            SelectedFloor = floor;
-                        }
-                    }
-                }
-
-
-                LoadFloorObjects();
-                for (int i=0; i<This.canvasMap.Children.Count;i++)
-                {
-                    var uielement = This.canvasMap.Children[i];
-                    if (uielement is Button)
-                    {
-                        if (uielement.Uid == model.ID.ToString()+ uidpostfix)
-                        {
-                         
-                            BitmapImage icon = null;                           
-                                   
-                            switch (model.Type)
-                            {
-                                case MapTerminalPointType.Termanals:                                 
-                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/Highligthted/StationIcon.png"));
-                                    ((Button)uielement).Background = new ImageBrush(icon);
-                                    break;
-                                case MapTerminalPointType.WC:                     
-                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/Highligthted/WCIcon.png"));
-                                    ((Button)uielement).Background = new ImageBrush(icon);
-                                    break;
-                                case MapTerminalPointType.ATMCash:
-                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/Highligthted/ATMIcon.png"));
-                                    ((Button)uielement).Background = new ImageBrush(icon);
-                                    break;
-                                case MapTerminalPointType.Stairs:
-                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/Highligthted/StairsIcon.png"));
-                                    ((Button)uielement).Background = new ImageBrush(icon);
-                                    break;
-                                case MapTerminalPointType.Lift:
-                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/Highligthted/ElevatorIcon.png"));
-                                    ((Button)uielement).Background = new ImageBrush(icon);
-                                    break;
-                                case MapTerminalPointType.Escolator:
-                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/Highligthted/EscalatorIcon.png"));
-                                    ((Button)uielement).Background = new ImageBrush(icon);
-                                    break;
-                            }
-                            return true;
-                        }                   
-                    }
-                }
-                return false;
-            }
-            return false;
-        }
-
-
-      
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
