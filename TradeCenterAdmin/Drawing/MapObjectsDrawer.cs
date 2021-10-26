@@ -177,6 +177,7 @@ namespace TradeCenterAdmin.Drawing
                                 }
                             }
                             MapEditorPage.currentWayStation = null;
+                            TemplateWaysExpander.ShowTemplateWaysList();
                             break;
                         case WayType.WCWay:
                             var wcpoint = MapEditorDataContext.Floors.Where(o => o.Id == MapEditorPage.firstFloor.Id).FirstOrDefault()
