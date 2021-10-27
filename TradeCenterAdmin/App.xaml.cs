@@ -18,7 +18,23 @@ namespace TradeCenterAdmin
     {
         public App()
         {
-            Storage.KioskObjects.LoadAllObjects().Wait();
+            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+            Storage.KioskObjects.LoadAllObjects().Wait();           
+        }
+
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            string path = Path.Combine(Environment.CurrentDirectory, "error.txt");
+            using (FileStream fs = File.Open(path,FileMode.OpenOrCreate))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    sw.WriteLine(e.Exception.Message);
+                    sw.WriteLine();
+                    sw.WriteLine(e.Exception.StackTrace);
+
+                }
+            }
         }
     }
 }

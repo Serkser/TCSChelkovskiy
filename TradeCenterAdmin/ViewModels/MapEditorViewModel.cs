@@ -1104,8 +1104,6 @@ namespace TradeCenterAdmin.ViewModels
         }
 
 
-
-       
         #endregion
 
 

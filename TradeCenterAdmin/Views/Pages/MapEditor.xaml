@@ -484,7 +484,7 @@
                 </Expander>
                 <Expander  x:Name="areaExpander" 
                            IsExpanded="True" Collapsed="areaExpanderCollapsed" Expanded="areaExpanderExpanded"
-                  Header="Выбранная область" Height="137" Width="328"  HorizontalAlignment="Left" VerticalAlignment="Top">
+                  Header="Выбранный объект" Height="137" Width="328"  HorizontalAlignment="Left" VerticalAlignment="Top">
                     <Grid Background="#FFE5E5E5" Margin="0,0,-1.6,0">
                         <TextBlock Text="Название :" FontSize="10" Margin="5,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
                         <TextBlock Text="Этаж :" FontSize="10" Margin="5,41,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
@@ -555,7 +555,7 @@
                     x:Name="templateWaysExpander" IsExpanded="True" Collapsed="templateWaysExpanderCollapsed" Expanded="templateWaysExpanderExpanded"
                     Header="Маршруты-переходы" Height="326" Width="330" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <Grid Background="#FFE5E5E5">
-                        <ListBox ItemsSource="{Binding FloorTemplateWays,Mode=TwoWay}"
+                        <ListBox x:Name="templatesList" ItemsSource="{Binding FloorTemplateWays,Mode=TwoWay}"
                                     HorizontalAlignment="Left" Height="265" Margin="10,29,0,0" VerticalAlignment="Top" Width="308">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
@@ -563,6 +563,12 @@
                                         <Run>Маршрут-переход</Run><Run Text=" "></Run><Run Text="{Binding WayID}"></Run><LineBreak/>
                                         <Run>C</Run><Run Text=" "></Run><Run Text="{Binding PointName}"></Run><Run Text=" до "></Run><Run Text="{Binding KioskName}"></Run><LineBreak/>
                                         <Run>Этажи :</Run><Run Text=" "></Run><Run Text="{Binding FloorsString}"></Run>
+                                        <TextBlock.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Click="deleteTemplateWay"
+                                                    Header="Удалить шаблон"></MenuItem>
+                                            </ContextMenu>
+                                        </TextBlock.ContextMenu>
                                     </TextBlock>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>

@@ -27,6 +27,8 @@ namespace TradeCenterAdmin.Storage
         //public static ObservableCollection<CategoryModel> Categories { get; set; } = new ObservableCollection<CategoryModel>();
         //public static ObservableCollection<Station> Stations { get; set; } = new ObservableCollection<Station>();
         public static ObservableCollection<ShopModel> Shops { get; set; } = new ObservableCollection<ShopModel>();
+
+        public static ObservableCollection<TerminalModel> rawTerminalModels { get; set; } = new ObservableCollection<TerminalModel>();
         public static ObservableCollection<TerminalModel> Terminals { get; set; } = new ObservableCollection<TerminalModel>();
         public static ObservableCollection<TerminalModel> ATMs { get; set; } = new ObservableCollection<TerminalModel>();
         public static ObservableCollection<TerminalModel> WCs { get; set; } = new ObservableCollection<TerminalModel>();
@@ -54,7 +56,7 @@ namespace TradeCenterAdmin.Storage
             }
             Shops = new ObservableCollection<ShopModel>(shops);
 
-
+            rawTerminalModels = new ObservableCollection<TerminalModel>(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetTerminals());
             var rawTerminalObjects = TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetTerminals();
 
 

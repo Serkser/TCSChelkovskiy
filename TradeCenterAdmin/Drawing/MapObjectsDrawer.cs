@@ -49,6 +49,16 @@ namespace TradeCenterAdmin.Drawing
             kiosk.ToolTip = "Киоск";
 
             kiosk.ContextMenu = new ContextMenu();
+
+
+            #region Выбор объекта при нажатии и подсветка
+            kiosk.Click += (o, e) =>
+            {
+                var terminalModel = Storage.KioskObjects.rawTerminalModels.Where(a => a.ID == station.Id).FirstOrDefault();
+                MapObjectsDrawer.ShowAndHighligthTerminalModelPoint(terminalModel);
+            };
+            #endregion
+
             #region Удалить киоск
             MenuItem deleteButton = new MenuItem
             {
@@ -171,6 +181,7 @@ namespace TradeCenterAdmin.Drawing
                             foreach (var way in point.TemplateWays.Where(o => o.Id == MapEditorPage.currentWay.Id).ToList())
                             {
                                 way.StationId = station.Id;
+                                way.FromTemplates = true;
                                 foreach (var wayPoint in way.WayPoints)
                                 {
                                     wayPoint.StationId = station.Id;
@@ -296,6 +307,15 @@ namespace TradeCenterAdmin.Drawing
 
             entry.ContextMenu = new ContextMenu();
 
+
+            #region Выбор объекта при нажатии и подсветка
+            entry.Click += (o, e) =>
+            {
+                var terminalModel = Storage.KioskObjects.rawTerminalModels.Where(a => a.ID == station.Id).FirstOrDefault();
+                MapObjectsDrawer.ShowAndHighligthTerminalModelPoint(terminalModel);
+            };
+            #endregion
+
             #region Удаление входа
             MenuItem deleteButton = new MenuItem
             {
@@ -384,6 +404,15 @@ namespace TradeCenterAdmin.Drawing
             entry.ToolTip = "Лестница";
 
             entry.ContextMenu = new ContextMenu();
+
+            #region Выбор объекта при нажатии и подсветка
+            entry.Click += (o, e) =>
+            {
+                var terminalModel = Storage.KioskObjects.rawTerminalModels.Where(a => a.ID == station.Id).FirstOrDefault();
+                MapObjectsDrawer.ShowAndHighligthTerminalModelPoint(terminalModel);
+            };
+            #endregion
+
 
             #region Удаление лестницы
             MenuItem deleteButton = new MenuItem
@@ -486,10 +515,6 @@ namespace TradeCenterAdmin.Drawing
                 Header = "Завершить маршрутом-переходом",
             };
             endByTemplate.Click += (sender1, e1) => {
-                if (MapEditorPage.currentArea == null)
-                {
-                    MessageBox.Show("Выберите область"); return;
-                }
                 Views.Windows.TemplateWays f = new Views.Windows.TemplateWays();
                 f.DataContext = MapEditorDataContext;
                 if (f.ShowDialog() == true)
@@ -506,6 +531,7 @@ namespace TradeCenterAdmin.Drawing
                             MapEditorDataContext.Floors.SelectMany(o => o.Areas).Where(o => o.Id == MapEditorPage.currentArea.Id).
                     FirstOrDefault().Ways.AddRange(template.Ways);
 
+                            //Меняем id шаблонного пути на id основного пути области
                             foreach (var way in MapEditorDataContext.Floors.SelectMany(o => o.Areas).Where(o => o.Id == MapEditorPage.currentArea.Id).
                             FirstOrDefault().Ways.Where(o => o.Id == template.WayID).ToList())
                             {
@@ -526,7 +552,6 @@ namespace TradeCenterAdmin.Drawing
                                 {
                                     point.StationId = template.Ways.LastOrDefault().StationId;
                                 }
-
                             }
                             break;
                         case WayType.WCWay:
@@ -534,9 +559,11 @@ namespace TradeCenterAdmin.Drawing
                             {
                                 MessageBox.Show("Выберите туалет"); return;
                             }
+
                             MapEditorDataContext.Floors.SelectMany(o => o.WCs).Where(o => o.Id == MapEditorPage.currentWC.Id).
                    FirstOrDefault().TemplateWays.AddRange(template.Ways);
 
+                            //Меняем id шаблонного пути на id основного пути области
                             foreach (var way in MapEditorDataContext.Floors.SelectMany(o => o.WCs).Where(o => o.Id == MapEditorPage.currentWC.Id).
                             FirstOrDefault().TemplateWays.Where(o => o.Id == template.WayID).ToList())
                             {
@@ -563,9 +590,11 @@ namespace TradeCenterAdmin.Drawing
                             MapEditorDataContext.Floors.SelectMany(o => o.ATMs).Where(o => o.Id == MapEditorPage.currentATM.Id).
                    FirstOrDefault().TemplateWays.AddRange(template.Ways);
 
+                            //Меняем id шаблонного пути на id основного пути области
                             foreach (var way in MapEditorDataContext.Floors.SelectMany(o => o.ATMs).Where(o => o.Id == MapEditorPage.currentATM.Id).
                             FirstOrDefault().TemplateWays.Where(o => o.Id == template.WayID).ToList())
                             {
+                                MessageBox.Show("замена id");
                                 way.Id = MapEditorPage.currentWay.Id;
                             }
 
@@ -583,6 +612,7 @@ namespace TradeCenterAdmin.Drawing
                             break;
                     }
 
+                    MapEditorPage.currentWay = null;
                     MapEditorPage.currentArea = null;
                     MapEditorPage.currentWayStation = null;
                     MapEditorPage.hints.Text = "Путь построен";
@@ -616,6 +646,14 @@ namespace TradeCenterAdmin.Drawing
             entry.ToolTip = "Лифт";
 
             entry.ContextMenu = new ContextMenu();
+
+            #region Выбор объекта при нажатии и подсветка
+            entry.Click += (o, e) =>
+            {
+                var terminalModel = Storage.KioskObjects.rawTerminalModels.Where(a => a.ID == station.Id).FirstOrDefault();
+                MapObjectsDrawer.ShowAndHighligthTerminalModelPoint(terminalModel);
+            };
+            #endregion
 
             #region Удаление лифта
             MenuItem deleteButton = new MenuItem
@@ -718,10 +756,6 @@ namespace TradeCenterAdmin.Drawing
                 Header = "Завершить маршрутом-переходом",
             };
             endByTemplate.Click += (sender1, e1) => {
-                if (MapEditorPage.currentArea == null)
-                {
-                    MessageBox.Show("Выберите область"); return;
-                }
                 Views.Windows.TemplateWays f = new Views.Windows.TemplateWays();
                 f.DataContext = MapEditorDataContext;
                 if (f.ShowDialog() == true)
@@ -738,6 +772,7 @@ namespace TradeCenterAdmin.Drawing
                             MapEditorDataContext.Floors.SelectMany(o => o.Areas).Where(o => o.Id == MapEditorPage.currentArea.Id).
                     FirstOrDefault().Ways.AddRange(template.Ways);
 
+                            //Меняем id шаблонного пути на id основного пути области
                             foreach (var way in MapEditorDataContext.Floors.SelectMany(o => o.Areas).Where(o => o.Id == MapEditorPage.currentArea.Id).
                             FirstOrDefault().Ways.Where(o => o.Id == template.WayID).ToList())
                             {
@@ -765,9 +800,11 @@ namespace TradeCenterAdmin.Drawing
                             {
                                 MessageBox.Show("Выберите туалет"); return;
                             }
+
                             MapEditorDataContext.Floors.SelectMany(o => o.WCs).Where(o => o.Id == MapEditorPage.currentWC.Id).
                    FirstOrDefault().TemplateWays.AddRange(template.Ways);
 
+                            //Меняем id шаблонного пути на id основного пути области
                             foreach (var way in MapEditorDataContext.Floors.SelectMany(o => o.WCs).Where(o => o.Id == MapEditorPage.currentWC.Id).
                             FirstOrDefault().TemplateWays.Where(o => o.Id == template.WayID).ToList())
                             {
@@ -794,9 +831,11 @@ namespace TradeCenterAdmin.Drawing
                             MapEditorDataContext.Floors.SelectMany(o => o.ATMs).Where(o => o.Id == MapEditorPage.currentATM.Id).
                    FirstOrDefault().TemplateWays.AddRange(template.Ways);
 
+                            //Меняем id шаблонного пути на id основного пути области
                             foreach (var way in MapEditorDataContext.Floors.SelectMany(o => o.ATMs).Where(o => o.Id == MapEditorPage.currentATM.Id).
                             FirstOrDefault().TemplateWays.Where(o => o.Id == template.WayID).ToList())
                             {
+                                MessageBox.Show("замена id");
                                 way.Id = MapEditorPage.currentWay.Id;
                             }
 
@@ -814,6 +853,7 @@ namespace TradeCenterAdmin.Drawing
                             break;
                     }
 
+                    MapEditorPage.currentWay = null;
                     MapEditorPage.currentArea = null;
                     MapEditorPage.currentWayStation = null;
                     MapEditorPage.hints.Text = "Путь построен";
@@ -847,6 +887,15 @@ namespace TradeCenterAdmin.Drawing
             entry.ToolTip = "Эскалатор";
 
             entry.ContextMenu = new ContextMenu();
+
+
+            #region Выбор объекта при нажатии и подсветка
+            entry.Click += (o, e) =>
+            {
+                var terminalModel = Storage.KioskObjects.rawTerminalModels.Where(a => a.ID == station.Id).FirstOrDefault();
+                MapObjectsDrawer.ShowAndHighligthTerminalModelPoint(terminalModel);
+            };
+            #endregion
 
             #region Удаление эскалатора
             MenuItem deleteButton = new MenuItem
@@ -965,6 +1014,7 @@ namespace TradeCenterAdmin.Drawing
                             MapEditorDataContext.Floors.SelectMany(o => o.Areas).Where(o => o.Id == MapEditorPage.currentArea.Id).
                     FirstOrDefault().Ways.AddRange(template.Ways);
 
+                            //Меняем id шаблонного пути на id основного пути области
                             foreach (var way in MapEditorDataContext.Floors.SelectMany(o => o.Areas).Where(o => o.Id == MapEditorPage.currentArea.Id).
                             FirstOrDefault().Ways.Where(o => o.Id == template.WayID).ToList())
                             {
@@ -992,9 +1042,11 @@ namespace TradeCenterAdmin.Drawing
                             {
                                 MessageBox.Show("Выберите туалет"); return;
                             }
+
                             MapEditorDataContext.Floors.SelectMany(o => o.WCs).Where(o => o.Id == MapEditorPage.currentWC.Id).
                    FirstOrDefault().TemplateWays.AddRange(template.Ways);
 
+                            //Меняем id шаблонного пути на id основного пути области
                             foreach (var way in MapEditorDataContext.Floors.SelectMany(o => o.WCs).Where(o => o.Id == MapEditorPage.currentWC.Id).
                             FirstOrDefault().TemplateWays.Where(o => o.Id == template.WayID).ToList())
                             {
@@ -1021,9 +1073,11 @@ namespace TradeCenterAdmin.Drawing
                             MapEditorDataContext.Floors.SelectMany(o => o.ATMs).Where(o => o.Id == MapEditorPage.currentATM.Id).
                    FirstOrDefault().TemplateWays.AddRange(template.Ways);
 
+                            //Меняем id шаблонного пути на id основного пути области
                             foreach (var way in MapEditorDataContext.Floors.SelectMany(o => o.ATMs).Where(o => o.Id == MapEditorPage.currentATM.Id).
                             FirstOrDefault().TemplateWays.Where(o => o.Id == template.WayID).ToList())
                             {
+                                MessageBox.Show("замена id");
                                 way.Id = MapEditorPage.currentWay.Id;
                             }
 
@@ -1041,7 +1095,7 @@ namespace TradeCenterAdmin.Drawing
                             break;
                     }
 
-                    
+                    MapEditorPage.currentWay = null;
                     MapEditorPage.currentArea = null;
                     MapEditorPage.currentWayStation = null;
                     MapEditorPage.hints.Text = "Путь построен";
@@ -1074,6 +1128,18 @@ namespace TradeCenterAdmin.Drawing
             entry.ToolTip = "Туалет";
 
             entry.ContextMenu = new ContextMenu();
+
+            #region Выбор туалета и показ информации в экспандере выбранного объекта
+            entry.Click += (o, e) =>
+            {
+                MapEditorPage.currentATM = null; MapEditorPage.currentArea = null;
+                MapEditorPage.currentWC = station as WC;
+                SelectedAreaExpander.ShowStationInfo(station,MapTerminalPointType.WC);
+                var terminalModel = Storage.KioskObjects.rawTerminalModels.Where(a => a.ID == station.Id).FirstOrDefault();
+                MapObjectsDrawer.ShowAndHighligthTerminalModelPoint(terminalModel);
+            };
+            #endregion
+
 
             #region Удаление туалета
             MenuItem deleteButton = new MenuItem
@@ -1177,6 +1243,21 @@ namespace TradeCenterAdmin.Drawing
             entry.ToolTip = "Банкомат";
 
             entry.ContextMenu = new ContextMenu();
+
+            #region Выбор банкомата и показ информации в экспандере выбранного объекта
+            entry.Click += (o, e) =>
+            {
+                MapEditorPage.currentWC = null; MapEditorPage.currentArea = null;
+                MapEditorPage.currentATM = station as ATM;
+
+
+                SelectedAreaExpander.ShowStationInfo(station, MapTerminalPointType.ATMCash);
+
+                var terminalModel = Storage.KioskObjects.rawTerminalModels.Where(a => a.ID == MapEditorPage.currentATM.Id).FirstOrDefault();
+                MapObjectsDrawer.ShowAndHighligthTerminalModelPoint(terminalModel);
+            };
+            #endregion
+
 
             #region Удаление банкомата
             MenuItem deleteButton = new MenuItem
@@ -1519,8 +1600,6 @@ namespace TradeCenterAdmin.Drawing
                 };
                 geometry.Figures.Add(figure);
 
-
-
                 Path perimeter = new Path
                 {
                     Uid = area.Id.ToString(),
@@ -1546,6 +1625,7 @@ namespace TradeCenterAdmin.Drawing
                 {
                     MapEditorPage.currentArea = MapEditorDataContext.SelectedFloor.Areas
                     .Where(o => o.Id == Convert.ToInt32(perimeter.Uid)).FirstOrDefault();
+                    MapEditorPage.currentATM = null; MapEditorPage.currentWC = null;
                     SelectedAreaExpander.ShowAreaInfo(area);
 
 
@@ -1990,9 +2070,9 @@ namespace TradeCenterAdmin.Drawing
                     }
                 }
             }
-            DrawWayTemplates();
-            DrawWCWays();
-            DrawATMWays();
+            //DrawWayTemplates();
+            //DrawWCWays();
+            //DrawATMWays();
         }
         //Загрузка объектов, отрисовка путей только выбранной области
         public static void LoadFloorObjects(Area selectedArea)
@@ -2029,9 +2109,70 @@ namespace TradeCenterAdmin.Drawing
                     }
                 }
             }
-            DrawWayTemplates();
-            DrawWCWays();
-            DrawATMWays();
+            //DrawWayTemplates();
+            //DrawWCWays();
+            //DrawATMWays();
+        }
+        //Загрузка объектов, отрисовка путей только выбранного туалета или банкомата
+        public static void LoadFloorObjects(Station selectedPoint, MapTerminalPointType type)
+        {
+            BaseDrawing();
+
+            if (MapEditorDataContext.HideAllWays)
+            {
+                if (MapEditorDataContext.EditingWay != null)
+                {
+                    MapObjectsDrawer.DrawWays(MapEditorDataContext.EditingWay, MapEditorDataContext.SelectedFloor.Id, System.Windows.Media.Brushes.Red);
+                }
+                return;
+            }
+
+            //Рисуем пути станции
+            if (selectedPoint == null)
+            {
+                LoadFloorObjects(); return;
+            }
+            foreach (var floor in MapEditorDataContext.Floors)
+            {
+                switch (type)
+                {
+                    case MapTerminalPointType.WC:
+                        foreach (var wc in floor.WCs)
+                        {
+                            if (wc.Id == selectedPoint.Id)
+                            {
+                                foreach (var way in wc.TemplateWays.ToList())
+                                {
+                                    if (way.WayPoints.Where(o => o.FloorId == MapEditorDataContext.SelectedFloor.Id).FirstOrDefault() != null)
+                                    {
+                                        MapObjectsDrawer.DrawWays(way, MapEditorDataContext.SelectedFloor.Id);
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case MapTerminalPointType.ATMCash:
+                        foreach (var atm in floor.ATMs)
+                        {
+                            if (atm.Id == selectedPoint.Id)
+                            {
+                                foreach (var way in atm.TemplateWays.ToList())
+                                {
+                                    if (way.WayPoints.Where(o => o.FloorId == MapEditorDataContext.SelectedFloor.Id).FirstOrDefault() != null)
+                                    {
+                                        MapObjectsDrawer.DrawWays(way, MapEditorDataContext.SelectedFloor.Id);
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                }
+
+               
+            }
+            //DrawWayTemplates();
+            //DrawWCWays();
+            //DrawATMWays();
         }
         //Загрузка объектов, отрисовка всех путей, подсветка выбранного пути
         public static void LoadFloorObjectsWithWayHighlighting(Way selectedWay, bool hideOther = false)
@@ -2103,8 +2244,6 @@ namespace TradeCenterAdmin.Drawing
             {
                 string uidpostfix = MapEditorPage.GetTerminalMapObjectUIDPostfix(model);
 
-
-
                 for (int i = 0; i < MapEditorDataContext.Floors.Count; i++)
                 {
                     var floor = MapEditorDataContext.Floors[i];
@@ -2117,18 +2256,14 @@ namespace TradeCenterAdmin.Drawing
                     }
                 }
 
-
-                MapObjectsDrawer.LoadFloorObjects();
                 for (int i = 0; i < MapEditorPage.canvasMap.Children.Count; i++)
                 {
                     var uielement = MapEditorPage.canvasMap.Children[i];
                     if (uielement is Button)
                     {
+                        BitmapImage icon = null;
                         if (uielement.Uid == model.ID.ToString() + uidpostfix)
-                        {
-
-                            BitmapImage icon = null;
-
+                        {                         
                             switch (model.Type)
                             {
                                 case MapTerminalPointType.Termanals:
@@ -2155,8 +2290,45 @@ namespace TradeCenterAdmin.Drawing
                                     icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/Highligthted/EscalatorIcon.png"));
                                     ((Button)uielement).Background = new ImageBrush(icon);
                                     break;
+                                case MapTerminalPointType.Entrance:
+                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/Highligthted/EntranceIcon.png"));
+                                    ((Button)uielement).Background = new ImageBrush(icon);
+                                    break;
                             }
-                            return true;
+                        }
+                        else
+                        {
+                            switch (model.Type)
+                            {
+                                case MapTerminalPointType.Termanals:
+                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/StationIcon.png"));
+                                    ((Button)uielement).Background = new ImageBrush(icon);
+                                    break;
+                                case MapTerminalPointType.WC:
+                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/WCIcon.png"));
+                                    ((Button)uielement).Background = new ImageBrush(icon);
+                                    break;
+                                case MapTerminalPointType.ATMCash:
+                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/ATMIcon.png"));
+                                    ((Button)uielement).Background = new ImageBrush(icon);
+                                    break;
+                                case MapTerminalPointType.Stairs:
+                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/StairsIcon.png"));
+                                    ((Button)uielement).Background = new ImageBrush(icon);
+                                    break;
+                                case MapTerminalPointType.Lift:
+                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/ElevatorIcon.png"));
+                                    ((Button)uielement).Background = new ImageBrush(icon);
+                                    break;
+                                case MapTerminalPointType.Escolator:
+                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/EscalatorIcon.png"));
+                                    ((Button)uielement).Background = new ImageBrush(icon);
+                                    break;
+                                case MapTerminalPointType.Entrance:
+                                    icon = new BitmapImage(new Uri("pack://application:,,,/Images/Icons/EntranceIcon.png"));
+                                    ((Button)uielement).Background = new ImageBrush(icon);
+                                    break;
+                            }
                         }
                     }
                 }

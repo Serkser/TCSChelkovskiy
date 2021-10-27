@@ -169,11 +169,34 @@ namespace TradeCenterAdmin.Views.Pages
         
         private void areaDeleteWayHandler(object sender, RoutedEventArgs e)
         {
-            SelectedAreaExpander.AreaWaysDeleteHandler();
+            if (currentArea != null)
+            {
+                SelectedAreaExpander.AreaWaysDeleteHandler();
+            }
+            else if (currentWC != null)
+            {
+                SelectedAreaExpander.StationWaysDeleteHandler(MapTerminalPointType.WC);
+            }
+            else if (currentATM != null)
+            {
+                SelectedAreaExpander.StationWaysDeleteHandler(MapTerminalPointType.ATMCash);
+            }
+
         }
         private void areaDeleteAllWaysHandler(object sender, RoutedEventArgs e)
         {
-            SelectedAreaExpander.AreaDeleteAllWaysHandler();
+            if (currentArea != null)
+            {
+                SelectedAreaExpander.AreaDeleteAllWaysHandler();
+            }
+            else if (currentWC != null)
+            {
+                SelectedAreaExpander.StationDeleteAllWaysHandler(MapTerminalPointType.WC);
+            }
+            else if (currentATM != null)
+            {
+                SelectedAreaExpander.StationDeleteAllWaysHandler(MapTerminalPointType.ATMCash);
+            }
         }
 
         /// Подсвечивание выбранного маршута области
@@ -184,7 +207,22 @@ namespace TradeCenterAdmin.Views.Pages
         #region Показ маршрутов только выделенной области
         private void areaCheckedOwnWays(object sender, RoutedEventArgs e)
         {
-            MapObjectsDrawer.LoadFloorObjects(currentArea);
+            if (currentArea != null)
+            {
+                MapObjectsDrawer.LoadFloorObjects(currentArea);
+            }
+            else if (currentWC != null)
+            {
+                MapObjectsDrawer.LoadFloorObjects(currentWC,MapTerminalPointType.WC);
+            }
+            else if (currentATM != null)
+            {
+                MapObjectsDrawer.LoadFloorObjects(currentATM, MapTerminalPointType.ATMCash);
+            }
+            else
+            {
+                MapObjectsDrawer.LoadFloorObjects();
+            }
         }
 
         private void areaUncheckedOwnWays(object sender, RoutedEventArgs e)
@@ -397,8 +435,13 @@ namespace TradeCenterAdmin.Views.Pages
         }
         #endregion
 
-       
 
+        #region Экспандер с маршрутами-шаблонами
+        private void deleteTemplateWay(object sender, RoutedEventArgs e)
+        {
+            TemplateWaysExpander.TemplateWayDeleteHandler();
+        }
+        #endregion
 
         public string GetTerminalMapObjectUIDPostfix(TerminalModel model)
         {
@@ -458,6 +501,6 @@ namespace TradeCenterAdmin.Views.Pages
              
         }
 
-       
+      
     }
 }

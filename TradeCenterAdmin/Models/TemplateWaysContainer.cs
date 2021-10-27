@@ -13,7 +13,9 @@ namespace TradeCenterAdmin.Models
         public int WayID { get; set; }
         public string FloorsString { get; set; }
         public string PointName { get; set; }
+        public int PointID { get; set; }
         public string KioskName { get; set; }
+        public int? KioskID { get; set; }
         public override string ToString()
         {
             return $"Маршрут-переход {WayID} c {PointName}  до {KioskName}" +

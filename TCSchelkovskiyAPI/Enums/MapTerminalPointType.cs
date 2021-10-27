@@ -13,6 +13,7 @@ namespace TCSchelkovskiyAPI.Enums
         Escolator = 3,
         Lift =4,
         Stairs = 5,
-        ATMCash = 6
+        ATMCash = 6,
+        Entrance =7
     }
 }
