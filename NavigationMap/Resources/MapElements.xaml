@@ -12,26 +12,32 @@
             <b:Interaction.Behaviors>
                 <behaviors:MapElementsScaleBehavior />
             </b:Interaction.Behaviors>
-            <Image Width="100" Height="136" Source="/NavigationMap;component/Images/YouAreHere.png"></Image>
+            <Image Margin="-350,-1000,0,0" Width="700" Height="1000" Source="/NavigationMap;component/Images/YouAreHere.png"></Image>
         </Grid>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type models:ATM}">
         <Grid>
-            <!--<b:Interaction.Behaviors>
-                <behaviors:MapElementsScaleBehavior />
-            </b:Interaction.Behaviors>-->
-            <Image Width="400" Height="400" Source="/NavigationMap;component/Images/ATMIcon.png"></Image>
+            <Image Width="400" Height="400" Source="/NavigationMap;component/Images/ATMIcon.png">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="MouseDown">
+                        <b:InvokeCommandAction Command="{Binding SelectATMCommand}" PassEventArgsToCommand="True" />
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Image>
         </Grid>
     </DataTemplate>
 
 
-    <DataTemplate DataType="{x:Type models:WC}">
-        <Grid>
-            <!--<b:Interaction.Behaviors>
-                <behaviors:MapElementsScaleBehavior />
-            </b:Interaction.Behaviors>-->
-            <Image Width="400" Height="400" Source="/NavigationMap;component/Images/WCIcon.png"></Image>
+    <DataTemplate DataType="{x:Type models:WC}" >
+        <Grid  Width="400" Height="400">
+            <Image Width="400" Height="400" Source="/NavigationMap;component/Images/WCIcon.png">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="MouseDown">
+                        <b:InvokeCommandAction Command="{Binding SelectWCCommand}" PassEventArgsToCommand="True" />
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Image>
         </Grid>
     </DataTemplate>
 

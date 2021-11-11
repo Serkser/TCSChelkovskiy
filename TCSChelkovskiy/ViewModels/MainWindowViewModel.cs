@@ -64,14 +64,17 @@ namespace TCEvropeyskiy.ViewModels
 
         async Task LoadBanners()
         {
-            try
+            foreach (var img in BannersUrls)
             {
-                foreach (var img in BannersUrls)
+                try
                 {
+
                     img.Image = await ImageDownloader.DownloadImage(Path.Combine("uploads/banners/" + img.BannerModel.Image), Path.GetFileName(img.BannerModel.Image));
+
                 }
+                catch { }
             }
-            catch { }
+
         }
         int currentSlideIndex = 0;
         async Task SlideBanners()

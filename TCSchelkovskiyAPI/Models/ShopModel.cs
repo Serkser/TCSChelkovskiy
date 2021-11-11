@@ -15,6 +15,7 @@ namespace TCSchelkovskiyAPI.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public string Phone { get; set; }
+        public string Status { get; set; }
         public FloorModel Floor { get; set; }
         public List<string> Images { get; set; }
         public List<CategoryModel> Categories { get; set; }

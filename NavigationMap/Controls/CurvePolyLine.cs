@@ -41,7 +41,7 @@ namespace NavigationMap.Controls
         {
             if (Points.Count < 3)
             {
-                Points.Add(Points[0]);
+                Points.Add(Points[1]);
             }
 
             Point[] points = Points
@@ -116,7 +116,7 @@ namespace NavigationMap.Controls
         {
             if (points == null || points.Count < 3)
             {
-                return null;
+                return points;
             }
 
             iterationCount = iterationCount switch

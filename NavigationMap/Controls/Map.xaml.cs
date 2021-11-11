@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using NavigationMap.Helpers;
 
+
 namespace NavigationMap.Controls
 {
     /// <summary>
@@ -103,101 +104,12 @@ namespace NavigationMap.Controls
             {
                 return;
             }
-
-            IEnumerable<Way> ways = area.Ways.Where(w => w.StationId == SelectedStation.Id);
+            IEnumerable<Way> ways = area.Ways.Reverse().Where(w => w.StationId == SelectedStation.Id);
 
             foreach (Way way in ways)
             {
                 SelectedAreaToStationWays.Clear();
 
-                if (!way.WayPoints.Any())
-                {
-                    continue;
-                }
-
-                Floor floor = Floors.FirstOrDefault(f => f.Id == way.FloorId);
-
-                if (floor is null)
-                {
-                    continue;
-                }
-
-                var wayPointToNavigate = way.WayPoints.FirstOrDefault();
-
-                if (wayPointToNavigate is null)
-                {
-                    continue;
-                }
-
-                Navigate(wayPointToNavigate.Position, floor);
-
-                double offsetX = wayPointToNavigate.Position.X;
-                double offsetY = wayPointToNavigate.Position.Y;
-
-                Point NormalizePoint(Point p)
-                {
-                    return new(offsetX - p.X, offsetY - p.Y);
-                }
-
-                PathGeometry animationPath = new();
-
-                PathFigure pFigure = new()
-                {
-                    StartPoint = NormalizePoint(wayPointToNavigate.Position)
-                };
-
-                PolyLineSegment line = new();
-
-                foreach (Point point in way.WayPoints.Select(p => p.Position))
-                {
-                    line.Points.Add(NormalizePoint(point));
-                }
-
-                pFigure.Segments.Add(line);
-
-                animationPath.Figures.Add(pFigure);
-
-                animationPath.Freeze();
-
-                int duration = way.WayPoints.Count * 900;
-
-                MatrixAnimationUsingPath matrixAnimation =
-                    new()
-                    {
-                        PathGeometry = animationPath,
-                        Duration = TimeSpan.FromMilliseconds(duration),
-                        IsAdditive = true,
-                        IsAngleCumulative = true,
-                        IsOffsetCumulative = true
-                    };
-
-                ScenarioCommands.Add(new ScenarioCommand()
-                {
-                    Animation = matrixAnimation,
-                    ScenarioBeforeAction = () =>
-                    {
-                        SelectedAreaToStationWays.Add(way);
-                    }
-                });
-
-               // ResetZoom();
-            }
-
-           // ResetZoom();
-        }
-        public void NavigateToWC(int wcId)
-        {
-            WC wc = Floors.SelectMany(f => f.WCs).FirstOrDefault(a => a.Id == wcId);
-
-            if (wc is null)
-            {
-                return;
-            }
-            IEnumerable<Way> ways = wc.TemplateWays.Reverse().Where(w => w.StationId == SelectedStation.Id);
-
-            foreach (Way way in ways)
-            {
-               
                 if (!way.WayPoints.Any())
                 {
                     continue;
@@ -267,10 +179,97 @@ namespace NavigationMap.Controls
                         SelectedAreaToStationWays.Add(way);
                     }
                 });
+
+                // ResetZoom();
+            }
+
+            // ResetZoom();
+        }
+
+        public void NavigateToPoint(Station station)
+        {
+            if (station == null) { return; }
+
+            IEnumerable<Way> ways = station.TemplateWays.Reverse().Where(w => w.StationId == SelectedStation.Id);
+
+            foreach (Way way in ways)
+            {
+                //SelectedAreaToStationWays.Clear();
+
+                if (!way.WayPoints.Any())
+                {
+                    continue;
+                }
+                Floor floor = Floors.FirstOrDefault(f => f.Id == way.FloorId);
+
+                if (floor is null)
+                {
+                    continue;
+                }
+
+                var wayPointToNavigate = way.WayPoints.LastOrDefault();
+
+                if (wayPointToNavigate is null)
+                {
+                    continue;
+                }
+
+                Navigate(wayPointToNavigate.Position, floor);
+
+                double offsetX = wayPointToNavigate.Position.X;
+                double offsetY = wayPointToNavigate.Position.Y;
+
+                Point NormalizePoint(Point p)
+                {
+                    return new(offsetX - p.X, offsetY - p.Y);
+                }
+
+                PathGeometry animationPath = new();
+
+                PathFigure pFigure = new()
+                {
+                    StartPoint = NormalizePoint(wayPointToNavigate.Position)
+                };
+
+                PolyLineSegment line = new();
+
+                foreach (Point point in way.WayPoints.Reverse().Select(p => p.Position))
+                {
+                    line.Points.Add(NormalizePoint(point));
+                }
+
+                pFigure.Segments.Add(line);
+
+                animationPath.Figures.Add(pFigure);
+
+                animationPath.Freeze();
+
+                int duration = way.WayPoints.Count * 900;
+
+                MatrixAnimationUsingPath matrixAnimation =
+                    new()
+                    {
+                        PathGeometry = animationPath,
+                        Duration = TimeSpan.FromMilliseconds(duration),
+                        IsAdditive = true,
+                        IsAngleCumulative = true,
+                        IsOffsetCumulative = true
+                    };
+
+                ScenarioCommands.Add(new ScenarioCommand()
+                {
+                    Animation = matrixAnimation,
+                    ScenarioBeforeAction = () =>
+                    {
+                        SelectedAreaToStationWays.Add(way);
+                    }
+                });
                 // ResetZoom();
             }
             // ResetZoom();
         }
+
+       
         public void ZoomIn(double zoomStep = ZOOM_STEP)
         {
             Zoom(true, zoomStep);
@@ -417,7 +416,8 @@ namespace NavigationMap.Controls
 
             map?.SelectedAreaToStationWays?.Clear();
             var floor = e.NewValue as Floor;
-            map.MapImageDisposable = new DisposableImage(Path.GetFullPath((e.NewValue as Floor).Image));
+
+           map.MapImageDisposable = new DisposableImage(Path.GetFullPath((e.NewValue as Floor).Image));
         }
 
         public Floor SelectedFloor
@@ -474,7 +474,7 @@ namespace NavigationMap.Controls
                     await Task.Delay((int)scenarioCommand.Animation.Duration.TimeSpan.TotalMilliseconds);
                 }
 
-                scenarioCommand.ScenarioAfterAction?.Invoke();
+                scenarioCommand?.ScenarioAfterAction?.Invoke();
 
                 ScenarioCommands.Remove(scenarioCommand);
             }
@@ -511,7 +511,6 @@ namespace NavigationMap.Controls
                 Dispatcher.Invoke(() =>
                 {
                     MatrixTransform mapContainerMt = (MatrixTransform)MapContainer.RenderTransform;
-
                     mapContainerMt?.BeginAnimation(MatrixTransform.MatrixProperty, matrixAnimation);
                 });
             }
@@ -534,7 +533,6 @@ namespace NavigationMap.Controls
             {
                 return;
             }
-
             Navigate(mapElement.Position, floor);
         }
 
@@ -615,6 +613,7 @@ namespace NavigationMap.Controls
             _state.OnAreaSelected += _state_OnAreaSelected;
             _state.OnWCSelected += _state_OnWCSelected;
             _state.OnATMSelected += _state_OnATMSelected;
+            if (SelectedFloor!=null&& SelectedFloor.Image != null)
             MapImageDisposable = new DisposableImage(Path.GetFullPath(SelectedFloor?.Image));
         }
 
@@ -624,7 +623,6 @@ namespace NavigationMap.Controls
             _state.OnAreaSelected -= _state_OnAreaSelected;
             _state.OnWCSelected -= _state_OnWCSelected;
             _state.OnATMSelected -= _state_OnATMSelected;
-
             SelectedAreaToStationWays.DisposeAndClear();
             ScenarioCommands.DisposeAndClear();
 

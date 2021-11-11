@@ -7,13 +7,13 @@ namespace NavigationMap.Models
 {
     public class Station : ObservableObject,ICloneable
     {
-        private DateTime _editDate;
+        private DateTime editDate;
         public DateTime EditDate
         {
-            get => _editDate;
+            get => editDate;
             set
             {
-                _editDate = value;
+                editDate = value;
                 OnPropertyChanged();
             }
         }
@@ -86,10 +86,6 @@ namespace NavigationMap.Models
                 OnPropertyChanged();
             }
         }
-
-        /// <summary>
-        /// Маршруты переходы от лифта/лестницы/эскалатора до киоска
-        /// </summary>
         public ObservableCollection<Way> TemplateWays { get; } = new();
         public Station()
         {

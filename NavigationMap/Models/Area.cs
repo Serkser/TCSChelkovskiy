@@ -1,5 +1,4 @@
 ﻿using NavigationMap.Core;
-using NavigationMap.Enums;
 using NavigationMap.Helpers;
 
 using System;
@@ -11,7 +10,7 @@ using System.Windows.Media;
 
 namespace NavigationMap.Models
 {
-    public class Area : ObservableObject, IMapElement, IDisposable,ICloneable
+    public class Area : ObservableObject, IMapElement, IDisposable, ICloneable
     {
         private State _state;
 
@@ -23,7 +22,16 @@ namespace NavigationMap.Models
 
             Points.CollectionChanged += Points_CollectionChanged;
         }
-
+        private DateTime editDate;
+        public DateTime EditDate
+        {
+            get => editDate;
+            set
+            {
+                editDate = value;
+                OnPropertyChanged();
+            }
+        }
         private string _image;
 
         public string Image
@@ -83,27 +91,7 @@ namespace NavigationMap.Models
                 OnPropertyChanged();
             }
         }
-        private int _innerId;
 
-        public int InnerId
-        {
-            get => _innerId;
-            set
-            {
-                _innerId = value;
-                OnPropertyChanged();
-            }
-        }
-        private DateTime _editDate;
-        public DateTime EditDate
-        {
-            get =>  _editDate;
-            set
-            {
-                _editDate = value;
-                OnPropertyChanged();
-            }
-        }
         public Point MiddlePoint => GeometryHelper.GetMiddlePoint(PointCollection);
 
         private Point _position;
@@ -119,7 +107,7 @@ namespace NavigationMap.Models
         }
 
         public PointCollection PointCollection =>
-            new(Points.Where(p => p.PointType == PointTypeEnum.Shape).Select(p => p.Position));
+            new(Points.Select(p => p.Position));
 
         private string _workingTime;
 
@@ -166,17 +154,11 @@ namespace NavigationMap.Models
         public ObservableCollection<AreaCategory> AreaCategories { get; } = new();
 
         private RelayCommand _selectAreaCommand;
-
-        public RelayCommand SelectAreaCommand
-        {
-            get
+        public RelayCommand SelectAreaCommand =>
+            _selectAreaCommand ??= new RelayCommand(obj =>
             {
-                return _selectAreaCommand ??= new RelayCommand(obj =>
-                {
-                    _state.SelectArea(this);
-                });
-            }
-        }
+                _state.SelectArea(this);
+            });
 
         private void Points_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -211,7 +193,6 @@ namespace NavigationMap.Models
 
             _disposed = true;
         }
-
         public object Clone()
         {
             Area clone = (Area)this.MemberwiseClone();

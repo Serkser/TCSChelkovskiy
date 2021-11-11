@@ -1,5 +1,6 @@
 ﻿using NavigationMap.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,7 +8,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using TCSChelkovskiy.Models;
@@ -64,9 +64,10 @@ namespace TCSChelkovskiy.Memory
                 }
                 
 
-                //MessageBox.Show(Banners.Count.ToString());
+                //
 
                 var filterFloors = TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors();
+           
                 filterFloors.Sort();
                 FilterFloors = new ObservableCollection<FloorModel>(filterFloors);
 
@@ -78,7 +79,7 @@ namespace TCSChelkovskiy.Memory
                 Contacts = TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetContacts();
                 AboutMall = TCSchelkovskiyAPI.TCSchelkovskiyAPI.AboutMall();
 
-
+            
                 RestoreSettings();
             });
 
@@ -87,9 +88,12 @@ namespace TCSChelkovskiy.Memory
         static JsonSerializer serializer = new JsonSerializer();
         public static void RestoreSettings()
         {
-            Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
+            
+            //MessageBox.Show(Banners.Count.ToString());
+            //Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());        
             ConvertToFloorsFromJson(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
             GetCurrentStationFromTxt();
+
         }
         public static void GetCurrentStationFromTxt()
         {
@@ -114,11 +118,12 @@ namespace TCSChelkovskiy.Memory
                 }
             }
 
+          
             if (CurrentStation == null)
             {
                 CurrentStation = CurrentStation = Floors[0].Stations.FirstOrDefault();
             }
-
+           
         }
         public static string FilePath = @"settings.json";
         private static ObservableCollection<Floor> ConvertToFloors(List<FloorModel> floors)
@@ -150,8 +155,6 @@ namespace TCSChelkovskiy.Memory
         private static void ConvertToFloorsFromJson(List<FloorModel> floors)
         {
             floorCount = floors.Count;
-            List<Floor> floorList = new List<Floor>();
-
             foreach (var fl in floors)
             {
                 try
@@ -166,23 +169,25 @@ namespace TCSChelkovskiy.Memory
                     WebClient client = new WebClient();
                     client.DownloadFile(url, jsonFile);
 
+
+                    if (!File.Exists(Path.Combine(Environment.CurrentDirectory, "AllImages", fl.Image)))
+                    {
+                        Services.ImageDownloader.DownloadImage(fl.ImagesPrefix + fl.Image, fl.Image).Wait();
+                    }
+
                     if (File.Exists(jsonFile))
                     {
-
-                        using (StreamReader file = File.OpenText(jsonFile))
+                        using (Stream s = new FileStream(jsonFile, FileMode.Open))
                         {
-                            floorFromJson = (Floor)serializer.Deserialize(file, typeof(Floor));
+                            using (StreamReader sr = new StreamReader(s))
+                            {
+                                string json = sr.ReadToEnd();
+                                var floorJson = (JsonConvert.DeserializeObject(json) as JObject).ToObject<Floor>();
+                                floorJson.Image = Path.Combine(Environment.CurrentDirectory, "AllImages", fl.Image);
+                                Floors.Add(floorJson);
+                            }
                         }
-                    }
-                    var selected = Floors.Where(o => o.Id == floorFromJson.Id).FirstOrDefault();
-                    if (selected != null)
-                    {
-
-                        int itemIndex = Floors.IndexOf(selected);
-                        string img = Floors[itemIndex].Image;
-                        Floors[itemIndex] = floorFromJson;
-                        Floors[itemIndex].Image = img;
-                    }
+                    }                            
                 }
                 catch (Exception ex)
                 {

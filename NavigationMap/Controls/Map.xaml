@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NavigationMap.Controls"
-             xmlns:models="clr-namespace:NavigationMap.Models" xmlns:flipView="https://github.com/GuOrg/Gu.Wpf.FlipView"
+             xmlns:models="clr-namespace:NavigationMap.Models" 
+             xmlns:flipView="https://github.com/GuOrg/Gu.Wpf.FlipView"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Name="Self" Loaded="Map_OnLoaded" Unloaded="Map_OnUnloaded">
@@ -17,6 +18,8 @@
                 <Grid>
                     <local:CurvePolyLine
                         IterationCount="3"
+                        StrokeEndLineCap="Round"
+                        StrokeStartLineCap="Round"
                         Points="{Binding PointCollection}"
                         Stroke="{Binding WayStrokeColor, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                         StrokeThickness="30"
@@ -139,22 +142,25 @@
                         </flipView:FlipView.LayoutTransform>
                         <flipView:FlipView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Name="Map" RenderTransformOrigin="0.5, 0.5">
+                                <Grid Name="Map" RenderTransformOrigin="0.5, 0.5"
+                                      VirtualizingStackPanel.IsVirtualizing="True" 
+                                      VirtualizingStackPanel.VirtualizationMode="Recycling">
                                     <Grid.LayoutTransform>
                                         <RotateTransform Angle="-90" />
                                     </Grid.LayoutTransform>
-                                    <Grid Background="White">
-                                        <Border Background="Aqua">
+                                    <Grid Background="Transparent">
+                                        <Border>
                                             <Image
                                                 Focusable="True"
                                                 Width="9000"
                                                 Height="9000"
                                                 SnapsToDevicePixels="True"
-                                                Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=MapImageDisposable.Source}"
-                                                Stretch="Uniform">
-                                                <Image.CacheMode>
+                                                Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=MapImageDisposable.Source, IsAsync=True}"
+                                                Stretch="Uniform"
+                                                RenderOptions.BitmapScalingMode="HighQuality">
+                                                <!--<Image.CacheMode>
                                                     <BitmapCache EnableClearType="True" RenderAtScale="1" SnapsToDevicePixels="True"/>
-                                                </Image.CacheMode>
+                                                </Image.CacheMode>-->
                                             </Image>
                                         </Border>
                                         <ItemsControl Focusable="False">

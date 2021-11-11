@@ -25,7 +25,7 @@ namespace TCSchelkovskiyAPI
 
         }
 
-        public static string HOST { get; set; } = "https://europa.useful.su";
+        public static string HOST { get; set; } = "https://navigator.useful.su";
         public static List<FloorModel> GetFloors()
         {
             
@@ -40,6 +40,7 @@ namespace TCSchelkovskiyAPI
                 response = client.Execute(request);
 
                 dynamic data = JsonConvert.DeserializeObject(response.Content);
+                MessageBox.ShowMessageBox(response.Content);
 
                 foreach (var user in data)
                 {
@@ -279,6 +280,7 @@ namespace TCSchelkovskiyAPI
                             Name = shop.name.ToString(),
                             Icon = shop.icon.ToString(),
                             Description = shop.description.ToString(),
+                            Status = shop.status?.ToString(),
                             Phone = shop.phone.ToString(),
                             Floor = new FloorModel
                             {
@@ -833,6 +835,75 @@ namespace TCSchelkovskiyAPI
             request.AddParameter("message", feedback.Text);
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
+        }
+
+        public static List<KeywordModel> GetKeywords()
+        {
+            string url = HOST + "/api/v1/keywords";
+            List<KeywordModel> keywords = new List<KeywordModel>();
+            RestClient client = new RestClient(url);
+            request = new RestRequest(Method.GET);
+            request.Timeout = 60 * 5 * 1000;
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            response = client.Execute(request);
+
+            dynamic data = JsonConvert.DeserializeObject(response.Content);
+
+            foreach (var keyword in data)
+            {
+                KeywordModel model = new KeywordModel();
+                model.Title = keyword.title.ToString();
+
+                try
+                {
+                    if (keyword.shops_list != null)
+                    {
+                        foreach (var shopId in keyword.shops_list)
+                        {
+                            model.ShopIDs.Add(Convert.ToInt32(shopId));
+                        }
+                    }
+
+                }
+                catch { }
+
+                keywords.Add(model);
+            }
+            return keywords;
+        }
+
+        public static List<KeywordModel> SearchKeywords(string word)
+        {
+            string url = HOST + "/api/v1/shops/search_keywords";
+            List<KeywordModel> keywords = new List<KeywordModel>();
+            RestClient client = new RestClient(url);
+            client.Timeout = -1;
+            request = new RestRequest(Method.POST);
+            request.AddParameter("search", word);
+            response = client.Execute(request);
+
+            dynamic data = JsonConvert.DeserializeObject(response.Content);
+
+            foreach (var keyword in data)
+            {
+                KeywordModel model = new KeywordModel();
+                model.Title = keyword.title.ToString();
+                try
+                {
+                    if (keyword.shops_list != null)
+                    {
+                        foreach (var shopId in keyword.shops_list)
+                        {
+                            model.ShopIDs.Add(Convert.ToInt32(shopId));
+                        }
+                    }
+                }
+                catch { }
+
+                keywords.Add(model);
+            }
+            return keywords;
         }
     }
 }

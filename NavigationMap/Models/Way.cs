@@ -10,16 +10,6 @@ namespace NavigationMap.Models
 {
     public class Way : ObservableObject, IMapElement, IDisposable
     {
-        private DateTime _editDate;
-        public DateTime EditDate
-        {
-            get => _editDate;
-            set
-            {
-                _editDate = value;
-                OnPropertyChanged();
-            }
-        }
         private bool _disposed;
 
         private Point _position;
@@ -33,7 +23,16 @@ namespace NavigationMap.Models
                 OnPropertyChanged();
             }
         }
-
+        private bool fromTemplates;
+        public bool FromTemplates
+        {
+            get => fromTemplates;
+            set
+            {
+                fromTemplates = value;
+                OnPropertyChanged();
+            }
+        }
         private int _id;
 
         public int Id
@@ -71,6 +70,7 @@ namespace NavigationMap.Models
         }
 
         private int _floorId;
+
         public int FloorId
         {
             get => _floorId;
@@ -86,8 +86,6 @@ namespace NavigationMap.Models
 
         public TrulyObservableCollection<WayPoint> WayPoints { get; } = new();
 
-
-        public bool FromTemplates { get; set; }
         public Way()
         {
             WayPoints.CollectionChanged += WayPoints_CollectionChanged;

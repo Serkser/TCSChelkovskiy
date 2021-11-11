@@ -44,11 +44,13 @@
                         <ImageBrush ImageSource="/Images/ForViewImages/news.png"/>
                     </Button.Background>
                 </Button>
-                <Button Command="{Binding TapSearch}" Style="{StaticResource HeaderSearchButton}" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
+                <Button Command="{Binding TapSearch}"
+                        Style="{StaticResource HeaderSearchButton}" FontSize="20" Padding="10,0,0,0" HorizontalContentAlignment="Left"
                          HorizontalAlignment="Left" Margin="1556,50,0,0" VerticalAlignment="Top" Height="64" Width="345">
                     <StackPanel Orientation="Horizontal">
                         <Image Width="40" Height="40" Source="/Images/ForViewImages/SearchNavButton.png"/>
-                        <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="{Binding SearchText, Mode=TwoWay}" Height="46" Width="271"/>
+                        <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                   Height="46" Width="271"/>
                     </StackPanel>
 
                 </Button>

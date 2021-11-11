@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="host" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://europa.useful.su</Value>
+      <Value Profile="(Default)">https://navigator.useful.su</Value>
     </Setting>
   </Settings>
 </SettingsFile>

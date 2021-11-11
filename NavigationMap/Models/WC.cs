@@ -12,7 +12,6 @@ namespace NavigationMap.Models
     public class WC : Station, ICloneable
     {
         private State _state;
-
         public WC()
         {
             _state = State.Instance;
@@ -22,7 +21,7 @@ namespace NavigationMap.Models
         public RelayCommand SelectWCCommand =>
             _selectWCCommand ??= new RelayCommand(obj =>
             {
-
+              
                 _state.SelectWC(this);
             });
         public new object Clone()

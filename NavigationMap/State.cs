@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using NavigationMap.Models;
 
 namespace NavigationMap
@@ -39,9 +40,9 @@ namespace NavigationMap
         {
             OnAreaSelected?.Invoke(area);
         }
-        public void SelectWC(WC wc)
-        {
-            OnWCSelected?.Invoke(wc);
+        public void SelectWC(WC area)
+        {       
+            OnWCSelected?.Invoke(area);
         }
         public void SelectATM(ATM atm)
         {

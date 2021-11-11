@@ -103,6 +103,7 @@ namespace NavigationMap.Models
         public ObservableCollection<WC> WCs { get; } = new();
         public ObservableCollection<ATM> ATMs { get; } = new();
 
+
         public void Dispose()
         {
             Dispose(true);

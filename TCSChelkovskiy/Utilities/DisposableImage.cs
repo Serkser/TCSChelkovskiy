@@ -58,6 +58,7 @@ namespace TCSChelkovskiy.Utilities
                 bitmap.BeginInit();
                 bitmap.CacheOption = BitmapCacheOption.None;
                 bitmap.StreamSource = mediaStream;
+                
                 bitmap.EndInit();
 
                 bitmap.Freeze();

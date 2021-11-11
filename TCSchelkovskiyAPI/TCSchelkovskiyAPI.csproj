@@ -58,6 +58,7 @@
     <Compile Include="Models\BannerModel.cs" />
     <Compile Include="Models\ContactsModel.cs" />
     <Compile Include="Models\FeedbackModel.cs" />
+    <Compile Include="Models\KeywordModel.cs" />
     <Compile Include="Models\ParkingModel.cs" />
     <Compile Include="Models\PromoModel.cs" />
     <Compile Include="Models\RuleModel.cs" />

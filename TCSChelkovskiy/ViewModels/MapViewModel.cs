@@ -26,6 +26,7 @@ namespace TCSChelkovskiy.ViewModels
         {
           
             Floors = KioskObjects.Floors;
+           
 
             Categories = KioskObjects.Categories;
             Stations = KioskObjects.Stations;
@@ -33,26 +34,35 @@ namespace TCSChelkovskiy.ViewModels
             Gallery = KioskObjects.Gallery;
             if (Floors.Count > 0)
             {
-                This.Map.SelectedStation = KioskObjects.CurrentStation;
-                foreach (var floor in KioskObjects.Floors)
+                if (KioskObjects.CurrentStation != null)
                 {
-                    foreach (var station in floor.Stations)
+                    This.Map.SelectedStation = KioskObjects.CurrentStation;
+                    foreach (var floor in KioskObjects.Floors)
                     {
-                        if (station.Id == KioskObjects.CurrentStation.Id)
+                        foreach (var station in floor.Stations)
                         {
-                            CurrentFloor = floor; break;
+                            if (station.Id == KioskObjects.CurrentStation.Id)
+                            {
+                                CurrentFloor = floor; break;
+                            }
                         }
                     }
                 }
+                else
+                {
+                    CurrentFloor = Floors.FirstOrDefault();
+                }
+              
             }
 
+          
         }
         public MapViewModel(Views.MapPage _this, MainWindow main)
         {
             This = _this;
             MainWindow = main;
             InitMap();
-
+            
         }
         public MapViewModel(Views.MapPage _this, MainWindow main,ShopModel selectedShop)
         {

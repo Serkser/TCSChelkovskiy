@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TCSChelkovskiy.Views"
       xmlns:Controls="clr-namespace:TCSChelkovskiy.Controls" xmlns:models="clr-namespace:TCSChelkovskiy.Models"
+    xmlns:keyboard="clr-namespace:TCEvropeyskiy.Controls.keyboard"
     x:Class="TCSChelkovskiy.Views.Feedback"
       mc:Ignorable="d" 
       d:DesignHeight="830" d:DesignWidth="1297"
@@ -20,21 +21,20 @@
         </Grid.ColumnDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="5,52,0,0" Text="ОБРАТНАЯ СВЯЗЬ" FontWeight="DemiBold" FontFamily="Manrope" TextAlignment="Left" 
             FontSize="35px" Foreground="Black" TextWrapping="Wrap" VerticalAlignment="Top" Width="461" Height="57" Grid.Column="1"/>
-        <CheckBox FontSize="11" IsChecked="{Binding FeedbackModel.AgreementState,Mode=TwoWay}" HorizontalAlignment="Left" Margin="5,110,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1">
+        <CheckBox FontSize="11" IsChecked="{Binding FeedbackModel.AgreementState, Mode=TwoWay}" HorizontalAlignment="Left" Margin="5,110,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1">
             <CheckBox.LayoutTransform>
                 <ScaleTransform ScaleX="2.5" ScaleY="2.5" />
             </CheckBox.LayoutTransform>
         </CheckBox>
-        <Button  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=SendFeedback}" Style="{DynamicResource ButtonBlue}" Content="ОТПРАВИТЬ" HorizontalAlignment="Left" Foreground="White"
+        <Button  Command="{Binding SendFeedback, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}" Style="{DynamicResource ButtonBlue}" Content="ОТПРАВИТЬ" HorizontalAlignment="Left" Foreground="White"
             FontSize="27"  Margin="280,261,0,0" VerticalAlignment="Top" Width="240" Height="100" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="1" FontWeight="Bold"/>
-        <Button  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Page}, Path=GoBack}" Style="{DynamicResource ButtonBordered}" Content="ОТМЕНА" HorizontalAlignment="Left"
+        <Button  Command="{Binding GoBack, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}" Style="{DynamicResource ButtonBordered}" Content="ОТМЕНА" HorizontalAlignment="Left"
             FontSize="27" Margin="10,261,0,0" VerticalAlignment="Top" Width="240" Height="100" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.Column="1" FontWeight="Bold"/>
-        <Controls:Keyboard ButtonPressed="buttonPressed" Grid.Column="1" Margin="550,83,66,45" Grid.Row="1"/>
 
 
         <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="60,115,0,0" FontSize="20" Text="Даю согласие на обработку персональных данных" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Row="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="5,172,0,0" Text="{Binding FirstValidationError,Mode=TwoWay}" TextAlignment="Center" FontWeight="DemiBold" FontFamily="Manrope"
-            FontSize="35px" Foreground="Black" TextWrapping="Wrap" VerticalAlignment="Top" Width="1184" Height="56" Grid.Column="1" Grid.Row="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="-621,166,0,0" Text="{Binding FirstValidationError, Mode=TwoWay}" TextAlignment="Center" FontWeight="DemiBold" FontFamily="Manrope"
+            FontSize="35px" Foreground="Black" TextWrapping="Wrap" VerticalAlignment="Top" Width="1184" Height="56" Grid.Row="1" Grid.ColumnSpan="2"/>
         <Controls:PlaceholderTextBox  Text="{Binding FeedbackModel.Topic, Mode=TwoWay}"  PlaceholderVerticalAlligment="Center"
             Placeholder="Тема" GotFocus="TextBox_GotFocus" Grid.Column="1" Width="1184" Margin="10,128,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="67" RenderTransformOrigin="0.47,0.513" />
         <Controls:PlaceholderTextBox  Text="{Binding FeedbackModel.EmailOrPhone, Mode=TwoWay}" PlaceholderVerticalAlligment="Center"
@@ -44,6 +44,9 @@
             Placeholder="Введите текст" GotFocus="TextBox_GotFocus" Grid.Column="1" Width="1184" Margin="10,274,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="205" RenderTransformOrigin="0.47,0.513" Grid.RowSpan="2" />
         <Controls:PlaceholderTextBox  Text="{Binding FeedbackModel.Name, Mode=TwoWay}"  PlaceholderVerticalAlligment="Center"
             Placeholder="Имя" GotFocus="TextBox_GotFocus" Width="587" Margin="10,200,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="67" RenderTransformOrigin="0.47,0.513" Grid.Column="1" />
+
+
+        <keyboard:CoolKeyBoard Grid.Column="1" HorizontalAlignment="Left" Margin="572,84,0,0" Grid.Row="1" VerticalAlignment="Top" Height="277" Width="622"/>
 
 
     </Grid>

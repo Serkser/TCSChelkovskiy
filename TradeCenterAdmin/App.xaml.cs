@@ -18,6 +18,18 @@ namespace TradeCenterAdmin
     {
         public App()
         {
+            
+            string pathToHost = Path.Combine(Environment.CurrentDirectory, "host.txt");
+            if (File.Exists(pathToHost))
+            {
+                using (StreamReader sr = File.OpenText(pathToHost))
+                {
+                    string host = sr.ReadToEnd();
+                    TCSchelkovskiyAPI.TCSchelkovskiyAPI.HOST = host;
+                }
+            }
+         
+
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
             Storage.KioskObjects.LoadAllObjects().Wait();           
         }

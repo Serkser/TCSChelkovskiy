@@ -41,6 +41,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
+    <Reference Include="Simplify.Windows.Forms, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplify.Windows.Forms.1.1.2\lib\net452\Simplify.Windows.Forms.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -62,6 +65,7 @@
     <Compile Include="Controls\Map.xaml.cs">
       <DependentUpon>Map.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\MapTerminalPointType.cs" />
     <Compile Include="Core\MatrixAnimation.cs" />
     <Compile Include="Core\ObservableCollectionExtensions.cs" />
     <Compile Include="Core\ObservableObject.cs" />
@@ -75,13 +79,13 @@
     <Compile Include="Models\AreaCategory.cs" />
     <Compile Include="Models\AreaImage.cs" />
     <Compile Include="Models\AreaPoint.cs" />
+    <Compile Include="Models\ATM.cs" />
     <Compile Include="Models\Floor.cs" />
     <Compile Include="Models\IMapElement.cs" />
     <Compile Include="Models\ShapePoint.cs" />
     <Compile Include="Models\Station.cs" />
     <Compile Include="Models\Way.cs" />
     <Compile Include="Models\WayPoint.cs" />
-    <Compile Include="Models\ATM.cs" />
     <Compile Include="Models\WC.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -109,15 +113,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Controls\0.png" />
+    <Resource Include="Images\ATMIcon.png" />
+    <Resource Include="Images\WCIcon.png" />
+    <Resource Include="Images\YouAreHere.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Page Include="Controls\Map.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\MapElements.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

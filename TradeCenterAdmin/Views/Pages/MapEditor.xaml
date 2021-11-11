@@ -34,7 +34,6 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <Image x:Name="img" MouseDown="click" Stretch="Fill"  Source="{Binding CurrentFloorImage.Source}" Width="9000" Height="9000" Canvas.Left="0" Canvas.Top="0"/>
-
                     </Canvas>
                 </ScrollViewer>
 
