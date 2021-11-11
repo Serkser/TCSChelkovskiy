@@ -34,7 +34,7 @@ namespace TCEvropeyskiy
         {
             timer.Interval = TimeSpan.FromSeconds(5);
             timer.Tick += TimerOnTick;
-            await Task.Delay(25000);
+            await Task.Delay(120000);
             timer.Start();
         }
 
