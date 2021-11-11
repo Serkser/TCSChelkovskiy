@@ -25,6 +25,7 @@
                         <controls:ShopItemTemplate  Width="331" Height="138" Icon="{Binding Icon, Mode=TwoWay}"
                             IconURI="{Binding IconURI, Mode=TwoWay}"
                             Title="{Binding Name, Mode=TwoWay}"
+                            Status="{Binding Path=Status, Mode=TwoWay}"
                            Category="{Binding Category.Name, Mode=TwoWay}"/>
                     </WrapPanel>
                 </DataTemplate>

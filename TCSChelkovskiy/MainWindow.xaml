@@ -49,8 +49,15 @@
                          HorizontalAlignment="Left" Margin="1556,50,0,0" VerticalAlignment="Top" Height="64" Width="345">
                     <StackPanel Orientation="Horizontal">
                         <Image Width="40" Height="40" Source="/Images/ForViewImages/SearchNavButton.png"/>
-                        <TextBlock FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                   Height="46" Width="271"/>
+                        <TextBox  x:Name="searchTb"
+                            BorderThickness="0" FontSize="30" Padding="20,0,0,0" TextAlignment="Left" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                   Height="46" Width="271">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="GotFocus">
+                                    <i:InvokeCommandAction Command="{Binding TapSearch}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
                     </StackPanel>
 
                 </Button>

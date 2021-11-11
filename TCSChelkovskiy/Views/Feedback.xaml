@@ -45,8 +45,10 @@
         <Controls:PlaceholderTextBox  Text="{Binding FeedbackModel.Name, Mode=TwoWay}"  PlaceholderVerticalAlligment="Center"
             Placeholder="Имя" GotFocus="TextBox_GotFocus" Width="587" Margin="10,200,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="67" RenderTransformOrigin="0.47,0.513" Grid.Column="1" />
 
+        <Viewbox  Margin="540,95,66,84" Grid.Column="1" Grid.Row="1">
+            <keyboard:CoolKeyBoard Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Center" />
+        </Viewbox>
 
-        <keyboard:CoolKeyBoard Grid.Column="1" HorizontalAlignment="Left" Margin="572,84,0,0" Grid.Row="1" VerticalAlignment="Top" Height="277" Width="622"/>
 
 
     </Grid>

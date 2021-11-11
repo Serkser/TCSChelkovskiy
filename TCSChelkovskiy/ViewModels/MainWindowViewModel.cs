@@ -92,6 +92,7 @@ namespace TCEvropeyskiy.ViewModels
                 return tapSearch ??
                     (tapSearch = new RelayCommand(obj =>
                     {
+                        This.searchTb.Focus();
                         ShopsByCategory = Shops;
                         Search page = new Search();
                         page.DataContext = this;
@@ -296,6 +297,31 @@ namespace TCEvropeyskiy.ViewModels
             set
             {
                 searchText = value;
+                if (value.Contains("Поиск"))
+                {
+                    SearchText.Replace("Поиск", string.Empty);
+                }
+                ShopsByCategory = new ObservableCollection<TCSchelkovskiyAPI.Models.ShopModel>(
+                    Shops.Where(o => o.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase)).ToList());
+                if (ShopsByCategory.Count == 0)
+                {
+                    var keywords = TCSchelkovskiyAPI.TCSchelkovskiyAPI.SearchKeywords(SearchText);
+                    if (keywords.Count() == 0) { return; }
+                    ShopsByCategory = new ObservableCollection<ShopModel>();
+                    foreach (var shop in KioskObjects.Shops)
+                    {
+                        foreach (var id in keywords.FirstOrDefault().ShopIDs)
+                        {
+                            if (shop.ID == id)
+                            {
+                                if (Shops.Contains(shop))
+                                {
+                                    ShopsByCategory.Add(shop);
+                                }
+                            }
+                        }
+                    }
+                }
                 OnPropertyChanged();
             }
         }

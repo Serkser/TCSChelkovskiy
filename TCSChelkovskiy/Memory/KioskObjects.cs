@@ -93,7 +93,24 @@ namespace TCSChelkovskiy.Memory
             //Floors = ConvertToFloors(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());        
             ConvertToFloorsFromJson(TCSchelkovskiyAPI.TCSchelkovskiyAPI.GetFloors());
             GetCurrentStationFromTxt();
+            RemoveOtherStations();
 
+        }
+        public static void RemoveOtherStations()
+        {
+            if (CurrentStation != null)
+            {
+                for (int f = 0; f < Floors.Count; f++)
+                {
+                    for (int s = Floors[f].Stations.Count - 1; s > -1; s--)
+                    {
+                        if (Floors[f].Stations[s].Id != CurrentStation.Id)
+                        {
+                            Floors[f].Stations.RemoveAt(s);
+                        }
+                    }
+                }
+            }          
         }
         public static void GetCurrentStationFromTxt()
         {

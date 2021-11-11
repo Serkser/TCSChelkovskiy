@@ -19,18 +19,24 @@ namespace TCSChelkovskiy.Services
             {
                 if (!Directory.Exists("AllImages"))
                     Directory.CreateDirectory("AllImages");
-                var imageFile = Path.Combine("AllImages", filename);
-                if (!File.Exists(imageFile))
+                if (!string.IsNullOrEmpty(filename))
                 {
-                    string url = "https://navigator.useful.su/";
-                    url += uri;
-                    using (WebClient client = new WebClient())
+                    var imageFile = Path.Combine("AllImages", filename);
+                    if (!File.Exists(imageFile))
                     {
-                        client.DownloadFile(url, Path.GetFullPath(imageFile));
+                        string url = "https://navigator.useful.su/";
+                        url += uri;
+                        using (WebClient client = new WebClient())
+                        {
+                            client.DownloadFile(url, Path.GetFullPath(imageFile));
+                        }
                     }
+                    return new DisposableImage(Path.GetFullPath(imageFile));
                 }
-                return new DisposableImage(Path.GetFullPath(imageFile));
-                
+                else
+                {
+                    return new DisposableImage(Path.GetFullPath("noimage.jpg"));
+                }                               
             });
 
         }

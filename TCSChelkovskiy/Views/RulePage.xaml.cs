@@ -27,6 +27,7 @@ namespace TCSChelkovskiy.Views
         public RulePage(RuleModel rule)
         {
             InitializeComponent();
+            Images.Clear();
             Model = rule;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;

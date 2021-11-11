@@ -50,6 +50,7 @@
                                                             IconURI="{Binding Path=IconURI, Mode=TwoWay}"
                                                             Margin="7"
                                                             Title="{Binding Path=Name, Mode=TwoWay}"
+                                                            Status="{Binding Path=Status, Mode=TwoWay}"
                                                             Category="{Binding Path=Category.Name,Mode=TwoWay}"/>
                                 </ControlTemplate>
                             </Setter.Value>

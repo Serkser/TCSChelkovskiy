@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Navigation;
@@ -32,6 +33,10 @@ namespace TCSChelkovskiy.ViewModels
             Stations = KioskObjects.Stations;
             Shops = KioskObjects.Shops;
             Gallery = KioskObjects.Gallery;
+
+             MessageBox.Show(Floors.Count.ToString());
+
+            
             if (Floors.Count > 0)
             {
                 if (KioskObjects.CurrentStation != null)
@@ -51,8 +56,7 @@ namespace TCSChelkovskiy.ViewModels
                 else
                 {
                     CurrentFloor = Floors.FirstOrDefault();
-                }
-              
+                }             
             }
 
           

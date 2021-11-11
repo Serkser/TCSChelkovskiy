@@ -97,6 +97,9 @@
                         <Run Text="{Binding Model.Category.Name}"
                              FontWeight="Regular"
                              FontSize="14"/><LineBreak/><LineBreak/>
+                          <Run Text="{Binding Model.Status}"
+                             FontWeight="Regular"
+                             FontSize="14"/><LineBreak/><LineBreak/>
                         <Run Text="{Binding Model.Description}"
                              FontWeight="Regular"
                              FontSize="18"/>

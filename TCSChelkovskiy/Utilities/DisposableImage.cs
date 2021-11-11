@@ -44,25 +44,30 @@ namespace TCSChelkovskiy.Utilities
             if (path != null)
             {
 
-                var bitmap = new BitmapImage();
-                if (path.Contains("pack://application:,,,"))
+                try
                 {
-                    mediaStream = Application.GetResourceStream(new Uri(path))?.Stream;
+                    var bitmap = new BitmapImage();
+                    if (path.Contains("pack://application:,,,"))
+                    {
+                        mediaStream = Application.GetResourceStream(new Uri(path))?.Stream;
+                    }
+                    else
+                    {
+                        mediaStream = File.OpenRead(path);
+                    }
+
+
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.None;
+                    bitmap.StreamSource = mediaStream;
+
+                    bitmap.EndInit();
+
+                    bitmap.Freeze();
+                    Source = bitmap;
                 }
-                else
-                {
-                    mediaStream = File.OpenRead(path);
-                }
-
-
-                bitmap.BeginInit();
-                bitmap.CacheOption = BitmapCacheOption.None;
-                bitmap.StreamSource = mediaStream;
-                
-                bitmap.EndInit();
-
-                bitmap.Freeze();
-                Source = bitmap;
+                catch { }
+               
             }
          
         }

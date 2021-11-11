@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TCSChelkovskiy.LangSwitchers;
 using TCSChelkovskiy.Utilities;
 using TCSchelkovskiyAPI.Models;
 
@@ -33,7 +34,12 @@ namespace TCSChelkovskiy.Controls
         {
             ImageBind?.Dispose();
         }
-
+        public static readonly DependencyProperty StatusProperty = DependencyProperty.Register("Status", typeof(string), typeof(ShopItemTemplate));
+        public string Status
+        {
+            get { return (string)GetValue(StatusProperty); }
+            set { SetValue(StatusProperty, value); }
+        }
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(ShopItemTemplate));
         public string Title
         {
@@ -72,6 +78,7 @@ namespace TCSChelkovskiy.Controls
         {
             ImageBind = await Services.ImageDownloader.DownloadImage(IconURI, Icon);
             category.Text = Category;
+            status.Text = new ShopStatusLangSwitcher().GetStatusWord(Status);
             title.Text = Title;
         }
     }

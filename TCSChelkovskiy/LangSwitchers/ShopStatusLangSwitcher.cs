@@ -26,5 +26,22 @@ namespace TCSChelkovskiy.LangSwitchers
                     return "";
             }
         }
+        public string GetStatusWord(string status)
+        {
+            if (status == null) { status = ""; }
+            switch (status)
+            {
+                case "no":
+                    return "";
+                case "new":
+                    return "Новый";
+                case "soon":
+                    return "Скоро открытие";
+                case "reconstruction":
+                    return "На реконструкции";
+                default:
+                    return "";
+            }
+        }
     }
 }

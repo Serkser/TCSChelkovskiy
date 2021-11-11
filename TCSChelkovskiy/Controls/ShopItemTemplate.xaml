@@ -11,7 +11,7 @@
              Height="138"
              CornerRadius="20">
         <Grid>
-                <Image Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=ImageBind.Source}"
+            <Image Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=ImageBind.Source}"
                        HorizontalAlignment="Left" 
                        Height="100" 
                        Margin="207,19,24,19"
@@ -20,7 +20,7 @@
                        Width="100" />
             <TextBlock x:Name="title" 
                        HorizontalAlignment="Left" 
-                       Margin="19,19,0,0" 
+                       Margin="18,10,0,0" 
                        Text="TextBlock" 
                        FontFamily="{StaticResource Montserrat}" 
                        TextAlignment="Left" 
@@ -31,10 +31,9 @@
                        VerticalAlignment="Top" 
                        Width="168" 
                        Height="73"/>
-            <TextBlock x:Name="category" 
+            <TextBlock 
                        HorizontalAlignment="Left" 
-                       Margin="19,110,0,0" 
-                       Text="КОСМЕТИКА" 
+                       Margin="18,94,0,0" 
                        FontFamily="Manrope" 
                        TextAlignment="Left" 
                         FontSize="10px" 
@@ -42,8 +41,12 @@
                        FontWeight="SemiBold" 
                        TextWrapping="Wrap" 
                        VerticalAlignment="Top" 
-                       Width="167" 
-                       Height="18"/>
+                       Width="189" 
+                       Height="44">
+                <Run x:Name="category" >КОСМЕТИКА</Run>
+                <LineBreak></LineBreak>
+                <Run x:Name="status" >Хуй</Run>
+            </TextBlock>
         </Grid>
     </Border>
 

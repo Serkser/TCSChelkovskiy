@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TCSChelkovskiy.LangSwitchers;
 using TCSChelkovskiy.Services;
 using TCSChelkovskiy.Utilities;
 using TCSchelkovskiyAPI.Models;
@@ -31,6 +32,7 @@ namespace TCSChelkovskiy.Views
             Model = modelShop;
             Loaded+= OnLoaded;
             Unloaded+= OnUnloaded;
+            Status = new ShopStatusLangSwitcher().GetStatusWord(Model.Status);
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
@@ -54,6 +56,14 @@ namespace TCSChelkovskiy.Views
             Logo = await ImageDownloader.DownloadImage(Model.IconURI, Path.GetFileName(Model.IconURI));
         }
 
+        public static readonly DependencyProperty StatusProperty = DependencyProperty.Register(
+            "Status", typeof(string), typeof(ShopPage), new PropertyMetadata(default(string)));
+
+        public string Status
+        {
+            get => (string)GetValue(StatusProperty);
+            set => SetValue(StatusProperty, value);
+        }
         public static readonly DependencyProperty LogoProperty = DependencyProperty.Register(
             "Logo", typeof(DisposableImage), typeof(ShopPage), new PropertyMetadata(default(DisposableImage)));
 
