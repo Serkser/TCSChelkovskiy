@@ -32,9 +32,10 @@ namespace TCEvropeyskiy
         private DispatcherTimer timer = new DispatcherTimer();
         private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            //timer.Interval = TimeSpan.FromSeconds(5);
-            //timer.Tick+= TimerOnTick;
-            //timer.Start();
+            timer.Interval = TimeSpan.FromSeconds(5);
+            timer.Tick += TimerOnTick;
+            await Task.Delay(25000);
+            timer.Start();
         }
 
         private int _index = 0;
